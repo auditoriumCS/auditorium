@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   helper_method :create_user
-
+  before_filter :set_locale
   rescue_from CanCan::AccessDenied do |exception|
     unless current_user
       authenticate_user!
@@ -61,5 +61,10 @@ class ApplicationController < ActionController::Base
 
     u.save
     u
+  end
+
+  private
+  def set_locale
+    I18n.locale = params[:locale] || I18n.default_locale
   end
 end
