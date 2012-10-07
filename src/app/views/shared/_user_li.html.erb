@@ -1,5 +1,5 @@
 <% if user_signed_in? %>
-    <%= form_tag '/search', :method => 'get', :id => 'search_form', :class => 'navbar-search visible-desktop',:remote => false do %>
+    <%= form_tag '/search', :method => 'get', :class => 'navbar-search visible-desktop form-search',:remote => false do %>
     <%= text_field_tag :query, nil, :placeholder => 'Search', :id => 'searchbar' %>
   <% end %>
   <%= render :partial => 'shared/notifications' %>
@@ -16,14 +16,14 @@
 
   <li  class='pull-right'>
      <a href="<%= edit_user_registration_path %>" title='Settings'>
-      <em class="icon-cog"></em>
+      <em class="icon-wrench"></em>
       <span class="visible-desktop">
       Settings
       </span>
     </a>
   </li>
   <li class="pull-right">
-  <%= link_to destroy_user_session_path, :method => :delete, :title => 'Logout' do %> <em class="icon-off"></em>
+  <%= link_to destroy_user_session_path, :method => :delete do %> <em class="icon-off"></em>
       <span class="visible-desktop"> Logout </span>
       <% end %>
   </li>
