@@ -2,12 +2,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   helper_method :create_user
-<<<<<<< HEAD
   before_filter :set_i18n_locale_from_params
-=======
-  before_filter :set_current_user
 
->>>>>>> master
   rescue_from CanCan::AccessDenied do |exception|
     unless current_user
       authenticate_user!
