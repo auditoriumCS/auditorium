@@ -3,9 +3,10 @@
 
 # BITTE DAS FILE DURCH DEN VALIDATOR JAGEN! http://yamllint.com
 # FUER INDENT BITTE SPACES NUTZEN!!!
+
 en:
-  welcome: 'Welcome to auditorium!'
-  slogan: 'You have a question? Ask and get answers!' 
+  welcome:             'Welcome to auditorium!'
+  slogan:              'The lecture is over and you still have questions?'
 
   my_courses:
     one: my course
@@ -53,7 +54,9 @@ en:
       one: '%{count} active member'
       other: '%{count} active members'
     no_questions_yet: "No questions yet. Ask now!"
-  #
+
+  english: english
+  german: german
   # Used in distance_of_time_in_words(), distance_of_time_in_words_to_now(), time_ago_in_words()
   datetime:
     ago: ago

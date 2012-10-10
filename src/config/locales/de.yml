@@ -1,11 +1,12 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
 # BITTE DAS FILE DURCH DEN VALIDATOR JAGEN! http://yamllint.com
 # FUER INDENT BITTE SPACES NUTZEN!!!
 
-
-
 de:
-  welcome: 'Willkommen auf auditorium!'
-  slogan: '' 
+  welcome:             'Willkommen auf auditorium!'
+  slogan:              'Die Vorlesung ist vorbei und du hast immer noch Fragen?'
 
   my_courses:
     one: mein Kurs
@@ -55,6 +56,9 @@ de:
       other: '%{count} aktive Mitglieder'
     no_questions_yet: "Noch keine Fragen. Stell eine!"
 
+
+  english: englisch
+  german: deutsch
   # Used in distance_of_time_in_words(), distance_of_time_in_words_to_now(), time_ago_in_words()
   datetime:
     ago: her
