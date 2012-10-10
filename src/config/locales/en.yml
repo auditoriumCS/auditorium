@@ -37,6 +37,10 @@ en:
   profile: 'Profile of'
   search: 'search'
   do_search: 'search'
+  subscribe:
+  subscribe-title: You'll receive notifications about activities in this course.
+  unsubscribe:
+  unsubscribe-title: You'll receive no more notifications on this course .
   answers:
     one: answer 
     other: answers

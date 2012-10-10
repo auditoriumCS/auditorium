@@ -37,6 +37,10 @@ de:
   profile: 'Profil von'
   search: 'Suche'
   do_search: 'Suchen'
+  subscribe: einschreiben
+  subscribe-title: Du erhälst Mitteilungen zu Aktivitäten in diesem Kurs. 
+  unsubscribe: austragen
+  unsubscribe-title: Du erhälst keine Mitteilungen zu diesem Kurs mehr. 
   answers:
     one: "%{count} Antwort"
     other: "%{count} Antworten"
