@@ -13,6 +13,7 @@ de:
   my_faculties:
     one:   meine Fakultät
     other: meine Fakultäten
+
   faculty:       Fakultät
   course:        Kurs
   lecture:       Vorlesung
@@ -22,6 +23,15 @@ de:
   log_in:        anmelden
   log_out:       abmelden
 
+  all_faculties: Alle Fakultäten
+  by_terms: Nach Semestern
+  ranking: Rangliste
+  moderation: Moderation
+  write_us_email: schreib uns per Email
+  reports: Meldungen
+  notification:
+    one:   "%{count} Mitteilung"
+    other: "%{count} Mitteilungen"
 
   profile: 'Profil von'
   search: 'Suche'

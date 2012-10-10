@@ -13,6 +13,7 @@ en:
   my_faculties:
     one:   my faculty
     other: my faculties
+
   faculty:       faculty
   course:        course
   lecture:       lecture
@@ -21,6 +22,16 @@ en:
   settings:      settings
   log_in:        log in
   log_out:       log out
+
+  all_faculties:
+  by_terms:
+  ranking:
+  moderation:
+  write_us_email:
+  reports:
+  notification:
+    one: "%{count} notification"
+    other: "%{count} notifications"
 
   profile: 'Profile of'
   search: 'search'
