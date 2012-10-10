@@ -36,6 +36,9 @@ en:
   profile: 'Profile of'
   search: 'search'
   do_search: 'search'
+  answers:
+    one: answer 
+    other: answers
   posts:
     headline: 'Post'
   courses:
@@ -49,3 +52,8 @@ en:
     active_member:
       one: '%{count} active member'
       other: '%{count} active members'
+    no_questions_yet: "No questions yet. Ask now!"
+  #
+  # Used in distance_of_time_in_words(), distance_of_time_in_words_to_now(), time_ago_in_words()
+  datetime:
+    ago: ago
