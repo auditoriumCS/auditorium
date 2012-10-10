@@ -2,7 +2,7 @@
 
   <% @courses_by_faculty.each do |faculty, courses| %>
 
-    <h2 name="<%= faculty %>"><%= "My Courses in #{faculty}" %></h2>
+    <h2 name="<%= faculty %>"><%=t "courses.my_courses_at" %> <%= faculty %></h2>
 
     <% cols = 3 ; cols = 12/cols ; i = 0 %>
 
@@ -24,7 +24,7 @@
                 <dt class="info-title">
                 <a href="#" class="info" data-id="<%= course.id%>" data-type="info">
                   <i class="chevron icon-chevron-right"></i>
-                  <span class="pull-right"><%= pluralize(course.infos.count, 'info') %></span>
+                  <span class="pull-right"><%= t('courses.info', :count => course.infos.keep_if{|q| can? :read, q}.count) %></span>
                 </a>
                 </dt>
 
@@ -54,7 +54,7 @@
                 <dt class="question-title"> 
                 <a href="#" class="question" data-id="<%= course.id%>" data-type="question">
                   <i class="chevron icon-chevron-right"></i>
-                  <span class="pull-right"><%= pluralize(course.questions.keep_if{|q| can? :read, q}.count, 'question') %></span>
+                  <span class="pull-right"><%= t('courses.question', :count => course.questions.keep_if{|q| can? :read, q}.count) %></span>
                 </a>
                 </dt>
 
@@ -95,7 +95,7 @@
 
 
               <div class="subtle pull-right" style="text-align:right;">
-                <%= course.participants.count %>/ <%= pluralize(course.followers.count, 'active member') %>
+                <%= course.participants.count %>/ <%=t 'courses.active_member', count:course.followers.count %>
               </div>
               </div>
 

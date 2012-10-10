@@ -1,8 +1,23 @@
 # BITTE DAS FILE DURCH DEN VALIDATOR JAGEN! http://yamllint.com
 # FUER INDENT BITTE SPACES NUTZEN!!!
 
+
+
 de:
   welcome: 'Willkommen auf auditorium!'
   profile: 'Profil von'
+  search: 'Suche'
+  do_search: 'Suchen'
   posts:
     headline: 'Beitrag'
+  courses:
+    my_courses_at: 'Meine Kurse an der '
+    info:
+      one: '%{count} Ankündigung'
+      other: '%{count} Ankündigungen'
+    question:
+      one:   '%{count} Frage'
+      other: '%{count} Fragen'
+    active_member:
+      one:   '%{count} aktives Mitglied'
+      other: '%{count} aktive Mitglieder'

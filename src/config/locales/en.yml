@@ -6,5 +6,18 @@
 en:
   welcome: 'Welcome to auditorium!'
   profile: 'Profile of'
+  search: 'search'
+  do_search: 'search'
   posts:
     headline: 'Post'
+  courses:
+    my_courses_at: 'My courses at the '
+    info:
+      one: '%{count} info'
+      other: '%{count} infos'
+    question:
+      one:   '%{count} question'
+      other: '%{count} questions'
+    active_member:
+      one: '%{count} active member'
+      other: '%{count} active members'
