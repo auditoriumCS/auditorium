@@ -1,0 +1,15 @@
+<% if @infos.count == 0 %>
+  
+  No announcements, yet.
+    <% if current_user and current_user.may_edit_course(@course) %>
+      <%= link_to 'Write an announcement.', new_post_path(:post_type => 'info', :course_id => @course.id) %>
+    <% end %>
+  </p>
+<% else %> 
+	<table class="table announcement-teaser">
+  <% @infos.first(5).each do |info| %>
+    <%= render :partial => 'posts/announcement-teaser', :locals => { :post => info} %>
+  <% end %>
+</table>
+<% end %>
+

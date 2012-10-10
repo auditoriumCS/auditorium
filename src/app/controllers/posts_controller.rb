@@ -16,9 +16,13 @@ class PostsController < ApplicationController
   # GET /posts/1.json
   def show
     @post = Post.find(params[:id])
-
     respond_to do |format|
-      format.html 
+      if @post.post_type.eql? 'question' or @post.post_type.eql? 'info'
+        format.html 
+      else
+        flash[:notice] =  'You were redirected to the origin post.'
+        format.html { redirect_to "#{post_path(@post.origin)}#post-#{@post.id}" }
+      end
       format.json { render json: @post }
     end
   end
@@ -28,6 +32,8 @@ class PostsController < ApplicationController
   def new
     @post = Post.new
     @post.is_private = params[:is_private] if params[:is_private]
+    @post.subject = params[:subject] if params[:subject]
+    @post.body = params[:body] if params[:body]
 
     if params[:course_id]
       @post.course_id = params[:course_id]
@@ -37,6 +43,23 @@ class PostsController < ApplicationController
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @post }
+    end
+  end
+
+  def maintainer_request
+    @post = Post.new
+    @post.post_type = 'question'
+    @post.is_private = true
+    @post.subject = "Bitte authorisiere mich als Maintainer des Kurses."
+    @post.body = "Hallo,\nbitte authorisiert mich als Maintainer des Kurses.\nVielen Dank\n#{current_user.full_name}"
+
+    if params[:course_id]
+      @post.course_id = params[:course_id]
+      @course_name = Course.find(params[:course_id]).name
+    end 
+    
+    respond_to do |format|
+      format.html
     end
   end
 

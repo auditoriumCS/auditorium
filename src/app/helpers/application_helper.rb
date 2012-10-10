@@ -3,6 +3,22 @@ module ApplicationHelper
     def block_code(code, language='ruby')
       CodeRay.scan(code, language).div
     end
+
+    def link(link, title, alt_text)
+      if link.match /^https?:\/\/auditorium.inf.tu-dresden.de/
+        "<a href=\"#{link}\">#{alt_text}</a>"
+      else
+        "<a target=\"_blank\" href=\"#{link}\"  title='external link to #{link}'> <i class='icon-external-link'></i> #{alt_text}</a>"
+      end
+    end
+
+    def autolink(link, link_type)
+      if link.match /^https?:\/\/auditorium.inf.tu-dresden.de/
+        "<a href=\"#{link}\">#{link}</i></a>"
+      else
+        "<a target=\"_blank\" href=\"#{link}\" title='external link to #{link}'><i class='icon-external-link'></i> #{link}</a>"
+      end
+    end
   end
 
   def markdown(text)
@@ -120,6 +136,10 @@ module ApplicationHelper
 
   def admins
     User.find_all(:admin => true)
+  end
+
+  def mathjax_should_load
+    %w{posts courses home reports}.include? params[:controller]
   end
 
   def shorten (string, length)

@@ -23,7 +23,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       #   respond_with resource, :location => after_inactive_sign_up_path_for(resource)
       # end
       if resource.email.match /tu-dresden.de$/
-        redirect_to root_url, :flash => { :info => "An email with confirmation informations was sent to you."}
+        redirect_to root_url, :flash => { :info => "An email with confirmation information was sent to you."}
       else
         redirect_to root_url, :flash => { :notice => "Your account needs to be approved by the moderator. If it is approved, you'll be notified."}
       end

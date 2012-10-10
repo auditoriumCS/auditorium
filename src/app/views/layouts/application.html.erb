@@ -11,7 +11,7 @@
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
+    <% if mathjax_should_load %>
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
        tex2jax: {
@@ -20,9 +20,12 @@
        }
       });
     </script>
+
     <%= mathjax_tag config: 'TeX-AMS_HTML.js' %>
+    <% end %>
   </head>
   <body data-spy="scroll" data-target=".subnav" data-offset="50">
+
     <header id="header">
       <div class="container">
         <%= render "shared/head" %>

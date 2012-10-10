@@ -15,7 +15,7 @@ class CoursesController < ApplicationController
     else
       @courses = Course.order('term_id DESC, name DESC')
     end
-    @courses.sort! { |x,y| y.participants.count <=> x.participants.count }
+    @courses.sort! { |x,y| y.participants.count <=> x.participants.count and y.followers.count <=> x.followers.count }
     @courses = Kaminari.paginate_array(@courses).page(params[:page]).per(20)
 
     respond_to do |format|
@@ -28,8 +28,9 @@ class CoursesController < ApplicationController
   # GET /courses/1.json
   def show
     @course = Course.find(params[:id])
-    @infos = Post.order('last_activity DESC, updated_at DESC, created_at DESC').where('post_type = ? and course_id = ?', 'info', @course.id).page(params[:info_page]).per(20)
-    @questions = Post.order('last_activity DESC, updated_at DESC, created_at DESC').where('post_type = ? and course_id = ?', 'question', @course.id).page(params[:question_page]).per(20)
+    @users = User.order('username DESC, email DESC, first_name DESC, last_name DESC') if can? :manage, User
+    @infos = Post.order('last_activity DESC, updated_at DESC, created_at DESC').where('post_type = ? and course_id = ?', 'info', @course.id)
+    @questions = Post.order('last_activity DESC, updated_at DESC, created_at DESC').where('post_type = ? and course_id = ?', 'question', @course.id).page(params[:page]).per(15)
     if current_user.nil?
       @questions.delete_if { |post| post.is_private }
     else
@@ -44,10 +45,14 @@ class CoursesController < ApplicationController
   # GET /courses/new
   # GET /courses/new.json
   def new
-    @course = Course.new
-    @course.lecture_id = params[:lecture_id]
-    @course.name = params[:name]
-    @course.url = params[:url]
+    if params[:course_id]
+      @course = Course.find(params[:course_id])
+    else
+      @course = Course.new
+      @course.lecture_id = params[:lecture_id]
+      @course.name = params[:name]
+      @course.url = params[:url]
+    end
 
     respond_to do |format|
       format.html # new.html.erb
@@ -188,17 +193,9 @@ class CoursesController < ApplicationController
         AuditoriumMailer.membership_changed(@course, user, membership_type).deliver
       end
     end
-
-    if request.env["HTTP_REFERER"]
-      redirect_url = request.env["HTTP_REFERER"]
-    else
-      redirect_url = @course
-    end
     
     respond_to do |format|
       format.js
-      format.html { redirect_to redirect_url, :flash => { :success => 'Successfully updated users for this course.'} }
-
     end
   end
 
@@ -213,6 +210,22 @@ class CoursesController < ApplicationController
     respond_to do |format|
       format.js
       format.html { redirect_to course, :flash => { :success => 'Course has been approved.'} }
+    end
+  end
+
+  def announcements
+    @infos = Course.find(params[:id]).infos
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
+  def search_users
+    @users = User.where('username LIKE ? or first_name LIKE ? or last_name LIKE ? or email LIKE ?', "%#{params[:q]}%","%#{params[:q]}%","%#{params[:q]}%","%#{params[:q]}%").order('username DESC, email DESC, first_name DESC, last_name DESC')
+
+    respond_to do |format|
+      format.js
     end
   end
 
