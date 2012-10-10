@@ -7,8 +7,12 @@ en:
   welcome: 'Welcome to auditorium!'
   slogan: 'You have a question? Ask and get answers!' 
 
-  my_courses:    my courses
-  my_faculties:  my faculties
+  my_courses:
+    one: my course
+    other: my courses
+  my_faculties:
+    one:   my faculty
+    other: my faculties
   faculty:       faculty
   course:        course
   lecture:       lecture

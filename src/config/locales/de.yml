@@ -7,8 +7,12 @@ de:
   welcome: 'Willkommen auf auditorium!'
   slogan: '' 
 
-  my_courses:    meine Kurse
-  my_faculties:  meine Fakultäten
+  my_courses:
+    one: mein Kurs
+    other: meine Kurse
+  my_faculties:
+    one:   meine Fakultät
+    other: meine Fakultäten
   faculty:       Fakultät
   course:        Kurs
   lecture:       Vorlesung

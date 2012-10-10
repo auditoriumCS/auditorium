@@ -19,14 +19,16 @@
         <li>
         <%= link_to( my_courses_path, :title => 'My Courses' ) do %>
           <i class="icon-book"></i>
-          <span class="hidden-phone"> <%=t 'my_courses' %> </span>
+          <span class="hidden-phone"> <%=t 'my_courses', :count => current_user.course_ids.count %> </span>
         <% end%>
         </li>
 
         <li>
         <%= link_to( faculties_path, :title => 'Faculties') do %>
           <i class="icon-beaker"></i>
-          <span class="hidden-phone"> <%=t 'my_faculties' %> </span>
+          <span class="hidden-phone">
+            <%=t 'my_faculties', :count => current_user.faculty_ids.count %>
+          </span>
         <% end%>
         </li>
 
