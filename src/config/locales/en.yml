@@ -5,6 +5,19 @@
 # FUER INDENT BITTE SPACES NUTZEN!!!
 en:
   welcome: 'Welcome to auditorium!'
+  slogan: 'You have a question? Ask and get answers!' 
+
+  my_courses:    my courses
+  my_faculties:  my faculties
+  faculty:       faculty
+  course:        course
+  lecture:       lecture
+  institute:     institute
+  chair:         chair
+  settings:      settings
+  log_in:        log in
+  log_out:       log out
+
   profile: 'Profile of'
   search: 'search'
   do_search: 'search'

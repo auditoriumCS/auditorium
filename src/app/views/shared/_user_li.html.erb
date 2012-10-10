@@ -18,13 +18,13 @@
      <a href="<%= edit_user_registration_path %>" title='Settings'>
       <em class="icon-wrench"></em>
       <span class="visible-desktop">
-      Settings
+      <%=t :settings%>
       </span>
     </a>
   </li>
   <li class="pull-right">
   <%= link_to destroy_user_session_path, :method => :delete do %> <em class="icon-off"></em>
-      <span class="visible-desktop"> Logout </span>
+      <span class="visible-desktop"> <%=t :log_out%> </span>
       <% end %>
   </li>
 
@@ -32,7 +32,7 @@
   <li class="pull-right">
     <%= link_to(new_user_session_path, 'data-toggle' => 'modal') do %>
       <em class='icon-user'></em>
-      <span>Sign in</span>
+      <span> <%=t :log_in%> </span>
     <% end %>
     <%= render :partial => 'shared/modal_login' %>
   </li>

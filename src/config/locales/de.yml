@@ -5,6 +5,20 @@
 
 de:
   welcome: 'Willkommen auf auditorium!'
+  slogan: '' 
+
+  my_courses:    meine Kurse
+  my_faculties:  meine Fakultäten
+  faculty:       Fakultät
+  course:        Kurs
+  lecture:       Vorlesung
+  institute:     Institut
+  chair:         Lehrstuhl
+  settings:      Einstellungen
+  log_in:        anmelden
+  log_out:       abmelden
+
+
   profile: 'Profil von'
   search: 'Suche'
   do_search: 'Suchen'

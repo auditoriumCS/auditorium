@@ -12,21 +12,21 @@
         <li>
         <%= link_to( home_path ) do %>
           <i class="icon-home"></i>
-          <span class="hidden-phone"> Home </span>
+          <span class="hidden-phone"> <%=t 'home' %></span>
         <% end%>
         </li>
 
         <li>
         <%= link_to( my_courses_path, :title => 'My Courses' ) do %>
           <i class="icon-book"></i>
-          <span class="hidden-phone"> Courses</span>
+          <span class="hidden-phone"> <%=t 'my_courses' %> </span>
         <% end%>
         </li>
 
         <li>
         <%= link_to( faculties_path, :title => 'Faculties') do %>
           <i class="icon-beaker"></i>
-          <span class="hidden-phone"> Faculties</span>
+          <span class="hidden-phone"> <%=t 'my_faculties' %> </span>
         <% end%>
         </li>
 
