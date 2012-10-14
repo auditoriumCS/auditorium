@@ -9,11 +9,11 @@ en:
   slogan:              'The lecture is over and you still have questions?'
 
   my_courses:
-    one: my course
-    other: my courses
+    one:   My course
+    other: My courses
   my_faculties:
-    one:   my faculty
-    other: my faculties
+    one:   My faculty
+    other: My faculties
 
   faculty:       faculty
   course:        course

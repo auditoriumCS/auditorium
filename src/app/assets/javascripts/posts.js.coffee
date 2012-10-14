@@ -54,7 +54,7 @@ jQuery ->
 	$('a.submit-report').click ->
 		data_id = $(this).data('id')
 		$('input#report_post_id').val(data_id)
-		$('.modal').show()
+		$('#reportModal').show()
 		$('#reportModal').css('visibility', 'visible')
 		return false
 
@@ -81,6 +81,11 @@ jQuery ->
 
 	$('a#insert-latex-block').click ->
 		insertAtCaret('content_field', '\n$$%LaTeX code here!$$\n')
+		return false
+
+	$('a.general-question').click ->
+		$('#course_name').val('Allgemeine und organisatorische Angelegenheiten').focus()
+		$('#course_name').autocomplete('search', $('#course_name').val())
 		return false
 
 	$('.permalink').click -> 

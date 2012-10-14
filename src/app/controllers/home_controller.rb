@@ -5,7 +5,6 @@ class HomeController < ApplicationController
     if signed_in?
       @post = Post.new()
       @post.post_type = 'question'
-
       case params[:post_filter]
       when 'questions'
         cookies[:post_filter] = 'question'

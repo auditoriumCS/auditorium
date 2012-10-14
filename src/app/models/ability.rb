@@ -9,6 +9,7 @@ class Ability
     alias_action :rating, :to => :rate
     alias_action :answered, :to => :mark_as_answered
     alias_action :search_courses, :to => :search_for_courses
+    alias_action :announcements, :to => :read_announcements
 
 
     user ||= User.new # guest user (not logged in)
@@ -26,7 +27,8 @@ class Ability
       cannot :search, User
 
       can :create,   Post
-      
+      can :read_announcements, Course
+
       can :update,   Post do |post|
         post.author_id == user.id or post.course.moderators.include? user or post.course.editors.include? user
       end
@@ -66,16 +68,19 @@ class Ability
       can :follow, Course
       can :read, Course
       can :manage, Course do |course|
-        user.is_course_maintainer? course
+        user.is_course_maintainer? course or user.is_course_editor? course or user.admin?
+      end
+
+      cannot :manage_users, Course do |course|
+        !user.is_course_maintainer?(course)
+      end
+
+      cannot :delete, Course do |course|
+        !user.is_course_maintainer? course
       end
 
       can :follow, Lecture
       can :follow, Faculty
-
-      can :manage_users, Course do |course|
-        user.is_course_maintainer? course
-      end
-      
       cannot :approve, Course
 
       cannot :manage, Feedback
@@ -100,6 +105,7 @@ class Ability
         user.id != post.author.id
       end
       can :manage, Feedback
+      can :manage_users, Course
     end
 
 

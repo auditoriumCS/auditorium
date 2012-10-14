@@ -1,6 +1,6 @@
 <p class="hint hidden-post post-<%= post.id %> <%= 'hidden' unless (post.rating < current_user.rating_minimum or post.too_many_reports?) %>">This post got to many negative feedback. That's why it is hidden. <%= link_to 'Show this post anyway.', '#',  'data-id' => post.id %></p>
 
-<% if current_user.subscribed_to?(post.course) %>
+<% if current_user.subscribed_to?(post.course) and params[:controller].eql? 'home' %>
   <table class="table-posts subscribed <%= 'hidden' if (post.rating < current_user.rating_minimum or post.too_many_reports?) %> post-<%= post.id %>" data-id='<%= post.id %>'>
 <% else %>
   <table class="table-posts <%= 'hidden' if (post.rating < current_user.rating_minimum or post.too_many_reports?) %> post-<%= post.id %>" data-id='<%= post.id %>'>
@@ -16,7 +16,11 @@
       <% elsif post.post_type.eql? 'info' %>
         <td rowspan="3" class="post-badge info-badge">&nbsp;</td>
       <% end %>
-      <td colspan="1"><% if not post.post_type.eql? 'answer' %>
+      <td colspan="1">
+        <% if not post.post_type.eql? 'answer' %>
+        <div class="post-course-name">
+          <%= link_to " #{post.course.name_with_term}", course_path(post.course), title: 'You have subscribed to this course.', class: "#{'icon-star' if current_user.subscribed_to?(post.course)}" %>
+        </div>
         <h3 class="post-subject">
           <% if post.top_rated? %>
             <span class="icon-star highlight-icon" style='color:#fff900' title='This post is top rated.'></span>
@@ -33,7 +37,7 @@
   <% if params[:controller].eql? 'posts'%>
   <table class="table-comments"> 
       <% post.comments.each do |comment| %>
-        <tr><td><%= render :partial => 'posts/comment', :locals => {:comment => comment }%></td></tr>
+        <tr class='<%= "highlight" if comment.author.may_edit_course comment.course %>'><td><%= render :partial => 'posts/comment', :locals => {:comment => comment }%></td></tr>
       <% end %>
   </table>
   <%= render :partial => 'posts/comment_form', :locals => {:post => post } %>

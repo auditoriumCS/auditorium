@@ -22,6 +22,13 @@
           <%= f.text_field :username, :class => "span8" %>
         </div>
       </div>
+
+      <div class="control-group">
+        <%= f.label :title, 'Title', :class => 'control-label'%>
+        <div class="controls">
+          <%= f.select :title, options_for_select(available_title), :include_blank => true, :class => 'span8' %>
+        </div>
+      </div>
       
       <div class="control-group">
         <%= f.label :first_name, 'First name', :class => 'control-label'%> 
@@ -39,15 +46,17 @@
       
       <hr />
       
+      <% if can? :manage, User %>
       <div class="control-group">
         <%= f.label :email, 'Email address', :class => 'control-label'%>
         <div class="controls"> 
           <%= f.email_field :email, :class => "span8"%>
         </div>
       </div>
+      <% end %>
       
       <div class="control-group">
-        <%= f.label :alternative_email, 'Second Email', :class => 'control-label'%>
+        <%= f.label :alternative_email, 'Email for your gravatar', :class => 'control-label'%>
         <div class="controls"> 
           <%= f.email_field :alternative_email, :class => "span8"%>
         <span class="label">used for gravatar</span>
@@ -68,6 +77,14 @@
           <%= f.password_field :password_confirmation, :autocomplete => "off", :class => "span8" %>
         </div>
       </div>
+
+      <div class="control-group">
+        <%= f.label :current_password, 'Current password', :class => 'control-label'%>
+        <div class="controls">
+          <%= f.password_field :current_password, :autocomplete => "off", :class => "span8" %>
+          <p class="hint">If you have changed your password, type in your current password for verification.</p>
+        </div>
+      </div>
       
       <hr />
       
@@ -81,17 +98,6 @@
         </div>
       </div>
       
-      <hr />
-      
-      <div class="control-group">
-        <%= f.label :current_password, 'Current Password', :class => 'control-label' %>
-        <div class="controls">
-
-          <%= f.password_field :current_password, :class => 'span8' %><br/>
-          <p class="help-block">Your current password is needed to save your changes.</p>
-        </div>
-      </div>
-
       <hr />
       
       <div class="controls">

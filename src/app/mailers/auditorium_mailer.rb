@@ -15,7 +15,7 @@ class AuditoriumMailer < ActionMailer::Base
   	@course = course 
 
   	mail(to: @user.email, 
-  		subject: "You are now a #{membership_type} of #{course.name_with_term}.", 
+  		subject: "You are now a#{'n' if membership_type.eql? 'editor'} #{membership_type} of #{course.name_with_term}.", 
   		template_path: "auditorium_mailer",
   		template_name: "#{membership_type}_membership")
   end
@@ -45,7 +45,7 @@ class AuditoriumMailer < ActionMailer::Base
     @course = post.course
     @url = course_url(post.course)
     @post = post
-
+    
     private_flag = 'private ' if post.origin.is_private?
 
     case post.post_type

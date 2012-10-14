@@ -1,13 +1,13 @@
 <% if params[:action] == 'show' and ["faculties","institutes","chairs","lectures","courses"].include? params[:controller] %>
 
-<ul class="breadcrumb">
+<ul class="breadcrumb visible-desktop">
     
   <% for item, index in item_parents %>
     <li>
     <% unless item_parents.index(item)  == 0 %>
       <span class="icon-chevron-right"></span>
     <% end %>
-    <%= link_to item, item%>
+    <%= link_to item, item %>
     </li>
   <% end %>
 </ul>

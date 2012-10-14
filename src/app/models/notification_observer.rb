@@ -39,7 +39,7 @@ class NotificationObserver < ActiveRecord::Observer
         sender = post.author
         
         receivers.each do |receiver|
-          Notification.create!(:receiver => receiver, :sender => sender, :notifyable_id => post.id, :notifyable_type => post.class.name)
+          notification = Notification.create!(:receiver => receiver, :sender => sender, :notifyable_id => post.id, :notifyable_type => post.class.name)
           
           # send emails to subscribers
           AuditoriumMailer.update_in_course(receiver, post).deliver if send_course_updates_to?(receiver, post.course) 

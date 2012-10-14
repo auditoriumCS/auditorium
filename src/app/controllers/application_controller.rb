@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
 
   helper_method :create_user
   before_filter :set_i18n_locale_from_params
+  before_filter :set_current_user
 
   rescue_from CanCan::AccessDenied do |exception|
     unless current_user
@@ -64,6 +65,14 @@ class ApplicationController < ActionController::Base
     u
   end
 
+  def url_options
+    super
+    @_url_options.dup.tap do |options|
+      options[:protocol] = Rails.env.production? ? "https://" : "http://"
+      options.freeze
+    end
+  end
+
   protected
     def set_i18n_locale_from_params
      if params[:locale]
@@ -80,4 +89,13 @@ class ApplicationController < ActionController::Base
     def default_url_options
      { :locale => I18n.locale }
     end
+
+  private
+  def set_current_user
+    User.current = current_user
+  end
+
+  def after_sign_in_path_for(resource_or_scope)
+    home_path
+  end
 end
