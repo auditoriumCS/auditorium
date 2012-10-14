@@ -8,35 +8,38 @@ en:
   welcome:             'Welcome to auditorium!'
   slogan:              'The lecture is over and you still have questions?'
 
-  my_courses:
-    one:   My course
-    other: My courses
-  my_faculties:
-    one:   My faculty
-    other: My faculties
+  global:
+    my_courses:
+      one:   My course
+      other: My courses
+    my_faculties:
+      one:   My faculty
+      other: My faculties
 
-  faculty:       faculty
-  course:        course
-  lecture:       lecture
-  institute:     institute
-  chair:         chair
-  settings:      settings
-  log_in:        log in
-  log_out:       log out
+    faculties:
+    courses:
+    lectures:
+    institutes:
+    chairs:
+    semesters:
+    settings:
+    sign_up:
+    log_in:        log in
+    log_out:       log out
 
-  all_faculties:
-  by_terms:
-  ranking:
-  moderation:
-  write_us_email:
-  reports:
-  notification:
-    one: "%{count} notification"
-    other: "%{count} notifications"
+    account:
+    ranking:
+    moderation:
+    write_us_email:
+    reports:
+    notification:
+      one: "%{count} notification"
+      other: "%{count} notifications"
 
-  profile: 'Profile of'
-  search: 'search'
-  do_search: 'search'
+    profile:    Profile of
+    search:     search
+    do_search:  search
+
   subscribe:
   subscribe-title: You'll receive notifications about activities in this course.
   unsubscribe:
@@ -46,7 +49,8 @@ en:
     other: answers
   posts:
     headline: 'Post'
-  courses:
+
+  my_courses:
     my_courses_at: 'My courses at the '
     info:
       one: '%{count} info'

@@ -9,7 +9,7 @@
       
         <ul class="nav">
           <li class="hidden-desktop"><%= link_to 'auditorium', home_path, class: 'brand' %></li>
-          <li class="visible-desktop"><%= link_to home_path do %><i class="icon-home"></i> <%=t 'home' %><% end %></li>
+          <li class="visible-desktop"><%= link_to home_path do %><i class="icon-home"></i> <%=t 'global.home' %><% end %></li>
         </ul>
         <% if signed_in? %>
         <ul class="nav">
@@ -25,7 +25,7 @@
             </ul>
           </li>  
 
-          <li class="hidden-phone"><%= link_to my_courses_path do %><i class="icon-th-large"></i> <%=t 'my_courses', :count => current_user.course_ids.count %><% end %></li>
+          <li class="hidden-phone"><%= link_to my_courses_path do %><i class="icon-th-large"></i> <%=t 'global.my_courses', :count => current_user.course_ids.count %><% end %></li>
           
           <% if help = Course.find_by_name('Support Center') %>
             <li class="hidden-phone"><%= link_to course_path(help) do %><i class="icon-question-sign"></i> Help<% end %></li>
@@ -36,7 +36,7 @@
         <ul class="nav pull-right hidden-phone">
           <li>
             <%= link_to destroy_user_session_path, :method => :delete do %>
-            <i class="icon-off"></i><span class="hidden-tablet"> Logout</span>
+            <i class="icon-off"></i><span class="hidden-tablet"> <%=t "global.log_out" %></span>
             <% end %>
           </li>  
         </ul> 
@@ -47,7 +47,7 @@
           <% end %>
           <li class="notification-button hidden-phone"><%= render :partial => 'shared/notifications' %></li>
           <li class="hidden-phone dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <b class="caret"></b></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%=t "global.account" %> <b class="caret"></b></a>
             <ul class="dropdown-menu hidden-phone">
               <li class='<%= "admin" if current_user.admin? %>' >
                 <%= link_to user_path(current_user) do %><i class="icon-user"></i> <%= (current_user.username? ? current_user.username : current_user.email.split('@')[0]) %>
@@ -61,18 +61,18 @@
 
         <div class="nav-collapse subnav-collapse"> 
           <ul class="nav visible-phone">
-            <li><%= link_to my_courses_path do %><i class="icon-th-large"></i> My courses<% end %></li>
-            <li><%= link_to courses_path do %><i class="icon-th"></i> Courses<% end %></li>
+            <li><%= link_to my_courses_path do %><i class="icon-th-large"></i> <%=t "global.my_courses" %><% end %></li>
+            <li><%= link_to courses_path do %><i class="icon-th"></i> <%=t "global.courses" %><% end %></li>
           </ul>
           <ul class="nav pull-right visible-phone">
             <li class='<%= "admin" if current_user.admin? %>' >
               <%= link_to user_path(current_user) do %><i class="icon-user"></i> <%= (current_user.username? ? current_user.username : current_user.email.split('@')[0]) %>
               <% end %> 
             </li>
-            <li><%= link_to edit_user_registration_path do %><i class="icon-cog"></i> Settings<% end %></li> 
+            <li><%= link_to edit_user_registration_path do %><i class="icon-cog"></i> <%=t "global.settings" %><% end %></li> 
             <li>
               <%= link_to destroy_user_session_path, :method => :delete do %>
-              <i class="icon-off"></i><span class="hidden-tablet"> Logout</span>
+              <i class="icon-off"></i><span class="hidden-tablet"> <%=t "global.log_out" %></span>
               <% end %>
             </li>     
           </ul> 
@@ -80,8 +80,8 @@
         </div><!-- /.nav-collapse --> 
       <% else %>
       <ul class="nav pull-right">
-        <li><%= link_to 'Sign in', new_user_session_path %></li>
-        <li><%= link_to 'Sign up', new_user_registration_path %></li>
+        <li><%= link_to t("global.log_in"), new_user_session_path %></li>
+        <li><%= link_to t("global.sign_up"), new_user_registration_path %></li>
       </ul>
       <% end %>
     </div> 

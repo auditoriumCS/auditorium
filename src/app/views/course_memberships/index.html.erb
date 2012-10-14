@@ -2,7 +2,7 @@
 
   <% @courses_by_faculty.each do |faculty, courses| %>
 
-    <h2 name="<%= faculty %>"><%=t "courses.my_courses_at" %> <%= faculty %></h2>
+    <h2 name="<%= faculty %>"><%=t ".my_courses_at" %> <%= faculty %></h2>
 
     <% cols = 3 ; cols = 12/cols ; i = 0 %>
 
@@ -24,7 +24,7 @@
                 <dt class="info-title">
                 <a href="#" class="info" data-id="<%= course.id%>" data-type="info">
                   <i class="chevron icon-chevron-right"></i>
-                  <span class="pull-right"><%= t('courses.info', :count => course.infos.keep_if{|q| can? :read, q}.count) %></span>
+                  <span class="pull-right"><%= t('info', :count => course.infos.keep_if{|q| can? :read, q}.count) %></span>
                 </a>
                 </dt>
 

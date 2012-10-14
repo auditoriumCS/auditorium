@@ -3,12 +3,12 @@
     <div class="span4">
       <dl class="dl-horizontal">
         <dt>browse</dt>
-        <dd><%= link_to courses_path    do %><i class="icon-th"></i>      Courses    <% end %></dd>
-        <dd><%= link_to terms_path      do %><i class="icon-time"></i>    Semester   <% end %></dd>
-        <dd><%= link_to lectures_path   do %><i class="icon-book"></i>    Lectures   <% end %></dd>
-        <dd><%= link_to chairs_path     do %><i class="icon-list"></i>    Chairs     <% end %></dd>
-        <dd><%= link_to institutes_path do %><i class="icon-sitemap"></i> Institutes <% end %></dd>
-        <dd><%= link_to faculties_path  do %><i class="icon-beaker"></i>  Faculty    <% end %></dd>
+        <dd><%= link_to courses_path    do %><i class="icon-th"></i>      <%=t "global.courses"    %> <% end %></dd>
+        <dd><%= link_to terms_path      do %><i class="icon-time"></i>    <%=t "global.semesters"  %> <% end %></dd>
+        <dd><%= link_to lectures_path   do %><i class="icon-book"></i>    <%=t "global.lectures"   %> <% end %></dd>
+        <dd><%= link_to chairs_path     do %><i class="icon-list"></i>    <%=t "global.chairs"     %> <% end %></dd>
+        <dd><%= link_to institutes_path do %><i class="icon-sitemap"></i> <%=t "global.institutes" %> <% end %></dd>
+        <dd><%= link_to faculties_path  do %><i class="icon-beaker"></i>  <%=t "global.faculties"  %> <% end %></dd>
       </dl>     
     </div>
 
@@ -16,9 +16,9 @@
       <dl class="dl-horizontal">
         <dt>navigate</dt>
 
-        <dd> <%= link_to root_path   do %><i class="icon-home"></i>    home    <% end %> </dd>
-        <dd> <%= link_to search_path do %><i class="icon-search"></i>  search  <% end %> </dd>
-        <dd> <%= link_to users_path  do %><i class="icon-list-ol"></i> ranking <% end %> </dd>
+        <dd> <%= link_to root_path   do %><i class="icon-home"></i>    <%=t "global.home"    %> <% end %> </dd>
+        <dd> <%= link_to search_path do %><i class="icon-search"></i>  <%=t "global.search"  %> <% end %> </dd>
+        <dd> <%= link_to users_path  do %><i class="icon-list-ol"></i> <%=t "global.ranking" %> <% end %> </dd>
 
         <% if current_user %>
           <dd><i class="icon-envelope"></i> <%= link_to t("notification", :count => current_user.unread_notifications.count), notifications_path %></dd>
@@ -31,11 +31,11 @@
     <div class="span4 ">
       <dl class="dl-horizontal">
         <dt>admin</dt>
-        <dd><i class="icon-user"></i> <%= link_to t('moderation'), users_moderation_path %></dd>
-        <dd><i class="icon-comment-alt"></i> <%= link_to "feedback (#{Feedback.where(read: false).count})", feedbacks_path %></dd>
-        <dd><%= link_to reports_path do %><i class="icon-bullhorn"></i> reports<% end %></dd>
-        <dd><%= link_to "http://twitter.com/_auditorium" do %><i class="icon-twitter"></i> twitter <% end %></dd>
-        <dd><%= link_to "https://github.com/auditorium/auditorium" do %><i class="icon-github"></i> github <% end %></dd>
+        <dd> <i class="icon-user"></i> <%= link_to t('moderation'), users_moderation_path %></dd>
+        <dd> <i class="icon-comment-alt"></i> <%= link_to "feedback (#{Feedback.where(read: false).count})", feedbacks_path %></dd>
+        <dd> <%= link_to reports_path do %><i class="icon-bullhorn"></i> reports<% end %></dd>
+        <dd> <%= link_to "http://twitter.com/_auditorium"           do %><i class="icon-twitter">  </i> twitter <% end %></dd>
+        <dd> <%= link_to "https://github.com/auditorium/auditorium" do %><i class="icon-github">   </i> github   <% end %></dd>
       </dl>
     </div>
 
@@ -48,7 +48,7 @@
         </dt>
         <dd> <%= link_to "http://twitter.com/_auditorium"           do %><i class="icon-twitter">  </i> twitter <% end %></dd>
         <dd> <%= link_to "https://github.com/auditorium/auditorium" do %><i class="icon-github">   </i> github   <% end %></dd>
-        <dd> <%= mail_to "auditorium@inftex.net"                    do %><i class="icon-envelope"> </i> <%= t('write_us_email') %> <% end %></dd>
+        <dd> <%= link_to "mailto:auditorium@inftex.net"                    do %><i class="icon-envelope"> </i> <%= t('write_us_email') %> <% end %></dd>
       </dl>
     </div>
 

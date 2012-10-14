@@ -8,35 +8,39 @@ de:
   welcome:             'Willkommen auf auditorium!'
   slogan:              'Die Vorlesung ist vorbei und du hast immer noch Fragen?'
 
-  my_courses:
-    one: mein Kurs
-    other: meine Kurse
-  my_faculties:
-    one:   meine Fakultät
-    other: meine Fakultäten
+  global:
+    my_courses:
+      one: mein Kurs
+      other: meine Kurse
+    my_faculties:
+      one:   meine Fakultät
+      other: meine Fakultäten
 
-  faculty:       Fakultät
-  course:        Kurs
-  lecture:       Vorlesung
-  institute:     Institut
-  chair:         Lehrstuhl
-  settings:      Einstellungen
-  log_in:        anmelden
-  log_out:       abmelden
+    faculties:   Fakultäten
+    courses:     Kurse
+    lectures:    Vorlesungen
+    institutes:  Institute
+    chairs:      Lehrstühle
+    semesters:   Semester
+    settings:    Einstellungen
+    sign_up:     Registrieren
+    log_in:      Anmelden
+    log_out:     Abmelden
 
-  all_faculties: Alle Fakultäten
-  by_terms: Nach Semestern
-  ranking: Rangliste
-  moderation: Moderation
-  write_us_email: schreib uns per Email
-  reports: Meldungen
-  notification:
-    one:   "%{count} Mitteilung"
-    other: "%{count} Mitteilungen"
+    account: Konto
+    ranking: Rangliste
+    moderation: Moderation
+    write_us_email: schreib uns per Email
+    reports: Meldungen
+    notification:
+      one:   "%{count} Mitteilung"
+      other: "%{count} Mitteilungen"
 
-  profile: 'Profil von'
-  search: 'Suche'
-  do_search: 'Suchen'
+    home:       Aktuelles
+    profile:    Profil von
+    search:     Suche
+    do_search:  Suchen
+
   subscribe: einschreiben
   subscribe-title: Du erhälst Mitteilungen zu Aktivitäten in diesem Kurs. 
   unsubscribe: austragen
@@ -47,7 +51,7 @@ de:
   posts:
     headline: 'Beitrag'
 
-  courses:
+  my_courses:
     my_courses_at: 'Meine Kurse an der '
     info:
       one: '%{count} Ankündigung'
