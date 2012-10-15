@@ -10,11 +10,11 @@ de:
 
   global:
     my_courses:
-      one: mein Kurs
-      other: meine Kurse
+      one: Mein Kurs
+      other: Meine Kurse
     my_faculties:
-      one:   meine Fakultät
-      other: meine Fakultäten
+      one:   Meine Fakultät
+      other: Meine Fakultäten
 
     faculties:   Fakultäten
     courses:     Kurse
@@ -65,8 +65,8 @@ de:
     no_questions_yet: "Noch keine Fragen. Stell eine!"
 
 
-  english: englisch
-  german: deutsch
+  english: Englisch
+  german: Deutsch
   # Used in distance_of_time_in_words(), distance_of_time_in_words_to_now(), time_ago_in_words()
   datetime:
     ago: her
