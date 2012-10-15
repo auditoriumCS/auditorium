@@ -8,9 +8,9 @@ Auditorium::Application.routes.draw do
   
   resources :email_settings
 
-  get "ajax/courses"
-  get "ajax/lectures"
-  get "ajax/chairs"
+  match "ajax/courses"
+  match "ajax/lectures"
+  match "ajax/chairs"
 
   match 'intro', :to => 'landing_page#index'
   match 'home', :to => 'home#index'
@@ -22,21 +22,21 @@ Auditorium::Application.routes.draw do
   resources :faculties
   
   resources :terms
-  get 'courses/search', to: 'terms#search_courses', as: :search_courses
-  get 'my_courses/search', to: 'terms#search_courses', as: :search_my_courses
-  get 'terms/:id/search', to: 'terms#search_courses', as: :search_courses_in_term
-  get 'lectures/search', to: 'lectures#search', as: :search_lectures
+  match 'courses/search', to: 'terms#search_courses', as: :search_courses
+  match 'my_courses/search', to: 'terms#search_courses', as: :search_my_courses
+  match 'terms/:id/search', to: 'terms#search_courses', as: :search_courses_in_term
+  match 'lectures/search', to: 'lectures#search', as: :search_lectures
 
   controller :search do
-    get 'search' => :index, as: :search
+    match 'search' => :index, as: :search
   end
 
   devise_for :users, :controllers => { :confirmations => "users/confirmations", :sessions => "users/sessions", :registrations => "users/registrations" }
-  get 'users/moderation' => 'users#moderation', :as => :users_moderation
-  get 'users/moderation/search', to: 'users#search', as: :search_users
+  match 'users/moderation' => 'users#moderation', :as => :users_moderation
+  match 'users/moderation/search', to: 'users#search', as: :search_users
   resources :users
-  get 'users/:id/questions' => 'users#questions', :as => :users_questions
-  get 'users/:id/answers' => 'users#answers', :as => :users_answers
+  match 'users/:id/questions' => 'users#questions', :as => :users_questions
+  match 'users/:id/answers' => 'users#answers', :as => :users_answers
   match 'users/:id/confirm' => 'users#confirm', :as => :confirm_user
   post 'notifications/mark_all_as_read' => 'notifications#mark_all_as_read', :as => :mark_all_as_read
   
@@ -64,12 +64,12 @@ Auditorium::Application.routes.draw do
   resources :course_memberships
   match "my_courses", :to => "course_memberships#index"
 
-  get 'chairs/search', to: 'chairs#search', as: :search_chairs
+  match 'chairs/search', to: 'chairs#search', as: :search_chairs
   resources :chairs
   
 
   resources :posts do
-    get :autocomplete_courses_name, :on => :collection
+    match :autocomplete_courses_name, :on => :collection
   end
 
   resources :reports
