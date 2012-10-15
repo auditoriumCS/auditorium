@@ -5,7 +5,6 @@
 # FUER INDENT BITTE SPACES NUTZEN!!!
 
 de:
-  welcome:             'Willkommen auf auditorium!'
   slogan:              'Die Vorlesung ist vorbei und du hast immer noch Fragen?'
 
   global:
@@ -40,6 +39,32 @@ de:
     profile:    Profil von
     search:     Suche
     do_search:  Suchen
+
+  welcome:
+    h2: Willkommen bei Auditorium!
+    h3: Eine Möglichkeit die Kommunikation auf dem Campus zu verbessern!
+    h4: Du bist Student? Sie Sind Dozent? Oder einfach nur interessiert mitzumachen?
+    button-register: Mit TU Dresden Email Adresse registrieren 
+    button-login: Bereits registriert?
+    p-questions:
+      Fragen stehen im Mittelpunkt von Auditorium.
+      Willst du wissen wie ein bestimmtes Problem gelöst wird?
+      Hast du eine Frage zu einer bestimmten Vorlesung?
+      Frag deine Kommilitonen oder Tutoren direkt hier!
+    p-registration:
+      Mit einer TU-Dresden Email Adresse kannst du dein Konto selber freischalten.
+      Wenn du keine TU-Dresden Email Adresse hast,
+      schreib uns einfach eine Email,
+      dann können wir dich freischalten.
+    already_registered_wrong:
+      html:
+        <b>Bereits mit einer nicht-TU Dresden email adresse registriert?</b>
+        <a href="mailto:auditorium@inftex.net?Subject=Registered with wrong email address.">Das können wir für dich ändern!</a>
+    questions_problems:
+      html:
+        <b>Fragen oder Probleme?</b>
+        Du kannst <a href="mailto:auditorium@inftex.net">uns emailen (deutsch oder englisch)</a> oder twitter an <a href="http://twitter.com/_auditorium">@_auditorium</a>
+        
 
   subscribe: einschreiben
   subscribe-title: Du erhälst Mitteilungen zu Aktivitäten in diesem Kurs. 

@@ -5,7 +5,6 @@
 # FUER INDENT BITTE SPACES NUTZEN!!!
 
 en:
-  welcome:             'Welcome to auditorium!'
   slogan:              'The lecture is over and you still have questions?'
 
   global:
@@ -39,6 +38,33 @@ en:
     profile:    Profile of
     search:     search
     do_search:  search
+
+
+  welcome:
+    h2: Welcome to auditorium!
+    h3: A way to change communication on campus!
+    h4: You are a student? A lecturer? Or just interested in participation?
+    button-register: Register with your TU Dresden email address
+    button-login: Already have an account?
+    p-questions:
+      Questions are the center of auditorium.
+      You want to know how to solve a specific problem?
+      You have a question to a specific lecture?
+      Ask your fellow students and tutors right here!
+    p-registration:
+      With an TU Dresden email address you can confirm your account yourself.
+      If you don't have such an email adress
+      you can write us an email,
+      then we can manually confirm your account.
+    already_registered_wrong:
+      html:
+        <b>Already registered with a non-TU Dresden email address?</b>
+        <a href="mailto:auditorium@inftex.net?Subject=Registered with wrong email address.">We can change your email address for you!</a>
+    questions_problems:
+      html:
+        <b>Questions or problems?</b>
+        You can <a href="mailto:auditorium@inftex.net">send us an email (german or english)</a> or a tweet to <a href="http://twitter.com/_auditorium">@_auditorium</a>
+    
 
   subscribe:
   subscribe-title: You'll receive notifications about activities in this course.
