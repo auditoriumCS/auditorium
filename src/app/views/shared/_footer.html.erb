@@ -3,12 +3,12 @@
     <div class="span4">
       <dl class="dl-horizontal">
         <dt>browse</dt>
-        <dd><%= link_to courses_path    do %><i class="icon-th"></i>      <%=t "global.courses"    %> <% end %></dd>
-        <dd><%= link_to terms_path      do %><i class="icon-time"></i>    <%=t "global.semesters"  %> <% end %></dd>
-        <dd><%= link_to lectures_path   do %><i class="icon-book"></i>    <%=t "global.lectures"   %> <% end %></dd>
-        <dd><%= link_to chairs_path     do %><i class="icon-list"></i>    <%=t "global.chairs"     %> <% end %></dd>
-        <dd><%= link_to institutes_path do %><i class="icon-sitemap"></i> <%=t "global.institutes" %> <% end %></dd>
-        <dd><%= link_to faculties_path  do %><i class="icon-beaker"></i>  <%=t "global.faculties"  %> <% end %></dd>
+        <dd><i class="icon-th"></i> <%= link_to (t "global.courses"), courses_path %></dd>
+        <dd><i class="icon-time"></i> <%= link_to (t "global.semesters"), terms_path %></dd>
+        <dd><i class="icon-book"></i> <%= link_to (t 'global.lectures'), lectures_path %></dd>
+        <dd><i class="icon-list"></i> <%= link_to (t 'global.chairs'), chairs_path %></dd>
+        <dd><i class="icon-sitemap"></i> <%= link_to (t 'global.institutes'), institutes_path %></dd>
+        <dd><i class="icon-beaker"></i> <%= link_to (t 'global.faculty'), faculties_path %></dd>
       </dl>     
     </div>
 
@@ -31,11 +31,11 @@
     <div class="span4 ">
       <dl class="dl-horizontal">
         <dt>admin</dt>
-        <dd> <i class="icon-user"></i> <%= link_to t('moderation'), users_moderation_path %></dd>
-        <dd> <i class="icon-comment-alt"></i> <%= link_to "feedback (#{Feedback.where(read: false).count})", feedbacks_path %></dd>
-        <dd> <%= link_to reports_path do %><i class="icon-bullhorn"></i> reports<% end %></dd>
-        <dd> <%= link_to "http://twitter.com/_auditorium"           do %><i class="icon-twitter">  </i> twitter <% end %></dd>
-        <dd> <%= link_to "https://github.com/auditorium/auditorium" do %><i class="icon-github">   </i> github   <% end %></dd>
+        <dd><i class="icon-user"></i> <%= link_to (t 'moderation'), users_moderation_path %></dd>
+        <dd><i class="icon-comment-alt"></i> <%= link_to "feedback (#{Feedback.where(read: false).count})", feedbacks_path %></dd>
+        <dd><i class="icon-flag"></i> <%= link_to 'reports', reports_path %></dd>
+        <dd><i class="icon-twitter"></i> <%= link_to "twitter", 'http://twitter.com/_auditorium' %></dd>
+        <dd><i class="icon-github"></i> <%= link_to "github", "https://github.com/auditorium/auditorium" %></dd>
       </dl>
     </div>
 

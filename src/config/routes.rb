@@ -1,89 +1,95 @@
 Auditorium::Application.routes.draw do
+
   scope "(:locale)", :locale => /en|de/ do
     resources :feedbacks
+    ActiveAdmin.routes(self)
 
-  post 'feedback/:id/mark_as_read' => 'feedback#mark_as_read', :as => :mark_feedback_as_read
+    devise_for :admin_users, ActiveAdmin::Devise.config
 
-  mathjax 'mathjax'
-  
-  resources :email_settings
+    devise_for :users, :controllers => { :confirmations => "users/confirmations", :sessions => "users/sessions", :registrations => "users/registrations" }
 
-  match "ajax/courses"
-  match "ajax/lectures"
-  match "ajax/chairs"
+    post 'feedback/:id/mark_as_read' => 'feedback#mark_as_read', :as => :mark_feedback_as_read
 
-  match 'intro', :to => 'landing_page#index'
-  match 'home', :to => 'home#index'
-  match 'my_faculties', :to => 'my_faculties#index'
-  match 'permission_denied', :to => 'applications#permission_denied', :as => :permission_denied
+    mathjax 'mathjax'
+    
+    resources :email_settings
 
-  resources :notifications
-  
-  resources :faculties
-  
-  resources :terms
-  match 'courses/search', to: 'terms#search_courses', as: :search_courses
-  match 'my_courses/search', to: 'terms#search_courses', as: :search_my_courses
-  match 'terms/:id/search', to: 'terms#search_courses', as: :search_courses_in_term
-  match 'lectures/search', to: 'lectures#search', as: :search_lectures
+    match "ajax/courses"
+    match "ajax/lectures"
+    match "ajax/chairs"
 
-  controller :search do
-    match 'search' => :index, as: :search
-  end
+    match 'intro', :to => 'landing_page#index'
+    match 'home', :to => 'home#index'
+    match 'my_faculties', :to => 'my_faculties#index'
+    match 'permission_denied', :to => 'applications#permission_denied', :as => :permission_denied
 
-  devise_for :users, :controllers => { :confirmations => "users/confirmations", :sessions => "users/sessions", :registrations => "users/registrations" }
-  match 'users/moderation' => 'users#moderation', :as => :users_moderation
-  match 'users/moderation/search', to: 'users#search', as: :search_users
-  resources :users
-  match 'users/:id/questions' => 'users#questions', :as => :users_questions
-  match 'users/:id/answers' => 'users#answers', :as => :users_answers
-  match 'users/:id/confirm' => 'users#confirm', :as => :confirm_user
-  post 'notifications/mark_all_as_read' => 'notifications#mark_all_as_read', :as => :mark_all_as_read
-  
+    resources :notifications
+    
+    resources :faculties
+    
+    resources :terms
+    match 'courses/search', to: 'terms#search_courses', as: :search_courses
+    match 'my_courses/search', to: 'terms#search_courses', as: :search_my_courses
+    match 'terms/:id/search', to: 'terms#search_courses', as: :search_courses_in_term
+    match 'lectures/search', to: 'lectures#search', as: :search_lectures
 
-  resources :courses
-  match 'courses/:id/manage_users', :to => 'courses#manage_users', :as => :manage_users
-  match 'courses/:id/announcements', :to => 'courses#announcements', :as => :course_announcements
-  match 'courses/:id/search_users', to: 'courses#search_users', as: :search_users_to_manage
+    controller :search do
+      match 'search' => :index, as: :search
+    end
 
-  match 'courses/search', :to => 'courses#search'
-  match 'courses/:id/following', :to => 'courses#following', as: :follow_course
-  match 'courses/:id/approve', :to => 'courses#approve', :as => :approve_course
-  match 'courses/:id/unfollow', :to => 'courses#following', :unfollow => 'true'
+    devise_for :users, :controllers => { :confirmations => "users/confirmations", :sessions => "users/sessions", :registrations => "users/registrations" }
+    match 'users/moderation' => 'users#moderation', :as => :users_moderation
+    match 'users/moderation/search', to: 'users#search', as: :search_users
+    resources :users
+    match 'users/:id/questions' => 'users#questions', :as => :users_questions
+    match 'users/:id/answers' => 'users#answers', :as => :users_answers
+    match 'users/:id/confirm' => 'users#confirm', :as => :confirm_user
+    post 'notifications/mark_all_as_read' => 'notifications#mark_all_as_read', :as => :mark_all_as_read
+    
 
-  match 'posts/maintainer_request', :to => 'posts#maintainer_request', :as => :maintainer_request
-  match 'posts/:id/rate', :to => 'posts#rate', :as => :rate_post
-  match 'posts/:id/answered', :to => 'posts#answered', :as => :answered_post
-  match 'posts/:parent_id/answering', :to => 'posts#answering'
-  match 'posts/:parent_id/commenting', :to => 'posts#commenting'
+    resources :courses
+    match 'courses/:id/manage_users', :to => 'courses#manage_users', :as => :manage_users
+    match 'courses/:id/announcements', :to => 'courses#announcements', :as => :course_announcements
+    match 'courses/:id/search_users', to: 'courses#search_users', as: :search_users_to_manage
 
-  resources :reports
+    match 'courses/search', :to => 'courses#search'
+    match 'courses/:id/following', :to => 'courses#following', as: :follow_course
+    match 'courses/:id/approve', :to => 'courses#approve', :as => :approve_course
+    match 'courses/:id/unfollow', :to => 'courses#following', :unfollow => 'true'
 
-  match '/reports/:id/mark_read', :to => 'reports#mark_read', :as => 'mark_report_as_read'
+    match 'posts/maintainer_request', :to => 'posts#maintainer_request', :as => :maintainer_request
+    match 'posts/:id/rate', :to => 'posts#rate', :as => :rate_post
+    match 'posts/:id/answered', :to => 'posts#answered', :as => :answered_post
+    match 'posts/:parent_id/answering', :to => 'posts#answering'
+    match 'posts/:parent_id/commenting', :to => 'posts#commenting'
 
-  resources :course_memberships
-  match "my_courses", :to => "course_memberships#index"
+    resources :reports
 
-  match 'chairs/search', to: 'chairs#search', as: :search_chairs
-  resources :chairs
-  
+    match '/reports/:id/mark_read', :to => 'reports#mark_read', :as => 'mark_report_as_read'
 
-  resources :posts do
-    match :autocomplete_courses_name, :on => :collection
-  end
+    resources :course_memberships
+    match "my_courses", :to => "course_memberships#index"
 
-  resources :reports
+    match 'chairs/search', to: 'chairs#search', as: :search_chairs
+    resources :chairs
+    
 
-  resources :periods
+    resources :posts do
+      match :autocomplete_courses_name, :on => :collection
+    end
 
-  resources :institutes
+    resources :reports
 
-  resources :events
+    resources :periods
 
-  resources :lectures
-  
-# run "rake db:jexam_sync" instead of GETting an url
-#  resources :jexamwebservice
+    resources :institutes
+
+    resources :events
+
+    resources :lectures
+    
+  # run "rake db:jexam_sync" instead of GETting an url
+  #  resources :jexamwebservice
 
     match '/:locale', :to => 'landing_page#index'
     root to: "landing_page#index"

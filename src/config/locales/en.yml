@@ -66,9 +66,10 @@ en:
         You can <a href="mailto:auditorium@inftex.net">send us an email (german or english)</a> or a tweet to <a href="http://twitter.com/_auditorium">@_auditorium</a>
     
 
-  subscribe:
+  subscribe: subscribe
+
   subscribe-title: You'll receive notifications about activities in this course.
-  unsubscribe:
+  unsubscribe: unsubscribe
   unsubscribe-title: You'll receive no more notifications on this course.
   answers:
     one: answer 
