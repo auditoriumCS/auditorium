@@ -1,5 +1,6 @@
 /*
 *= require_self
+*= require ie
 *= require jquery.ui.all
 *= require feedbacks
 *= require my_faculties
@@ -221,7 +222,7 @@ h5, h6
         -moz-text-shadow: @black 0px 0px 2px;
         -o-text-shadow: @black 0px 0px 2px;
         text-shadow: @black 0px 0px 2px;
-        filter: glow(color=@grayDark,strength=4); 
+        filter: progid:DXImageTransform.Microsoft.Shadow(color=@grayDark,strength=2);
         margin:5px 0;
         padding:10px 5px 0 5px;
         a { color: @headerColor; }
@@ -259,7 +260,7 @@ h5, h6
         -moz-text-shadow: @black 0px 0px 2px;
         -o-text-shadow: @black 0px 0px 2px;
         text-shadow: @black 0px 0px 2px;
-        filter: glow(color=@grayDark,strength=4); 
+        filter: progid:DXImageTransform.Microsoft.Shadow(color=@grayDark,strength=2);
         font-weight: 400;
         font-size:1.3em;
 
@@ -869,12 +870,9 @@ body
 
     #content
     {
-      //background-color: @contentBackground;
       header
       {
         .bottom-border;
-        //outline: 1px dashed green;
-        //padding: 20px 0px;
       }
 
       footer

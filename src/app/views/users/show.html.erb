@@ -11,6 +11,7 @@ end
 	<% if @user.admin? %><i class="icon-certificate" title='Admin of auditorium' rel="tooltip" style="cursor:pointer;"></i><% end %> 
 	Profile of <%= @user.full_name %>
 </h2>
+
 <section class="row-fluid">
 	<div id="questions" class="span6">
 		<h3>Questions</h3>
@@ -23,7 +24,6 @@ end
 	    	<% end %>
 			<% end %>
 				<%= link_to "view more", user_path(@user, show: 'all') %>
-
 		<% end %>
 	</div>
 
@@ -41,6 +41,14 @@ end
 		<% end %>
 	</div>
 </section>
+<hr />
+
+<% if @courses.count > 0 %>
+<section>
+	<h3>Maintainer or editor of these courses</h3>
+	<%= render 'courses/courses-list' %>
+</section>
+<% end %>
 
 <% if can? :manage, @user %>
 	<p>
