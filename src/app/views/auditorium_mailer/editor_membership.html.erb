@@ -6,14 +6,21 @@
       body {
         padding:20px;
       }
+
+      h1 {
+        font-size:1.1em;
+        font-weight:200;
+      }
+
       p {
         font-weight:200;
       }
     </style>
   </head>
   <body>
-    <h1 style="font-weight:100;">Hello, <%= @user.full_name %></h1>
+    <h1>Hello, <%= @user.full_name %></h1>
     
+    <% if @membership_request.nil? or @membership_request.confirmed %>
     <p>You are now an editor of the course <%= link_to @course.name_with_term, @url %>. As editor you can access the course with additional privileges:</p>
       <ul>
         <li>make announcements for this course,</li>
@@ -23,6 +30,9 @@
     </p>
       Go to <%= link_to @course.name_with_term, @url %> and see what you can do.  
     </p>
+    <% else %>
+    <p>Your membership request as <%= @membership_request.membership_type %> for <%= link_to @course.name_with_term, course_url(@course) %> has been rejected.</p>
+    <% end %>
 
     <p>Have a great day!</p>
     <em>The auditorium team</em>

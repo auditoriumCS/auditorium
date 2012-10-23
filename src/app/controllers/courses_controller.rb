@@ -12,9 +12,12 @@ class CoursesController < ApplicationController
     if params[:term_id]
       @term = Term.find(params[:term_id]) if params[:term_id]
       @courses = Course.where('term_id = ?', @term.id).order('term_id DESC, name DESC')
+    elsif params[:q]
+      @courses = Course.where('name LIKE ?', "%#{params[:q]}%").limit(20)
     else
       @courses = Course.order('term_id DESC, name DESC')
     end
+
     @courses.sort! { |x,y| y.followers.count <=> x.followers.count }
     @courses = Kaminari.paginate_array(@courses).page(params[:page]).per(20)
 
@@ -173,8 +176,10 @@ class CoursesController < ApplicationController
   
   def manage_users
     @course = Course.find(params[:id])
-    
-    User.all.each do |user|
+
+    params.keep_if{|p| p.match /membership/}.each do |p|
+      user = User.find(p[0].split('_')[1])
+
       membership_type = params["membership_#{user.id}"]
       membership = CourseMembership.find_by_course_id_and_user_id(@course.id, user.id)
 

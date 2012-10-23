@@ -155,4 +155,26 @@ module ApplicationHelper
 
   end
 
+  def unread_membership_requests
+    membership_requests = MembershipRequest.where(:read => false).keep_if { |m| can? :manage, m and !m.read? } 
+    membership_requests = Kaminari.paginate_array(membership_requests).page(params[:mr_page]).per(10)
+  end
+
+  def user_from_email(user)
+    if !user.email.match /@mail.zih.tu-dresden.de$/
+      prefix = user.email.split('@')[0]
+      "#{prefix.split('.')[0].to_s.titleize} #{prefix.split('.')[1].to_s.titleize}"
+    else
+      prefix = user.email.split('@')[0]
+    end
+  end
+
+  def membership_type?(membership_request)
+    if membership = CourseMembership.find_by_user_id_and_course_id(membership_request.user.id, membership_request.course.id)
+      membership.membership_type
+    else
+      "no membership"
+    end
+  end
+
 end
