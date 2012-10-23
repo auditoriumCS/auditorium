@@ -4,147 +4,124 @@
 # BITTE DAS FILE DURCH DEN VALIDATOR JAGEN! http://yamllint.com
 # FUER INDENT BITTE SPACES NUTZEN!!!
 
-de:
-  slogan:              'Die Vorlesung ist vorbei und du hast immer noch Fragen?'
+# BITTE KEINE TABS!!!
 
-  global:
-    my_courses:
-      one: Mein Kurs
-      other: Meine Kurse
-    my_faculties:
-      one:   Meine Fakultät
-      other: Meine Fakultäten
-
-    faculties:   Fakultäten
-    courses:     Kurse
-    lectures:    Vorlesungen
-    institutes:  Institute
-    chairs:      Lehrstühle
-    semesters:   Semester
-    settings:    Einstellungen
-    sign_up:     Registrieren
-    log_in:      Anmelden
-    log_out:     Abmelden
-
-    account: Konto
-    ranking: Rangliste
-    moderation: Moderation
-    write_us_email: schreib uns per Email
-    reports: Meldungen
-    notification:
-      one:   "%{count} Mitteilung"
-      other: "%{count} Mitteilungen"
-
-    home:       Aktuelles
-    profile:    Profil von
-    search:     Suche
-    do_search:  Suchen
-
-  welcome:
-    h2: Willkommen bei Auditorium!
-    h3: Eine Möglichkeit die Kommunikation auf dem Campus zu verbessern!
-    h4: Du bist Student? Sie Sind Dozent? Oder einfach nur interessiert mitzumachen?
-    button-register: Mit TU Dresden Email Adresse registrieren 
-    button-login: Bereits registriert?
-    p-questions:
-      Fragen stehen im Mittelpunkt von Auditorium.
-      Willst du wissen wie ein bestimmtes Problem gelöst wird?
-      Hast du eine Frage zu einer bestimmten Vorlesung?
-      Frag deine Kommilitonen oder Tutoren direkt hier!
-    p-registration:
-      Mit einer TU-Dresden Email Adresse kannst du dein Konto selber freischalten.
-      Wenn du keine TU-Dresden Email Adresse hast,
-      schreib uns einfach eine Email,
-      dann können wir dich freischalten.
-    already_registered_wrong:
-      html:
-        <b>Bereits mit einer nicht-TU Dresden email adresse registriert?</b>
-        <a href="mailto:auditorium@inftex.net?Subject=Registered with wrong email address.">Das können wir für dich ändern!</a>
-    questions_problems:
-      html:
-        <b>Fragen oder Probleme?</b>
-        Du kannst <a href="mailto:auditorium@inftex.net">uns emailen (deutsch oder englisch)</a> oder twitter an <a href="http://twitter.com/_auditorium">@_auditorium</a>
-        
-
-  subscribe: einschreiben
-  subscribe-title: Du erhälst Mitteilungen zu Aktivitäten in diesem Kurs. 
-  unsubscribe: austragen
-  unsubscribe-title: Du erhälst keine Mitteilungen zu diesem Kurs mehr. 
-  answers:
+--- 
+de: 
+  answers: 
     one: "%{count} Antwort"
     other: "%{count} Antworten"
-  posts:
-    headline: 'Beitrag'
-
-  my_courses:
-    my_courses_at: 'Meine Kurse an der '
-    info:
-      one: '%{count} Ankündigung'
-      other: '%{count} Ankündigungen'
-    question:
-      one:   '%{count} Frage'
-      other: '%{count} Fragen'
-    active_member:
-      one:   '%{count} aktives Mitglied'
-      other: '%{count} aktive Mitglieder'
-    no_questions_yet: "Noch keine Fragen. Stell eine!"
-
-
+  datetime: 
+    ago: her
+    distance_in_words: 
+      about_x_hours: 
+        one: "etwa 1 Stunde"
+        other: "etwa %{count} Stunden"
+      about_x_months: 
+        one: "etwa 1 Monat"
+        other: "etwa %{count} Monate"
+      about_x_years: 
+        one: "etwa 1 Jahr"
+        other: "etwa %{count} Jahre"
+      almost_x_years: 
+        one: "fast 1 Jahr"
+        other: "fast %{count} Jahre"
+      half_a_minute: "eine halbe Minute"
+      less_than_x_minutes: 
+        one: "weniger als 1 Minute"
+        other: "weniter als %{count} Minuten"
+      less_than_x_seconds: 
+        one: "weniger als 1 Sekunde"
+        other: "weniger als %{count} Sekunden"
+      over_x_years: 
+        one: "über 1 Jahr"
+        other: "über %{count} Jahre"
+      x_days: 
+        one: "1 Tag"
+        other: "%{count} Tage"
+      x_minutes: 
+        one: "1 Minute"
+        other: "%{count} Minuten"
+      x_months: 
+        one: "1 Monat"
+        other: "%{count} Monate"
+      x_seconds: 
+        one: "1 Sekunde"
+        other: "%{count} Sekunden"
+    prompts: 
+      day: Tag
+      hour: Stunde
+      minute: Minute
+      month: Monat
+      second: Sekunden
+      year: Jahr
   english: Englisch
   german: Deutsch
-  # Used in distance_of_time_in_words(), distance_of_time_in_words_to_now(), time_ago_in_words()
-  datetime:
-    ago: her
-    distance_in_words:
-      half_a_minute: "eine halbe Minute"
-      less_than_x_seconds:
-        one:   "weniger als 1 Sekunde"
-        other: "weniger als %{count} Sekunden"
-      x_seconds:
-        one:   "1 Sekunde"
-        other: "%{count} Sekunden"
-      less_than_x_minutes:
-        one:   "weniger als 1 Minute"
-        other: "weniter als %{count} Minuten"
-      x_minutes:
-        one:   "1 Minute"
-        other: "%{count} Minuten"
-      about_x_hours:
-        one:   "etwa 1 Stunde"
-        other: "etwa %{count} Stunden"
-      x_days:
-        one:   "1 Tag"
-        other: "%{count} Tage"
-      about_x_months:
-        one:   "etwa 1 Monat"
-        other: "etwa %{count} Monate"
-      x_months:
-        one:   "1 Monat"
-        other: "%{count} Monate"
-      about_x_years:
-        one:   "etwa 1 Jahr"
-        other: "etwa %{count} Jahre"
-      over_x_years:
-        one:   "über 1 Jahr"
-        other: "über %{count} Jahre"
-      almost_x_years:
-        one:   "fast 1 Jahr"
-        other: "fast %{count} Jahre"
-    prompts:
-      year:   "Jahr"
-      month:  "Monat"
-      day:    "Tag"
-      hour:   "Stunde"
-      minute: "Minute"
-      second: "Sekunden"
-
-  helpers:
-    select:
-      # Default value for :prompt => true in FormOptionsHelper
+  global: 
+    account: Konto
+    chairs: Lehrstühle
+    courses: Kurse
+    do_search: Suchen
+    faculties: Fakultäten
+    home: Aktuelles
+    institutes: Institute
+    lectures: Vorlesungen
+    log_in: Anmelden
+    log_out: Abmelden
+    moderation: Moderation
+    my_courses: 
+      one: "Mein Kurs"
+      other: "Meine Kurse"
+    my_faculties: 
+      one: "Meine Fakultät"
+      other: "Meine Fakultäten"
+    notification: 
+      one: "%{count} Mitteilung"
+      other: "%{count} Mitteilungen"
+    profile: "Profil von"
+    ranking: Rangliste
+    reports: Meldungen
+    search: Suche
+    semesters: Semester
+    settings: Einstellungen
+    sign_up: Registrieren
+    write_us_email: "schreib uns per Email"
+  helpers: 
+    select: 
       prompt: "Please select"
+    submit: 
+      create: "Create %{model}"
+      submit: "Save %{model}"
+      update: "Update %{model}"
+  my_courses: 
+    active_member: 
+      one: "%{count} aktives Mitglied"
+      other: "%{count} aktive Mitglieder"
+    info: 
+      one: "%{count} Ankündigung"
+      other: "%{count} Ankündigungen"
+    my_courses_at: "Meine Kurse an der "
+    no_questions_yet: "Noch keine Fragen. Stell eine!"
+    question: 
+      one: "%{count} Frage"
+      other: "%{count} Fragen"
+  posts: 
+    headline: Beitrag
+  slogan: "Die Vorlesung ist vorbei und du hast immer noch Fragen?"
+  subscribe: einschreiben
+  subscribe-title: "Du erhälst Mitteilungen zu Aktivitäten in diesem Kurs."
+  unsubscribe: austragen
+  unsubscribe-title: "Du erhälst keine Mitteilungen zu diesem Kurs mehr."
+  welcome: 
+    already_registered_wrong: 
+      html: "Bereits mit einer nicht-TU Dresden email adresse registriert? <a href='mailto:auditorium@inftex.net?Subject=Registered with wrong email address.'>Das können wir für dich ändern!</a>"
+    button-login: "Bereits registriert?"
+    button-register: "Mit TU Dresden Email Adresse registrieren"
+    h2: "Willkommen bei Auditorium!"
+    h3: "Eine Möglichkeit die Kommunikation auf dem Campus zu verbessern!"
+    h4: "Du bist Student? Sie Sind Dozent? Oder einfach nur interessiert mitzumachen?"
+    p-questions: "Fragen stehen im Mittelpunkt von Auditorium. Willst du wissen wie ein bestimmtes Problem gelöst wird? Hast du eine Frage zu einer bestimmten Vorlesung? Frag deine Kommilitonen oder Tutoren direkt hier!"
+    p-registration: "Mit einer TU-Dresden Email Adresse kannst du dein Konto selber freischalten. Wenn du keine TU-Dresden Email Adresse hast, schreib uns einfach eine Email, dann können wir dich freischalten."
+    questions_problems: 
+      html: "<b>Fragen oder Probleme?</b> Du kannst <a href='mailto:auditorium@inftex.net'>uns emailen (deutsch oder englisch)</a> oder twitter an <a href='http://twitter.com/_auditorium'>@_auditorium</a>"
 
-    # Default translation keys for submit and button FormHelper
-    submit:
-      create: 'Create %{model}'
-      update: 'Update %{model}'
-      submit: 'Save %{model}'

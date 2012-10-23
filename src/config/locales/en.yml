@@ -4,94 +4,73 @@
 # BITTE DAS FILE DURCH DEN VALIDATOR JAGEN! http://yamllint.com
 # FUER INDENT BITTE SPACES NUTZEN!!!
 
-en:
-  slogan:              'The lecture is over and you still have questions?'
+# BITTE KEINE TABS!
 
-  global:
-    my_courses:
-      one:   My course
-      other: My courses
-    my_faculties:
-      one:   My faculty
-      other: My faculties
-
-    faculties:
-    courses:
-    lectures:
-    institutes:
-    chairs:
-    semesters:
-    settings:
-    sign_up:
-    log_in:        log in
-    log_out:       log out
-
-    account:
-    ranking:
-    moderation:
-    write_us_email:
-    reports:
-    notification:
-      one: "%{count} notification"
-      other: "%{count} notifications"
-
-    profile:    Profile of
-    search:     search
-    do_search:  search
-
-
-  welcome:
-    h2: Welcome to auditorium!
-    h3: A way to change communication on campus!
-    h4: You are a student? A lecturer? Or just interested in participation?
-    button-register: Register with your TU Dresden email address
-    button-login: Already have an account?
-    p-questions:
-      Questions are the center of auditorium.
-      You want to know how to solve a specific problem?
-      You have a question to a specific lecture?
-      Ask your fellow students and tutors right here!
-    p-registration:
-      With an TU Dresden email address you can confirm your account yourself.
-      If you don't have such an email adress
-      you can write us an email,
-      then we can manually confirm your account.
-    already_registered_wrong:
-      html:
-        <b>Already registered with a non-TU Dresden email address?</b>
-        <a href="mailto:auditorium@inftex.net?Subject=Registered with wrong email address.">We can change your email address for you!</a>
-    questions_problems:
-      html:
-        <b>Questions or problems?</b>
-        You can <a href="mailto:auditorium@inftex.net">send us an email (german or english)</a> or a tweet to <a href="http://twitter.com/_auditorium">@_auditorium</a>
-    
-
-  subscribe: subscribe
-
-  subscribe-title: You'll receive notifications about activities in this course.
-  unsubscribe: unsubscribe
-  unsubscribe-title: You'll receive no more notifications on this course.
-  answers:
-    one: answer 
+--- 
+en: 
+  answers: 
+    one: answer
     other: answers
-  posts:
-    headline: 'Post'
-
-  my_courses:
-    my_courses_at: 'My courses at the '
-    info:
-      one: '%{count} info'
-      other: '%{count} infos'
-    question:
-      one:   '%{count} question'
-      other: '%{count} questions'
-    active_member:
-      one: '%{count} active member'
-      other: '%{count} active members'
-    no_questions_yet: "No questions yet. Ask now!"
-
+  datetime: 
+    ago: ago
   english: english
   german: german
-  # Used in distance_of_time_in_words(), distance_of_time_in_words_to_now(), time_ago_in_words()
-  datetime:
-    ago: ago
+  global: 
+    account: ~
+    chairs: ~
+    courses: ~
+    do_search: search
+    faculties: ~
+    institutes: ~
+    lectures: ~
+    log_in: "log in"
+    log_out: "log out"
+    moderation: ~
+    my_courses: 
+      one: "My course"
+      other: "My courses"
+    my_faculties: 
+      one: "My faculty"
+      other: "My faculties"
+    notification: 
+      one: "%{count} notification"
+      other: "%{count} notifications"
+    profile: "Profile of"
+    ranking: ~
+    reports: ~
+    search: search
+    semesters: ~
+    settings: ~
+    sign_up: ~
+    write_us_email: ~
+  my_courses: 
+    active_member: 
+      one: "%{count} active member"
+      other: "%{count} active members"
+    info: 
+      one: "%{count} info"
+      other: "%{count} infos"
+    my_courses_at: "My courses at the "
+    no_questions_yet: "No questions yet. Ask now!"
+    question: 
+      one: "%{count} question"
+      other: "%{count} questions"
+  posts: 
+    headline: Post
+  slogan: "The lecture is over and you still have questions?"
+  subscribe: subscribe
+  subscribe-title: "You'll receive notifications about activities in this course."
+  unsubscribe: unsubscribe
+  unsubscribe-title: "You'll receive no more notifications on this course."
+  welcome: 
+    already_registered_wrong: 
+      html: "Already registered with a non-TU Dresden email address? We can change your email address for you!"
+    button-login: "Already have an account?"
+    button-register: "Register with your TU Dresden email address"
+    h2: "Welcome to auditorium!"
+    h3: "A way to change communication on campus!"
+    h4: "You are a student? A lecturer? Or just interested in participation?"
+    p-questions: "Questions are the center of auditorium. You want to know how to solve a specific problem? You have a question to a specific lecture? Ask your fellow students and tutors right here!"
+    p-registration: "With an TU Dresden email address you can confirm your account yourself. If you don't have such an email adress you can write us an email, then we can manually confirm your account."
+    questions_problems: 
+      html: "Questions or problems? You can <a href='mailto:auditorium@inftex.net'>send us an email (german or english)</a> or a tweet to <a href='http://twitter.com/_auditorium'>@_auditorium</a>"
