@@ -1,6 +1,8 @@
 Auditorium::Application.routes.draw do
   ActiveAdmin.routes(self)
 
+  resources :questions
+
   resources :membership_requests, :only => [:index, :create, :destroy]
 
   post "membership_requests/create", :to => 'membership_requests#create', :as => :create_membership_request

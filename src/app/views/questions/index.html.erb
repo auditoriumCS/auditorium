@@ -1,0 +1,29 @@
+<h1>index</h1>
+
+<%= @questions.size %>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>#</th>
+			<th><%= t('questions.comments.size') %></th>
+			<th><%= t('questions.answers.size') %></th>
+			<th><%= t('questions.subject') %></th>
+			<th><%= t('questions.body') %></th>
+			<th><%= t('questions.author') %></th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<% @questions.sort.each do |question| %>
+		<tr>
+			<td><%= question.id %></td>
+			<td><%= question.comments.size %></td>
+			<td><%= question.answers.size %></td>
+			<td><%= markdown question.subject %></td>
+			<td><%= markdown question.body %></td>
+			<td><%= question.author %></td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>
