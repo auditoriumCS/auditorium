@@ -1,0 +1,23 @@
+<% Choice.all.each do |c| %>
+ <div> <%= c.answertext %> </div>
+<% end %>
+
+
+<div class="choice">
+	<% new_or_existing = choice.new_record? ? 'new' : 'existing' %>
+	<% prefix ="poll[#{new_or_existing}_choice_attributes][]"%>
+
+
+
+	<% fields_for prefix, choice do |choice_form| -%>
+		<p>
+            <label for="answertext" class="accessibility"> answer of the poll</label>
+            <%= choice_form.text_field :answertext, :placeholder => "a possible answer...", :class => "span8"%>
+            <%= check_box_tag(:is_correct) %> 
+            <%= label_tag(:is_correct, "This is the correct answer", :class => "checkbox inline") %>
+			<%= link_to_function "remove", "$(this).up('.choice').remove()" %>
+		</p>
+	<% end -%>
+</div>
+
+
