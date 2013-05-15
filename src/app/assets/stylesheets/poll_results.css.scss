@@ -1,0 +1,32 @@
+// Place all the styles related to the PollResults controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.poll-result-bar {
+	background: #ff3232; /* Old browsers */
+	background: -moz-linear-gradient(left,  #ff3232 0%, #ffff30 50%, #97ff89 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right top, color-stop(0%,#ff3232), color-stop(50%,#ffff30), color-stop(100%,#97ff89)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(left,  #ff3232 0%,#ffff30 50%,#97ff89 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(left,  #ff3232 0%,#ffff30 50%,#97ff89 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(left,  #ff3232 0%,#ffff30 50%,#97ff89 100%); /* IE10+ */
+	background: linear-gradient(to right,  #ff3232 0%,#ffff30 50%,#97ff89 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff3232', endColorstr='#97ff89',GradientType=1 ); /* IE6-9 */
+	position:absolute;
+	height: 10px;
+}
+
+.poll-result-bar-wrap {
+	position:relative;
+	padding:10px;
+}
+.poll-result-count {
+	float:right;
+	padding: 20px 0;
+}
+.poll-result {
+
+
+}
+
+.poll-results {
+
+}
