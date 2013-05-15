@@ -95,7 +95,16 @@ Auditorium::Application.routes.draw do
   resources :events
 
   resources :lectures
-  
+
+  resources :polls
+
+
+  #has no controller anyway
+  resources :choices
+  #match "/choices" => redirect("/polls")
+  #match "/choices/:id" => redirect("/polls")
+  #match "/choices/new" => redirect("/polls/new")
+    
 # run "rake db:jexam_sync" instead of GETting an url
 #  resources :jexamwebservice
 

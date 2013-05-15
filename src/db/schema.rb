@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130417122706) do
+ActiveRecord::Schema.define(:version => 20130514113533) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -56,6 +56,12 @@ ActiveRecord::Schema.define(:version => 20130417122706) do
   end
 
   add_index "chairs", ["institute_id"], :name => "index_chairs_on_institute_id"
+
+  create_table "choices", :force => true do |t|
+    t.string  "answertext", :null => false
+    t.boolean "is_correct", :null => false
+    t.integer "poll_id",    :null => false
+  end
 
   create_table "course_memberships", :force => true do |t|
     t.integer  "user_id"
@@ -234,6 +240,10 @@ ActiveRecord::Schema.define(:version => 20130417122706) do
 
   add_index "periods", ["event_id"], :name => "index_periods_on_event_id"
 
+  create_table "polls", :force => true do |t|
+    t.string "questiontext"
+  end
+
   create_table "posts", :force => true do |t|
     t.string   "subject"
     t.text     "body"
@@ -325,17 +335,5 @@ ActiveRecord::Schema.define(:version => 20130417122706) do
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
-
-  create_table "videos", :force => true do |t|
-    t.string   "title"
-    t.text     "description"
-    t.integer  "course_id"
-    t.string   "uri"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-    t.string   "code"
-  end
-
-  add_index "videos", ["course_id"], :name => "index_videos_on_course_id"
 
 end

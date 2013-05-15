@@ -1,0 +1,75 @@
+<% if @poll.errors.any? %>
+<div class="alert alert-error">
+  Something went wrong
+  <dl>
+    <% @poll.errors.full_messages.each do |msg| %>
+    <dd><%= msg %></dd>
+    <% end %>
+  </dl>
+</div>
+<% end %>
+
+
+
+<div class="row">
+  <div class="well span8">
+    <%= form_for (@poll), :class => 'form-horizontal', :remote => false do |f| %>
+      <div class="control-group">
+      <% if signed_in? %>
+        <div class="controls">
+
+          <!-- Select the refering course -->
+          <!-- collection_select( object, method, collection, value_method, text_method, options = {}, html_options = {} ) -->
+          <%= collection_select(  nil, 
+                                  :course_id,  
+                                  Course.all, 
+                                  :id, 
+                                  :name,
+                                  {:prompt   => "Select a course"},
+                                  {}
+                                 ) %>
+          <%= collection_select(  nil, 
+                                  :events_id,  
+                                  Event.all, 
+                                  :id, 
+                                  :name,
+                                  {:prompt   => "Select an event"},
+                                  {}
+                                 ) %>                       
+
+          
+          <label for="questiontext" class="accessibility"> question of the poll</label>
+          <%= f.text_field :questiontext, :placeholder => "Write the question...", :class => "span8"%>
+
+
+          <%= render :partial => 'choice', :collection => @poll.choices %>
+          <p>
+            <%= add_choice_link "Add an answer" %> 
+          </p>
+
+        </div>
+
+          <% if params[:action].eql? 'edit' %>
+            <%= f.submit "Update poll", { :class => 'btn btn-large btn-primary', 'data-disable-with' => 'Submitting...', :id => 'submit-button-label'}  %>
+            <%= link_to "Cancel", poll_path(@poll), class: 'btn btn-large' %> 
+          <% else %>
+            
+            <%= f.submit "Submit poll", { :class => 'btn btn-large btn-primary', 'data-disable-with' => 'Submitting...', :id => 'submit-button-label'}  %>
+            <%= link_to "Cancel", polls_path, class: 'btn btn-large' %>
+            <% if !current_user.is_admin? %>
+              <p class="hint">a hint</p>
+            <% end %>
+          <% end %>
+ 
+
+      <% else %>
+        <!-- not signed in -->
+        <div class='controls center'>
+          <%= link_to 'Sign in to suggest a poll', '/users/sign_in', :class => 'btn btn-large btn-primary' %>
+          <p class="help-block"><%= link_to 'Not an account yet? Sign up.', '/users/sign_up'%></p>
+        </div>
+      <% end %>
+      </div>
+    <% end %> <!-- end form -->
+  </div> 
+</div>
