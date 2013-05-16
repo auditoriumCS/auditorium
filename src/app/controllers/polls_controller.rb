@@ -5,18 +5,18 @@ class PollsController < ApplicationController
   def index
     @polls = Poll.all
 
-    #poll = Poll.create(:questiontext => "A real question?")
+    #poll = Poll.create(:questiontext => "What Time is it?")
 
     #choice1 = Choice.new(
-    #     :answertext => "NO",
+    #     :answertext => "Time to go",
     #      :is_correct => false
     # ) 
     #choice2 = Choice.new(
-    #      :answertext => "YES",
+    #      :answertext => "Time to dance",
     #      :is_correct => true
     # )   
 
-     #poll.choices << choice1  
+    # poll.choices << choice1  
     # poll.choices << choice2
  
     respond_to do |format|
