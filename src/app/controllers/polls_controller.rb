@@ -11,7 +11,7 @@ class PollsController < ApplicationController
     poll.choices << choice1  
     poll.choices << choice2
 	poll.save
-	
+
     respond_to do |format|
       format.html  # index.html.erb
       format.json  { render :json => @polls }

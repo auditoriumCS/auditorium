@@ -1,8 +1,13 @@
 <div class="choice">
-	<% new_or_existing = choice.new_record ? 'new' : 'existing' %>
+	<% new_or_existing = choice.new_record? ? 'new' : 'existing' %>
 	<% prefix ="poll[#{new_or_existing}_choice_attributes][]"%>
+	prefix:
+	<%= prefix %><br>
+	choice to string:
+	<%= choice %><br>
+	<%= choice.to_s %><br>
 
-
+	<!-- prefix = poll[new_choice_attributes][] -->
 
 	<% fields_for prefix, choice do |choice_form| -%>
 		<p>
