@@ -1,7 +1,4 @@
 Auditorium::Application.routes.draw do
-  resources :poll_results
-
-
   ActiveAdmin.routes(self)
 
   resources :membership_requests, :only => [:index, :create, :destroy]
