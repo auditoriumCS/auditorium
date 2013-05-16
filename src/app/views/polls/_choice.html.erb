@@ -1,10 +1,5 @@
-<% Choice.all.each do |c| %>
- <div> <%= c.answertext %> </div>
-<% end %>
-
-
 <div class="choice">
-	<% new_or_existing = choice.new_record? ? 'new' : 'existing' %>
+	<% new_or_existing = choice.new_record ? 'new' : 'existing' %>
 	<% prefix ="poll[#{new_or_existing}_choice_attributes][]"%>
 
 

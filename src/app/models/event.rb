@@ -12,4 +12,10 @@ class Event < ActiveRecord::Base
                     inclusion: { in: %w{lecture exercise seminar lab} }
   validates :course,  presence: true
   validates :tutor, presence: true
+
+	def to_s
+  		attributes.each_with_object("") do |attribute, result|
+    		result << "#{attribute[1].to_s} "
+  		end
+	end
 end

@@ -3,8 +3,8 @@
 
 class Choice < ActiveRecord::Base
   # adds a foreign_key of polls to choices 
-  belongs_to : polls
-  has_many : poll_result
+  belongs_to :polls
+  has_many :poll_result
 
 
   attr_accessible :answertext, :is_correct, :poll_result

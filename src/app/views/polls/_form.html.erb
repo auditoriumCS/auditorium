@@ -19,30 +19,20 @@
         <div class="controls">
 
           <!-- Select the refering course -->
-          <!-- collection_select( object, method, collection, value_method, text_method, options = {}, html_options = {} ) -->
-          <%= collection_select(  nil, 
-                                  :course_id,  
-                                  Course.all, 
-                                  :id, 
-                                  :name,
-                                  {:prompt   => "Select a course"},
-                                  {}
-                                 ) %>
-          <%= collection_select(  nil, 
-                                  :events_id,  
-                                  Event.all, 
-                                  :id, 
-                                  :name,
-                                  {:prompt   => "Select an event"},
-                                  {}
-                                 ) %>                       
+          <%= render :partial => 'eventselection' %>                    
 
           
           <label for="questiontext" class="accessibility"> question of the poll</label>
           <%= f.text_field :questiontext, :placeholder => "Write the question...", :class => "span8"%>
 
 
-          <%= render :partial => 'choice', :collection => @poll.choices %>
+          <% if @poll.choices.empty %>
+            <b>neue Antwort:</b>
+            <%= render :partial => 'choice', :collection => Choice.new %>
+          <% else %>
+            <b>bestehende Antwort:</b>
+            <%= render :partial => 'choice', :collection => @poll.choices %>
+          <% end %>
           <p>
             <%= add_choice_link "Add an answer" %> 
           </p>
