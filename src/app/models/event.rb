@@ -13,6 +13,7 @@ class Event < ActiveRecord::Base
   validates :course,  presence: true
   validates :tutor, presence: true
 
+  	# makes a String from every attribute within the model
 	def to_s
   		attributes.each_with_object("") do |attribute, result|
     		result << "#{attribute[1].to_s} "

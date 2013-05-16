@@ -26,7 +26,7 @@
           <%= f.text_field :questiontext, :placeholder => "Write the question...", :class => "span8"%>
 
 
-          <% if @poll.choices.empty %>
+          <% if @poll.choices.empty? %>
             <b>neue Antwort:</b>
             <%= render :partial => 'choice', :collection => Choice.new %>
           <% else %>
