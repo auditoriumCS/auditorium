@@ -1,0 +1,12 @@
+<h1>Listing poll_results</h1>
+<div class="poll-results">
+	<% @poi.each do |r| %>
+	<div class="poll-result">
+		<div class="poll-result-count"><%=r.result.count%></div>
+		<div class="poll-result-bar-wrap">
+			<div class="poll-result-bar" style="width: <%= r.result.length %>%"></div>
+		</div>
+	</div>
+	<% end %>
+</div>
+<%= link_to 'New Poll result', new_poll_result_path %>

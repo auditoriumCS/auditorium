@@ -1,4 +1,8 @@
 Auditorium::Application.routes.draw do
+  resources :poll_results, :controller => "poll_results" , :type => "PollResult"
+  match "poll_results/:id" => "poll_results#index"
+  match "poll_results/new/:question_id/:user_id" => "poll_results#new"
+
   ActiveAdmin.routes(self)
 
   resources :membership_requests, :only => [:index, :create, :destroy]
