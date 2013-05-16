@@ -6,19 +6,12 @@ class PollsController < ApplicationController
     @polls = Poll.all
 
     poll = Poll.create(:questiontext => "A real question?")
-
-    choice1 = Choice.new(
-         :answertext => "NO",
-          :is_correct => false
-     ) 
-    choice2 = Choice.new(
-          :answertext => "YES",
-          :is_correct => true
-     )   
-
+    choice1 = Choice.new(:answertext => "NO", :is_correct => false , :poll_id => poll.id) 
+    choice2 = Choice.new(:answertext => "YES", :is_correct => true , :poll_id => poll.id)   
     poll.choices << choice1  
     poll.choices << choice2
- 
+	poll.save
+	
     respond_to do |format|
       format.html  # index.html.erb
       format.json  { render :json => @polls }
