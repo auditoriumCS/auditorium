@@ -7,7 +7,7 @@ class Choice < ActiveRecord::Base
   has_many :poll_result
 
 
-  attr_accessible :answertext, :is_correct, :poll_result
+  attr_accessible :answertext, :is_correct, :poll_result, :poll_id
   validates :answertext,  :presence => true
   validates :is_correct,  :presence => true
 

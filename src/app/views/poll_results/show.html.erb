@@ -1,20 +1,13 @@
 <p id="notice"><%= notice %></p>
-
-<p>
-  <b>Userid:</b>
-  <%= @poll_result.userId %>
-</p>
-
-<p>
-  <b>Questionid:</b>
-  <%= @poll_result.questionId %>
-</p>
-
-<p>
-  <b>Choiceid:</b>
-  <%= @poll_result.choiceId %>
-</p>
-
-
+<div class="poll-results">
+	<% @poi.each do |r| %>
+	<div class="poll-result">
+		<div class="poll-result-count"><%=r.poll_result.count%></div>
+		<div class="poll-result-bar-wrap">
+			<div class="poll-result-bar" style="width: <%= r.total / r.poll_result.count %>%"></div>
+		</div>
+	</div>
+	<% end %>
+</div>
 <%= link_to 'Edit', edit_poll_result_path(@poll_result) %> |
 <%= link_to 'Back', poll_results_path %>
