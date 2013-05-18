@@ -1,23 +1,15 @@
 <div class="choice">
-	<% new_or_existing = choice.new_record? ? 'new' : 'existing' %>
-	<% prefix ="poll[#{new_or_existing}_choice_attributes][]"%>
-	prefix:
-	<%= prefix %><br>
-	choice to string:
-	<%= choice %><br>
-	<%= choice.to_s %><br>
 
-	<!-- prefix = poll[new_choice_attributes][] -->
-
-	<% fields_for prefix, choice do |choice_form| -%>
+	<%= form_for (choice), :remote => false do |choice_form| %>
 		<p>
+			<label class="category-select">
+            	<%= choice_form.check_box :is_correct %>
+  				answer is correct
+			</label>
             <label for="answertext" class="accessibility"> answer of the poll</label>
             <%= choice_form.text_field :answertext, :placeholder => "a possible answer...", :class => "span8"%>
-            <%= check_box_tag(:is_correct) %> 
-            <%= label_tag(:is_correct, "This is the correct answer", :class => "checkbox inline") %>
-			<%= link_to_function "remove", "$(this).up('.choice').remove()" %>
 		</p>
-	<% end -%>
+	 <% end %> 
 </div>
 
 

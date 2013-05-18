@@ -24,18 +24,21 @@
           
           <label for="questiontext" class="accessibility"> question of the poll</label>
           <%= f.text_field :questiontext, :placeholder => "Write the question...", :class => "span8"%>
+         
 
-
-          <% if @poll.choices.empty? %>
-            <b>neue Antwort:</b>
-            <%= render :partial => 'choice', :collection => Choice.new %>
-          <% else %>
-            <b>bestehende Antwort:</b>
-            <%= render :partial => 'choice', :collection => @poll.choices %>
-          <% end %>
-          <p>
-            <%= add_choice_link "Add an answer" %> 
+          <p class='hint'>
+            <strong> Answers </strong> (mark correct answer with a check)
           </p>
+
+            <% @poll.choices.each do |c| %>
+              <%= render :partial => 'choice', :locals => { :choice => c} %>
+            <% end %>
+
+          <p class='hint'>
+            <strong> add Answers </strong>
+          </p>
+
+            <%= render :partial => 'choice', :locals => { :choice => Choice.new} %>
 
         </div>
 
