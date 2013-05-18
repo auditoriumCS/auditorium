@@ -23,7 +23,7 @@ class PollResultsController < InheritedResources::Base
 		@poll_result = PollResult.new
 
 		respond_to do |format|
-		  format.html  # new.html.erb
+		  format.html  new.html.erb
 		end
 	end
 	
@@ -31,15 +31,15 @@ class PollResultsController < InheritedResources::Base
 		pr = PollResult.create()
 		pr.userId = params[:poll_result][:userId]
 		pr.questionId = params[:poll_result][:questionId]
-		pr.choiceId = params[:poll_result][:choiceId]
+		pr.choiceId = params[:choiceId]
 		pr.save
 		
-		choice = Choice.find(params[:poll_result][:choiceId])
+		choice = Choice.find(params[:choiceId])
 		choice.poll_result << pr
 		choice.save
 		
 		respond_to do |format|
-		  format.html  # index.html.erb
+		  format.html  index.html.erb
 		  format.json  { render :json => @pr,
 						:status => :created, :location => @pr }
 		end
