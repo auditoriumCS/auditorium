@@ -34,6 +34,10 @@
               <%= render :partial => 'choice', :locals => { :choice => c} %>
             <% end %>
 
+            <% if @poll.choices.count == 0 %>
+              <p> none, yet.</p>
+            <% end %>
+
           <p class='hint'>
             <strong> add Answers </strong>
           </p>
