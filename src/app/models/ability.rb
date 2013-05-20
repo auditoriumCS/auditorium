@@ -118,6 +118,7 @@ class Ability
       end
       can :manage, Feedback
       can :manage_users, Course
+      can :manage_events, Course
     end
 
 

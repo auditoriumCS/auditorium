@@ -42,6 +42,16 @@
     </h3>
     <%= render 'courses/announcement_overview'%>
 
+
+    <% if can? :manage_events, @course %>
+      <h3>Events
+        <% if @events.count > 5 %>
+        <p class="pull-right"><small><%= link_to 'Show all events', course_events_path(@course), class: "btn btn-link" %></small></p> 
+        <% end %>
+      </h3>
+      <%= render 'courses/events_overview'%>
+    <% end %>    
+
     
     <h3>Questions?
       <p class="pull-right"><small>sorted by last activity</small></p>
@@ -78,7 +88,7 @@
       </div></p>
       <hr />
 
-    
+    <!-- CanCan see models/ability.rb and :manage_xy is within the course_controller -->
     <% if can? :manage, @course %>
       <h3>Manage course</h3>
       <% if can? :manage_users, @course %>
@@ -92,6 +102,9 @@
       <% end %>
       <hr />
     <% end %>
+
+
+
     <h3>Member</h3>
     <table class="table table-borderless member-list">
       <%= render 'courses/member-list' %>
