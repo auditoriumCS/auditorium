@@ -1,0 +1,35 @@
+<% if @events.count == 0 %>  
+   No events, yet.
+<% else %> 
+	<table class="table announcement-teaser">
+    <tr>
+      <th> Event </th>
+      <th> Tutor </th>
+      <th> Datum </th>
+      <th> Ort   </th>
+      <th> Action   </th>
+    </tr>
+  <% @events.first(5).each do |event| %>
+    <tr>
+      <td><%= event.event_type      ? event.event_type : " - " %></td>
+      <td><%= event.tutor.full_name ? event.tutor.full_name : " - "  %></td>
+      <td><%= event.beginDate %> - <%= event.endDate %></td>
+      <td><%= event.building        ? event.building : " - " %> 
+          <%= event.room            ? event.room : " - " %></td>
+      <td>
+        <small>
+          <b class="icon-edit"><%= link_to "edit", edit_event_path(event) %></b> &nbsp; &nbsp;
+          <b class="icon-trash"><%= link_to 'delete', event, confirm: 'Are you sure?', method: :delete %></b>
+
+        </small>
+      </td>
+		</tr>  
+  <% end %>
+</table>
+<% end %>
+
+
+<% if current_user and current_user.may_edit_course(@course) %>
+  <%= link_to 'Add a new event.', new_event_path(:post_type => 'info', :course_id => @course.id) %>
+<% end %>
+
