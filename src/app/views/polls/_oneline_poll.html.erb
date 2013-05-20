@@ -1,0 +1,4 @@
+<strong> <%= poll.questiontext %> </strong> 
+<span class="icon-edit"> <%= link_to "edit", edit_poll_path(poll) %></span> &nbsp;
+<span class="icon-trash"> <%= link_to 'delete', poll, confirm: 'Are you sure?', method: :delete %></span>
+<br>

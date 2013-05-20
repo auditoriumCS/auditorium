@@ -1,26 +1,59 @@
 class PollsController < ApplicationController
 
+  def initpoll
+
+ poll = Poll.create(:questiontext => "What Time is it?", :event_id => 1)
+
+    choice1 = Choice.new(
+         :answertext => "Time to go",
+         :is_correct => false,
+         :poll_id => poll.id
+     ) 
+    choice2 = Choice.create(
+          :answertext => "Time to dance",
+          :is_correct => true,
+         :poll_id => poll.id
+     )   
+
+     poll.choices << choice1  
+     poll.choices << choice2
+
+     poll.save
+
+
+  poll = Poll.create(:questiontext => "What do you like?", :event_id => 1)
+
+    choice1 = Choice.new(
+         :answertext => "I like apples",
+         :is_correct => false,
+         :poll_id => poll.id
+     ) 
+    choice2 = Choice.new(
+          :answertext => "I like bananas",
+          :is_correct => true,
+         :poll_id => poll.id
+     )   
+
+     choice1.save
+     choice2.save
+
+     poll.choices << choice1  
+     poll.choices << choice2
+
+     poll.save    
+
+  end
+
   # GET /polls
   # index.html.erb
   def index
+
+    if Poll.count == 0
+      initpoll
+    end  
+
     @polls = Poll.all
 
-    #poll = Poll.create(:questiontext => "What Time is it?")
-
-    #choice1 = Choice.new(
-    #     :answertext => "Time to go",
-    #     :is_correct => false,
-    # ) 
-    #choice2 = Choice.create(
-     #     :answertext => "Time to dance",
-     #     :is_correct => true
-     #)   
-
-     #poll.choices << choice1  
-     #poll.choices << choice2
-
-     #poll.save
- 
     respond_to do |format|
       format.html  # index.html.erb
       format.json  { render :json => @polls }

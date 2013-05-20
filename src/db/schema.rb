@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130514161829) do
+ActiveRecord::Schema.define(:version => 20130520211944) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -249,8 +249,11 @@ ActiveRecord::Schema.define(:version => 20130514161829) do
   end
 
   create_table "polls", :force => true do |t|
-    t.string "questiontext"
+    t.string  "questiontext"
+    t.integer "event_id"
   end
+
+  add_index "polls", ["event_id"], :name => "index_polls_on_event_id"
 
   create_table "posts", :force => true do |t|
     t.string   "subject"
