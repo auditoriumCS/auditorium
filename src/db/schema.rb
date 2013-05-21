@@ -274,6 +274,7 @@ ActiveRecord::Schema.define(:version => 20130521092123) do
     t.boolean  "is_private",      :default => false
     t.datetime "last_activity"
     t.integer  "views",           :default => 0
+    t.string   "url"
   end
 
   add_index "posts", ["answer_to_id"], :name => "index_posts_on_answer_to_id"
