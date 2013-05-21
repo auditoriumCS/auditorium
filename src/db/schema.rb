@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130520211944) do
+ActiveRecord::Schema.define(:version => 20130521092123) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -62,6 +62,8 @@ ActiveRecord::Schema.define(:version => 20130520211944) do
     t.boolean "is_correct", :null => false
     t.integer "poll_id",    :null => false
   end
+
+  add_index "choices", ["poll_id"], :name => "index_choices_on_poll_id"
 
   create_table "course_memberships", :force => true do |t|
     t.integer  "user_id"

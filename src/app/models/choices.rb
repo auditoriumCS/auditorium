@@ -9,7 +9,8 @@ class Choice < ActiveRecord::Base
 
   attr_accessible :answertext, :is_correct, :poll_result, :poll_id
   validates :answertext,  :presence => true
-  validates :is_correct,  :presence => true
+  # validation presence throws an error if :is_correct => false ... thats why we should avoid it.
+  # validates :is_correct,  :presence => true
 
   	# makes a String from every attribute within the model
 	def to_s

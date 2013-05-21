@@ -4,7 +4,7 @@ class PollsController < ApplicationController
 
  poll = Poll.create(:questiontext => "What Time is it?", :event_id => 1)
 
-    choice1 = Choice.new(
+    choice1 = Choice.create(
          :answertext => "Time to go",
          :is_correct => false,
          :poll_id => poll.id
@@ -18,29 +18,28 @@ class PollsController < ApplicationController
      poll.choices << choice1  
      poll.choices << choice2
 
-     poll.save
 
+  poll2 = Poll.create(:questiontext => "What do you like?", :event_id => 1)
 
-  poll = Poll.create(:questiontext => "What do you like?", :event_id => 1)
-
-    choice1 = Choice.new(
+    choice1 = Choice.create(
          :answertext => "I like apples",
          :is_correct => false,
-         :poll_id => poll.id
+         :poll_id => poll2.id
      ) 
-    choice2 = Choice.new(
+    choice2 = Choice.create(
           :answertext => "I like bananas",
           :is_correct => true,
-         :poll_id => poll.id
+         :poll_id => poll2.id
      )   
 
-     choice1.save
-     choice2.save
+     poll2.choices << choice1  
+     poll2.choices << choice2
 
-     poll.choices << choice1  
-     poll.choices << choice2
 
-     poll.save    
+
+     # add ! to throw errors to console e.g. poll.save!
+     poll2.save   
+     poll.save
 
   end
 
