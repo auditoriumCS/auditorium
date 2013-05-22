@@ -1,9 +1,9 @@
 Auditorium::Application.routes.draw do
+
   resources :poll_results, :controller => "poll_results" , :type => "PollResult"
   match "poll_results/:id" => "poll_results#index"
-  match "poll_results/new/:question_id/:user_id" => "poll_results#new"
-
-  ActiveAdmin.routes(self)
+  match "poll_results/new/:questionId/:userId" => "poll_results#new"
+  match "poll_results/refresh/:id" => "poll_results#ajax_refresh"
 
   resources :membership_requests, :only => [:index, :create, :destroy]
 
@@ -57,7 +57,11 @@ Auditorium::Application.routes.draw do
   post 'notifications/delete_all_notifications' => 'notifications#delete_all_notifications', :as => :delete_all_notifications
   match 'notifications' => 'notifications#index', :as => :notifications_for_course
 
-  resources :courses
+  resources :courses do 
+    resources :recordings do 
+      post 'comment', :on => :member
+    end
+  end
 
   match 'courses/:id/manage_users', :to => 'courses#manage_users', :as => :manage_users
   match 'courses/:id/announcements', :to => 'courses#announcements', :as => :course_announcements
@@ -113,6 +117,8 @@ Auditorium::Application.routes.draw do
 #  resources :jexamwebservice
 
   root to: "landing_page#index"
+
+  ActiveAdmin.routes(self)
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

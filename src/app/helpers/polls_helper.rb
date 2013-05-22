@@ -3,7 +3,7 @@ module PollsHelper
   
   def add_choice_link(name)
     link_to_function(name, nil) do |page|
-      page.insert_html :bottom, :choice, :partial => 'choice', :object => Choice.new
+      page.insert_html :bottom, :choices, :partial => 'choice', :object => Choice.new
     end
   end
    # link_to_function("Show me more", nil, :id => "more_link") do |page|

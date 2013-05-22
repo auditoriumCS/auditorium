@@ -10,17 +10,18 @@
       </ul>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= f.number_field :user_id %>
-  </div>
-  <div class="field">
-    <%= f.number_field :question_id %>
-  </div>
-  <div class="field">
-    <%= f.number_field :choice_id %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+	<%= f.hidden_field :userId, :value => params[:userId]%>
+	<%= f.hidden_field :questionId, :value => params[:questionId]%>
+	<div class="control-group">
+	<legend><%= @p.questiontext %></legend>
+	<% @p.choices.each do |c|  %>
+		<div class="controls">
+			<%= radio_button_tag( :choiceId, c.id) %>
+			<%= c.answertext  %>	
+		</div>
+	<%end%>
+	</div>
+	<div class="actions">
+		<%= f.submit "answer question", { :class => 'btn btn-primary' } %>
+	</div>
 <% end %>

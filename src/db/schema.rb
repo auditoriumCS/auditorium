@@ -11,7 +11,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
+
 ActiveRecord::Schema.define(:version => 20130514161829) do
+=======
+ActiveRecord::Schema.define(:version => 20130521092123) do
+
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -62,6 +66,11 @@ ActiveRecord::Schema.define(:version => 20130514161829) do
     t.boolean "is_correct", :null => false
     t.integer "poll_id",    :null => false
   end
+<<<<<<< HEAD
+=======
+
+  add_index "choices", ["poll_id"], :name => "index_choices_on_poll_id"
+>>>>>>> b20e094b3854930eea70bb42ada67402588601bc
 
   create_table "course_memberships", :force => true do |t|
     t.integer  "user_id"
@@ -249,9 +258,15 @@ ActiveRecord::Schema.define(:version => 20130514161829) do
   end
 
   create_table "polls", :force => true do |t|
-    t.string "questiontext"
+    t.string  "questiontext"
+    t.integer "event_id"
   end
 
+<<<<<<< HEAD
+=======
+  add_index "polls", ["event_id"], :name => "index_polls_on_event_id"
+
+>>>>>>> b20e094b3854930eea70bb42ada67402588601bc
   create_table "posts", :force => true do |t|
     t.string   "subject"
     t.text     "body"
@@ -269,6 +284,7 @@ ActiveRecord::Schema.define(:version => 20130514161829) do
     t.boolean  "is_private",      :default => false
     t.datetime "last_activity"
     t.integer  "views",           :default => 0
+    t.string   "url"
   end
 
   add_index "posts", ["answer_to_id"], :name => "index_posts_on_answer_to_id"
