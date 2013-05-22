@@ -54,7 +54,7 @@ class Ability
       end
 
       can :mark_as_answered, Post do |post|
-        user.id == post.parent.author.id
+        user.id == post.parent.author.id or user.is_course_editor? post.course or user.is_course_maintainer? post.course
       end
 
       can :convert, Post do |post|
@@ -102,6 +102,12 @@ class Ability
       can :manage, MembershipRequest do |mr|
         user.is_course_maintainer? mr.course or user.admin
       end
+
+      can :read, Recording
+      can :comment, Recording
+      can :manage, Recording do |recording|
+        user.is_course_maintainer? recording.course
+      end
       
     else # Gäste
       cannot :read, :all
@@ -118,6 +124,7 @@ class Ability
       end
       can :manage, Feedback
       can :manage_users, Course
+      can :manage_events, Course
     end
 
 

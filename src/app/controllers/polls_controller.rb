@@ -1,24 +1,58 @@
 class PollsController < ApplicationController
 
+  def initpoll
+
+ poll = Poll.create(:questiontext => "What Time is it?", :event_id => 1)
+
+    choice1 = Choice.create(
+         :answertext => "Time to go",
+         :is_correct => false,
+         :poll_id => poll.id
+     ) 
+    choice2 = Choice.create(
+          :answertext => "Time to dance",
+          :is_correct => true,
+         :poll_id => poll.id
+     )   
+
+     poll.choices << choice1  
+     poll.choices << choice2
+
+
+  poll2 = Poll.create(:questiontext => "What do you like?", :event_id => 1)
+
+    choice1 = Choice.create(
+         :answertext => "I like apples",
+         :is_correct => false,
+         :poll_id => poll2.id
+     ) 
+    choice2 = Choice.create(
+          :answertext => "I like bananas",
+          :is_correct => true,
+         :poll_id => poll2.id
+     )   
+
+     poll2.choices << choice1  
+     poll2.choices << choice2
+
+
+
+     # add ! to throw errors to console e.g. poll.save!
+     poll2.save   
+     poll.save
+
+  end
+
   # GET /polls
   # index.html.erb
   def index
+
+    if Poll.count == 0
+      initpoll
+    end  
+
     @polls = Poll.all
 
-    #poll = Poll.create(:questiontext => "A real question?")
-
-    #choice1 = Choice.new(
-    #     :answertext => "NO",
-    #      :is_correct => false
-    # ) 
-    #choice2 = Choice.new(
-    #      :answertext => "YES",
-    #      :is_correct => true
-    # )   
-
-     #poll.choices << choice1  
-    # poll.choices << choice2
- 
     respond_to do |format|
       format.html  # index.html.erb
       format.json  { render :json => @polls }
@@ -27,7 +61,7 @@ class PollsController < ApplicationController
 
   def new
     @poll = Poll.new
-    @poll.choices.build
+    #@poll.choices.build
    
     respond_to do |format|
       format.html  # new.html.erb
@@ -37,6 +71,9 @@ class PollsController < ApplicationController
 
 def create
   @poll = Poll.new(params[:poll])
+  @choice = Choice.new(params[:choice])
+
+  @poll.choices << @choice
 
   respond_to do |format|
     if @poll.save
@@ -84,12 +121,15 @@ end
   end
 
 def update 
-  params[:poll][:existing_choice_attributes] ||= {}
+  #params[:poll][:existing_choice_attributes] ||= {}
   @poll = Poll.find(params[:id])
-  if
-    @poll.update_attributes(params[:poll])
-    flash[:notice] =  "Successfully updated poll and choices."
-    redirect_to project_path(@poll)
+
+  #@choice = Choice.find_all_by_poll_id(params[:id]).first
+
+
+  if @poll.update_attributes(params[:poll])
+    flash[:notice] +=  "Successfully updated poll."
+    redirect_to poll_path(@poll)
   else
     render :action =>  'edit'
   end

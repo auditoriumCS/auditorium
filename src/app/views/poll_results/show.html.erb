@@ -1,20 +1,17 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <b>Userid:</b>
-  <%= @poll_result.userId %>
-</p>
-
-<p>
-  <b>Questionid:</b>
-  <%= @poll_result.questionId %>
-</p>
-
-<p>
-  <b>Choiceid:</b>
-  <%= @poll_result.choiceId %>
-</p>
+<script src="app/views/poll_results/actualize_show.js"></script>
 
 
-<%= link_to 'Edit', edit_poll_result_path(@poll_result) %> |
+<legend>Results for Question: <%=@p["text"]%> </legend>
+<div class="poll-results">
+	<% @p["choices"].each do |c| %>
+	<div class="poll-result">
+		<div class="poll-result-count"><%=c["count"]%> of <%=@p["total"]%>  ( <%= (c["count"].to_i / @p["total"])*100 %>% )</div>
+		<h4><%=c["text"]%></h4>
+		<div class="poll-result-bar-wrap">
+			<div class="poll-result-bar <%=c["correct_class"]%>" style="width: <%= (c["count"].to_i / @p["total"])*100 %>%"></div>
+		</div>
+	</div>
+	<% end %>
+</div>
+
 <%= link_to 'Back', poll_results_path %>

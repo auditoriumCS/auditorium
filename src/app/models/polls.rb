@@ -4,13 +4,11 @@
 class Poll < ActiveRecord::Base
   has_many :choices
   # adds this key as a foreign_key into choices
-  # has_one:polls_choices, :through => :choices
+  # has_one :polls_choices, :through => :choices
   # adds a foreign_key of events to polls 
-  # belongs_to:events
+  belongs_to :events
 
-
-
-  attr_accessible :questiontext, :choices
+  attr_accessible :questiontext, :choices , :event_id
   validates :questiontext,  :presence => true
 
   def new_choice_attributes=(choice_attributes)

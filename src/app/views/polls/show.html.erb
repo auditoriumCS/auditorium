@@ -1,13 +1,23 @@
 <p id="notice"><%= notice %></p>
- 
+
+<h3>Poll Information</h3>
+
 <p>
-  <b>Text:</b>
+  <strong>Text:</strong><br>
   <%= @poll.questiontext %>
 </p>
 
 <p>
-  <b>Answers:</b>
-  <%= @poll.choices.count %>
+  <strong>Answers:</strong><br>
+    <% i = 0 %>
+	<% @poll.choices.each do |c| %>
+			<% i = i+1 %>
+			<p>
+			  Answer <%= i %> <br>
+              <%= c.answertext %><br>
+              <%= c.is_correct ? "is correct" : "is not correct" %>
+          </p>
+    <% end %>
 </p>
  
  
