@@ -11,7 +11,7 @@
   </tr>
 
 <% @events.each do |event| %>
-  <tr class="event_tr">
+  <tr>
     <td><%= event.event_type %></td>
     <td><%= event.course.name %></td>
     <td><%= event.tutor.full_name %></td>

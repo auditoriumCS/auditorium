@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130514113533) do
+ActiveRecord::Schema.define(:version => 20130514161829) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -62,8 +62,6 @@ ActiveRecord::Schema.define(:version => 20130514113533) do
     t.boolean "is_correct", :null => false
     t.integer "poll_id",    :null => false
   end
-  
-  
 
   create_table "course_memberships", :force => true do |t|
     t.integer  "user_id"
@@ -243,15 +241,17 @@ ActiveRecord::Schema.define(:version => 20130514113533) do
   add_index "periods", ["event_id"], :name => "index_periods_on_event_id"
 
   create_table "poll_results", :force => true do |t|
-    t.integer  "question_id", :null => false
-    t.integer "user_id", :null => false
-    t.integer "choice_id",  :null => false
+    t.integer  "userId"
+    t.integer  "questionId"
+    t.integer  "choiceId"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
-  
+
   create_table "polls", :force => true do |t|
     t.string "questiontext"
   end
-  
+
   create_table "posts", :force => true do |t|
     t.string   "subject"
     t.text     "body"
