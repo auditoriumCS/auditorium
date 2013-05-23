@@ -16,18 +16,21 @@ function actualize(eId) {
 				var pieColors = [];
 				var decisive = false;
 				var firstCorrect = r[q].choices[0].correct;
+				
 				for(c in r[q].choices) if(r[q].choices[c].text){
+					if(r[q].total > 0){
 					pieValues.push({correct:r[q].choices[c].correct,value:r[q].choices[c].count});
 					if(firstCorrect!=r[q].choices[c].correct)
 						decisive = true;
+						}
 					snippet += '<div class="poll-result">';
-					snippet += 	'<h4>'+r[q].choices[c].text+'  '+r[q].choices[c].count+' of '+r[q].total+'  ( '+Math.floor((r[q].choices[c].count/r[q].total)*100)+'% )</h4>';
+					snippet += 	'<h4>'+r[q].choices[c].text+'  '+(r[q].total > 0)?r[q].choices[c].count+' of '+r[q].total:+'  ( '+Math.floor((r[q].choices[c].count/r[q].total)*100):''+'% )</h4>';
 					snippet += 	'<div class="poll-result-bar-wrap">';
 					snippet += '</div>';
 				}
 				
 				
-				for(i in pieValues){
+				if(r[q].total > 0)for(i in pieValues){
 					if(decisive){
 						var j = (pieValues[i].correct)?0:1;
 						pie[j] =  (pie[j]==undefined)?pieValues[i].value:pie[j]+pieValues[i].value;
@@ -35,8 +38,8 @@ function actualize(eId) {
 						pie.push(pieValues[i].value)
 					}
 				}
-				
-				snippet +=  '<span class="sparklines" values="'+pie.join(",")+'" decisive="'+decisive+'"></span>'
+				if(r[q].total > 0)
+					snippet +=  '<span class="sparklines" values="'+pie.join(",")+'" decisive="'+decisive+'"></span>'
 				jQuery("#poll_result_"+q).html(snippet);
 				
 			}
