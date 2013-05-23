@@ -2,15 +2,15 @@ class PollsController < ApplicationController
 
   def initpoll
 
- poll = Poll.create(:questiontext => "What Time is it?", :event_id => 1)
+ poll = Poll.create(:questiontext => "What is the meaning of life?", :event_id => 2)
 
     choice1 = Choice.create(
-         :answertext => "Time to go",
+         :answertext => "42",
          :is_correct => false,
          :poll_id => poll.id
      ) 
     choice2 = Choice.create(
-          :answertext => "Time to dance",
+          :answertext => "21",
           :is_correct => true,
          :poll_id => poll.id
      )   
@@ -19,15 +19,15 @@ class PollsController < ApplicationController
      poll.choices << choice2
 
 
-  poll2 = Poll.create(:questiontext => "What do you like?", :event_id => 1)
+  poll2 = Poll.create(:questiontext => "To be or not to be!", :event_id => 2)
 
     choice1 = Choice.create(
-         :answertext => "I like apples",
+         :answertext => "To be",
          :is_correct => false,
          :poll_id => poll2.id
      ) 
     choice2 = Choice.create(
-          :answertext => "I like bananas",
+          :answertext => "not to be",
           :is_correct => true,
          :poll_id => poll2.id
      )   
@@ -61,7 +61,7 @@ class PollsController < ApplicationController
 
   def new
     @poll = Poll.new
-    #@poll.choices.build
+    3.times do @poll.choices.build end
    
     respond_to do |format|
       format.html  # new.html.erb
@@ -71,16 +71,30 @@ class PollsController < ApplicationController
 
 def create
   @poll = Poll.new(params[:poll])
-  @choice = Choice.new(params[:choice])
+  @poll.event_id = params[:poll][:event_id]
+  
 
-  @poll.choices << @choice
+  #TODO: one of the answers must be correct
 
   respond_to do |format|
     if @poll.save
-      format.html  { redirect_to(@poll,
-                    :notice => 'poll was successfully created.') }
-      format.json  { render :json => @poll,
+
+      @choice = Choice.new(params[:choice])
+      @choice.poll_id = @poll.id
+
+      if @choice.save
+          format.html  { redirect_to(@poll,
+                    :notice => 'poll and its choices were successfully created.') }
+          format.json  { render :json => @poll,
                     :status => :created, :location => @poll }
+      # cant save choice
+      else
+        # redirect_to( { :action => "show", :id => @project }, { :notice => 'Project was successfully created.' } )
+        format.html  { redirect_to( { :id => @poll, :action => "edit" }, 
+                                    {:notice => 'Created poll without any answers. Please add answers now.' }) }
+        format.json  { render :json => @choice.errors,
+                    :status => :unprocessable_entity }
+      end
     else
       format.html  { render :action => "new" }
       format.json  { render :json => @poll.errors,
@@ -101,6 +115,9 @@ end
   # GET /polls/1/edit
   def edit
     @poll = Poll.find(params[:id])
+    @event = Event.find(@poll.event_id)
+    @course = @event.course
+    @choices = @poll.choices
   end
 
   # DELETE /polls/1
@@ -124,15 +141,13 @@ def update
   #params[:poll][:existing_choice_attributes] ||= {}
   @poll = Poll.find(params[:id])
 
-  #@choice = Choice.find_all_by_poll_id(params[:id]).first
-
-
   if @poll.update_attributes(params[:poll])
-    flash[:notice] +=  "Successfully updated poll."
-    redirect_to poll_path(@poll)
+      flash[:notice] = "Successfully updated poll."
+      redirect_to @poll
   else
-    render :action =>  'edit'
+      render :action => 'edit'
   end
 end
+
 
 end

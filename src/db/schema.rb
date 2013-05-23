@@ -11,11 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(:version => 20130514161829) do
-=======
 ActiveRecord::Schema.define(:version => 20130521092123) do
->>>>>>> b20e094b3854930eea70bb42ada67402588601bc
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -67,9 +63,7 @@ ActiveRecord::Schema.define(:version => 20130521092123) do
     t.integer "poll_id",    :null => false
   end
 
-
   add_index "choices", ["poll_id"], :name => "index_choices_on_poll_id"
-
 
   create_table "course_memberships", :force => true do |t|
     t.integer  "user_id"
@@ -261,11 +255,8 @@ ActiveRecord::Schema.define(:version => 20130521092123) do
     t.integer "event_id"
   end
 
-<<<<<<< HEAD
-=======
   add_index "polls", ["event_id"], :name => "index_polls_on_event_id"
 
->>>>>>> b20e094b3854930eea70bb42ada67402588601bc
   create_table "posts", :force => true do |t|
     t.string   "subject"
     t.text     "body"
