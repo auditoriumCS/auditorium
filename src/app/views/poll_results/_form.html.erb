@@ -9,8 +9,8 @@
       </ul>
     </div>
   <% end %>
-	<%= f.hidden_field :userId, :value => params[:userId]%>
-	<%= f.hidden_field :questionId, :value => params[:questionId]%>
+    <%= f.hidden_field :eventId, :value => params[:eventId]%>
+	<%= f.hidden_field :pollId, :value => params[:pollId]%>
 	<div class="control-group">
 	<legend><%= @p.questiontext %></legend>
 	<% @p.choices.each do |c|  %>

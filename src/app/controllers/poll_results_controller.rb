@@ -30,7 +30,7 @@ class PollResultsController < InheritedResources::Base
 	end
 	
 	def new
-		@p = Poll.find(params[:questionId])
+		@p = Poll.find(params[:pollId])
 		@poll_result = PollResult.new
 
 		respond_to do |format|
@@ -38,25 +38,39 @@ class PollResultsController < InheritedResources::Base
 		end
 	end
 	
-	def ajax_refresh
-		@poll = Poll.find(:id)
-		@p = {}
-		@p.text = @poll.questiontext;
-		
-		@c = {}
-		
-		Poll.choices.each do |c|
+	def showjax
+		r = Hash.new
+		event = Event.find(params[:id])
+		event.polls.each do |poll|
+
+			p = Hash.new
+			p["text"] = poll.questiontext;
+			p["choices"] = Array.new
+			total = 0;
 			
+			poll.choices.each do |e|
+				c = Hash.new
+				c["text"] = e.answertext
+				c["correct"] = e.is_correct
+				c["correct_class"] = (e.is_correct) ? "correct" : "incorrect" 
+				c["count"] = PollResult.select("COUNT(*) AS count").where("choiceId = #{e.id}").count
+				total += c["count"].to_i
+				p["choices"] << c
+			end
+			p["total"] = total
+			r[poll.id] = p
 		end
 		
-		format.js
+		respond_to do |format|
+		  format.json { render :json => r }
+		end
 
 	end
 
 	def create
 		pr = PollResult.create()
-		pr.userId = params[:poll_result][:userId]
-		pr.questionId = params[:poll_result][:questionId]
+		pr.userId = current_user.id
+		pr.pollId = params[:poll_result][:pollId]
 		pr.choiceId = params[:choiceId]
 		pr.save
 		
@@ -65,9 +79,7 @@ class PollResultsController < InheritedResources::Base
 		choice.save
 		
 		respond_to do |format|
-		  format.html  { render :action => "show", :id => params[:questionId] }
-		  format.json  { render :json => @pr,
-						:status => :created, :location => @pr }
+		  format.html  { redirect_to "events/#{params[:poll_result][:eventId]}"}
 		end
 	end
 end		
