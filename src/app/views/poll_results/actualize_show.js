@@ -1,4 +1,4 @@
-function actualize() {
+function actualize(eId) {
 	var url = "poll_results/ajax_refresh";
 	jQuery.post(
 	url,
@@ -20,9 +20,6 @@ function actualize() {
 			}
 		}
 	});
-	setTimeout('actualize',300);
+	setTimeout(function(){actualize(eId)},500);
 }
 
-jQuery(function(){
-	actualize();
-});

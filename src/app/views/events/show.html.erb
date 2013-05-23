@@ -1,5 +1,11 @@
 <p id="notice"><%= notice %></p>
-
+<script src="assets/javascripts/sparklines.js"></script>
+<script src="views/poll_results/actualize_show.js"></script>
+<script>
+jQuery(function(){
+	actualize(<%=event.id%>);
+});
+</script>
 <p><%= @event.event_type %></p>
 <p><%= @event.course.name %></p>
 <p><%= @event.tutor.full_name %></p>
@@ -10,6 +16,24 @@
 <p><%= @event.url %></p>
 <p><%= @event.building %></p>
 <p><%= @event.room %></p>
+
+<% @event.polls.each do |poll| %>
+<div>
+	<div>
+		<legend>
+			<h3><%= poll.questiontext %></h3>
+			<div>
+				<%= link_to 'Edit' %>
+				<%= link_to 'Delete' %>
+			</div>
+		</legend>
+	</div>
+	<div class="poll-result" id="poll_result_<%=@poll.id%>">
+
+	</div>
+</div>
+<% end %>
+
 
 <%= link_to 'Edit', edit_event_path(@event) %> |
 <%= link_to 'Back', events_path %>
