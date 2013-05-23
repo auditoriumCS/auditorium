@@ -11,30 +11,40 @@ function actualize(eId) {
 		for(q in r){
 			if(r[q].text){
 				var snippet = "";
-				var pie = "";
-				var pieColors = []
+				var pie = [];
+				var pieValues = [];
+				var pieColors = [];
+				var decisive = false;
+				var firstCorrect = r[q].choices[0].correct;
 				for(c in r[q].choices) if(r[q].choices[c].text){
+					pieValues.push({correct:r[q].choices[c].correct,value:r[q].choices[c].count});
+					if(firstCorrect!=r[q].choices[c].correct)
+						decisive = true;
 					snippet += '<div class="poll-result">';
-					//snippet += 	'<div class="poll-result-count"> '+r[q].choices[c].count+' of '+r[q].total+'  ( '+Math.floor((r[q].choices[c].count/r[q].total)*100)+'% )</div>';
 					snippet += 	'<h4>'+r[q].choices[c].text+'  '+r[q].choices[c].count+' of '+r[q].total+'  ( '+Math.floor((r[q].choices[c].count/r[q].total)*100)+'% )</h4>';
 					snippet += 	'<div class="poll-result-bar-wrap">';
-					//snippet += 	'<div class="poll-result-bar '+r[q].choices[c].correct_class+'" style="width: '+(r[q].choices[c].count/r[q].total)*100+'%"></div>';
-					if(c < r[q].choices.length - 1){
-						pie += r[q].choices[c].count + ",";
-						
-					}else{
-						pie += r[q].choices[c].count;
-						
-					}
-					pieColors.push((r[q].choices[c].correct)?"#00ff00":"#ff0000")
 					snippet += '</div>';
 				}
-				snippet +=  '<span class="sparklines" values="'+pie+'" colors="'+pieColors+'"></span>'
+				
+				
+				for(i in pieValues){
+					if(decisive){
+						var j = (pieValues[i].correct)?0:1;
+						pie[j] =  (pie[j]==undefined)?pieValues[i].value:pie[j]+pieValues[i].value;
+					} else {
+						pie.push(pieValues[i].value)
+					}
+				}
+				
+				snippet +=  '<span class="sparklines" values="'+pie.join(",")+'" decisive="'+decisive+'"></span>'
 				jQuery("#poll_result_"+q).html(snippet);
 				
 			}
 		}
-		jQuery(".sparklines").sparkline('html',{ width : '100', height : '100', type : 'pie', sliceColors: pieColors});
+		jQuery(".sparklines").each(function(idx){
+			var dec = Boolean(jQuery(this).attr("decisive"));
+			jQuery(this).sparkline('html',{ width : '100', height : '100', type : 'pie', sliceColors:((dec)? ["00ff00","#ff0000"] : undefined)})
+		});
 	});
 	setTimeout(function(){actualize(eId)},1500);
 }
