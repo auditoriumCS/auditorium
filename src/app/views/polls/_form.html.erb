@@ -19,7 +19,8 @@
         <div class="controls">
 
           <!-- Select the refering course -->
-          <%= render :partial => 'eventselection' %>                    
+          <!-- %= render :partial => 'eventselection', :locals => { :event => @event, :course => @course} % -->
+          <%= f.select :event_id, options_from_collection_for_select(Event.all, :id, :to_s, @poll.event_id) %>                   
 
           
           <label for="questiontext" class="accessibility"> question of the poll</label>
@@ -30,19 +31,13 @@
             <strong> Answers </strong> (mark correct answer with a check)
           </p>
 
-            <% @poll.choices.each do |c| %>
-              <%= render :partial => 'choice', :locals => { :choice => c} %>
-            <% end %>
+          <!-- see all existing answers -->
+          <!-- add a button to add a new answer -->
+          <%= f.fields_for :choices do |builder| %>
+            <%= render 'choice', :f => builder %>
+          <% end %>
 
-            <% if @poll.choices.count == 0 %>
-              <p> none, yet.</p>
-            <% end %>
-
-          <p class='hint'>
-            <strong> add Answers </strong>
-          </p>
-
-            <%= render :partial => 'choice', :locals => { :choice => Choice.new} %>
+          <p><%= link_to_add_fields "Add Choice", f, :choices %></p>
 
         </div>
 

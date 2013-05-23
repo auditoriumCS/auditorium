@@ -1,14 +1,21 @@
-          <!-- collection_select( object, method, collection, value_method, text_method, options = {}, html_options = {} ) -->
-          <%= collection_select(  nil, 
+          <!-- collection_select( object, 
+                                  method, 
+                                  collection, 
+                                  value_method, 
+                                  text_method, 
+                                  options = {}, 
+                                  html_options = {} ) -->
+          <!--
+          collection_select(  course.id, 
                                   :course_id,  
                                   Course.all, 
                                   :id, 
                                   :name,
                                   {:prompt   => "Select a course"},
                                   {}
-                                 ) %>
+                                 ) -->
           <%= collection_select(  nil, 
-                                  :events_id,  
+                                  :event_id,  
                                   Event.all, 
                                   :id, 
                                   :to_s,
