@@ -2,7 +2,6 @@
   <% if @poll_result.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@poll_result.errors.count, "error") %> prohibited this poll_result from being saved:</h2>
-
       <ul>
       <% @poll_result.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
