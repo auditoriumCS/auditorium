@@ -10,7 +10,6 @@ class PollResultsController < InheritedResources::Base
 	end		
 	
 	def show
-	
 		@poll = Poll.find(params[:id])
 		@p = Hash.new
 		@p["text"] = @poll.questiontext;
@@ -66,7 +65,7 @@ class PollResultsController < InheritedResources::Base
 		choice.save
 		
 		respond_to do |format|
-		  format.html  show.html.erb
+		  format.html  { render :action => "show", :id => params[:questionId] }
 		  format.json  { render :json => @pr,
 						:status => :created, :location => @pr }
 		end
