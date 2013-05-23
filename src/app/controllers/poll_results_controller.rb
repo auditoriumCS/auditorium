@@ -70,7 +70,7 @@ class PollResultsController < InheritedResources::Base
 	def create
 		pr = PollResult.create()
 		pr.userId = current_user.id
-		pr.pollId = params[:poll_result][:pollId]
+		pr.questionId = params[:poll_result][:pollId]
 		pr.choiceId = params[:choiceId]
 		pr.save
 		
@@ -79,7 +79,7 @@ class PollResultsController < InheritedResources::Base
 		choice.save
 		
 		respond_to do |format|
-		  format.html  { redirect_to "events/#{params[:poll_result][:eventId]}"}
+		  format.html  { redirect_to "/events/#{params[:poll_result][:eventId]}"}
 		end
 	end
 end		
