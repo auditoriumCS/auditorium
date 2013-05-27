@@ -4,6 +4,11 @@
 *= require jquery.ui.all
 *= require feedbacks
 *= require my_faculties
+<<<<<<< HEAD
+*= require events
+=======
+*= require poll_results
+>>>>>>> b20e094b3854930eea70bb42ada67402588601bc
 */
 
 @import "variables";
@@ -132,6 +137,11 @@ h5, h6
   .well {
     padding:10px;
   }
+
+  .youtube-player {
+    width:300px;
+    height:187.5px;
+  }
 }
 
 @media (max-width: 390px) {
@@ -152,7 +162,10 @@ h5, h6
       margin:0;
     }
   }
-
+  .youtube-player {
+    width:600px;
+    height:375px;
+  }
 }
 
 // Landscape phone to portrait tablet
@@ -200,6 +213,11 @@ h5, h6
   #footer
   {
     padding: 15px 5px;
+  }
+
+  .youtube-player {
+    width:500px;
+    height:312.5px;
   }
 }
 
@@ -272,6 +290,11 @@ h5, h6
       }
     }
   }
+
+  .youtube-player {
+    width:600px;
+    height:375px;
+  }
 }
 
 
@@ -281,6 +304,11 @@ h5, h6
     & > header{
       height:60px;
     }
+  }
+
+  .youtube-player {
+    width:600px;
+    height:375px;
   }
 }
 
@@ -675,6 +703,14 @@ table.announcement-teaser {
   
   &.info-badge {
     background: @yellow url("info-badge.png") top no-repeat;
+  }
+
+  &.private-recording-badge {
+    background: lighten(@orange, 30%) url("recording-badge.png") top no-repeat;
+  }
+
+  &.recording-badge {
+    background: @orange url("recording-badge.png") top no-repeat;
   }
 
   &.answer-badge {
@@ -1116,9 +1152,19 @@ p.rating-points {
 }
 
 .well-small{
-  .well;
-  padding: 5px 10px 19px 19px;
-  
+  border-radius:none;
+  padding: 10px;
+  border:1px solid @grayLighter;
+  margin:10px 0;
+
+  &:hover {
+    background: @grayLighter;
+    border: 1px solid @grayLight;
+  }
+
+  .private {
+    background-color: @grayLighter;
+  }
 }
 
 .backward_compatability {
@@ -1223,3 +1269,12 @@ a#tooCool {
   text-decoration: none;
 }
 
+.youtube-preview {
+  width:350px;
+  height:218.75px;
+}
+
+
+.new-feature {
+  color:@orange;
+}
