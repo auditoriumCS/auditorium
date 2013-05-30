@@ -48,6 +48,7 @@ class PollResultsController < InheritedResources::Base
 			p["choices"] = Array.new
 			total = 0;
 			
+			
 			poll.choices.each do |e|
 				c = Hash.new
 				c["text"] = e.answertext
