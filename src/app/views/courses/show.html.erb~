@@ -90,73 +90,80 @@
 
 <div class="row-fluid">
 <!--event-->
-<script>
-	function toggleEventsShow(id) {
-		if(jQuery(id).height == 0) {
-			jQuery(id).css("height","auto");
-		} else {
-			jQuery(id).css("height","0px");
-		}
-	}
-</script>
-<% if can? :manage_events, @course %>
-      <h3>Events
-        <% if @events.count > 1 %>
-        <p class="pull-right"><small>
-		<div onclick="toggleEventsShow('#course_events')" >Show all events</div>
-		<p id="course_events">
-			<% @course.events.each do |event| %>
-			<div> event </div>
-			<% end %>
-		</p>
-	</p>
-        <% end %>
-      </h3>
-      <%= render 'courses/events_overview'%>
-    <% end %>  
 
+<script>
+   function toggleEventsShow(id) {
+    if(jQuery(id).height() == 0) {
+     jQuery(id).css("max-height","99999px");
+     } else {
+
+      jQuery(id).css("max-height","0px");
+     }
+   }
+ </script> 
+
+<% if can? :manage_events, @course %>
+<table style="width:100%;"><tr><th>     	
+
+<span style="cursor:pointer;float:left;" onclick="toggleEventsShow('#course_events')"><h3>Events</h3></span>
+</th><th>
+<span style="float:right;border:solid 1px #7777DD;border-radius:3px;padding:5px;font-weight:none;">
+		<% if current_user and current_user.may_edit_course(@course) %>
+  		<%= link_to '  add new event  ', new_event_path(:post_type => 'info', :course_id => @course.id) %>
+<% end %>
+</span>
+</th></tr></table>
+	<% if @events.count > 1 %>
+         	<p class="pull-right">
+     			<%= render 'courses/events_overview'%> 
+		</p>
+	<% end %> 
+<% end %> 
 
 
   <div class="span8">
-	<table style="width: 100%;">
-<tr>
-	<td>
-    <h3>Announcements
-	</td>
-	<td style="float: right;vertical-align:top;padding-left:30px;">
 	<% if can? :manage, @course %>
-        <p><%= link_to 'Add new announcement', new_post_path(:post_type => 'info', :course_id => 		@course.id), :class => 'btn btn-small btn-block btn-warning' %></p>
+<table style="width:100%;">
+	<tr><th>
+<span style="cursor:pointer;float:left;" onclick="toggleEventsShow('#course_announcements')"><h3>Announcements</h3></span>
+	
+	</th>
+	<th>
+<span style="float:right;border:solid 1px #7777DD;border-radius:3px;padding:5px;font-weight:none;">
+        <%= link_to 'Add new announcement', new_post_path(:post_type => 'info', :course_id => 		@course.id), :class => 'btn btn-link' %>
       	<% end %> 
-	</td>
-</tr>
+	</span>
+
+	</th>
+	</tr>
+</table>
       <% if @infos.count > 5 %>
       <p class="pull-right"><small><%= link_to 'Show all announcements', course_announcements_path(@course), class: "btn btn-link" %></small></p> 
       <% end %>
     </h3>      
     <%= render 'courses/announcement_overview'%>
 
-
       
 
-    
-    <h3>Questions?
-      <p class="pull-right"><small>sorted by last activity</small></p>
-    </h3>
+    <table style="width:100%;">
+	<tr>
+ <span style="cursor:pointer;float:left;" onclick="toggleEventsShow('#course_questions')">
+	<h3> Questions  </h3>
+ </span>
+	</tr>
+    	
+	</table>
+ 
     <%= render 'courses/question_stream' %>
   </div>
 
-
-
   <div class='span4 vertical-border'>
     <hr class="visible-phone"></hr>
-    <h3>What can I do?</h3>
+    
 
-      <p><%= link_to 'Ask a public question', new_post_path(:post_type => 'question', :course_id => @course.id), :class => 'btn btn-small btn-block btn-primary' %></p>
-
-      <p><%= link_to 'Ask a private question', new_post_path(:post_type => 'question', :course_id => @course.id, :is_private => true), class: 'btn btn-small btn-block' %></p>
-      <hr />
-  
-      
+     
+     
+	
 
       
       <% unless current_user.admin? %>
@@ -168,14 +175,7 @@
         <% end %>
       <% end %>
       
-      <hr />
-
     
-    
-
-
-
-      
    
 </div>
 <% if can? :manage_users, @course %>
