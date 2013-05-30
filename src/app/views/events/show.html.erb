@@ -24,8 +24,7 @@ function actualize(eId) {
 						decisive = true;
 						}
 					snippet += '<div class="poll-result">';
-					var totalstr = (r[q].total > 0)?r[q].choices[c].count + ' of ' + r[q].total + '  ( '+Math.floor((r[q].choices[c].count/r[q].total)*100):'';
-					snippet += 	'<h4>'+r[q].choices[c].text+'  '+totalstr+'% )</h4>';
+					snippet += 	'<h4>'+r[q].choices[c].text+'  '+(r[q].total > 0)?r[q].choices[c].count+' of '+r[q].total:+'  ( '+Math.floor((r[q].choices[c].count/r[q].total)*100):''+'% )</h4>';
 					snippet += 	'<div class="poll-result-bar-wrap">';
 					snippet += '</div>';
 				}
@@ -46,7 +45,7 @@ function actualize(eId) {
 			}
 		}
 		jQuery(".sparklines").each(function(idx){
-			var dec = (jQuery(this).attr("decisive")=="true")?true:false;
+			var dec = Boolean(jQuery(this).attr("decisive"));
 			jQuery(this).sparkline('html',{ width : '100', height : '100', type : 'pie', sliceColors:((dec)? ["00ff00","#ff0000"] : undefined)})
 		});
 	});
