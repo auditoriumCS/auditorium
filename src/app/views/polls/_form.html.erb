@@ -19,8 +19,8 @@
         <div class="controls">
 
           <!-- Select the refering course -->
-          <!-- %= render :partial => 'eventselection', :locals => { :event => @event, :course => @course} % -->
-          <%= f.select :event_id, options_from_collection_for_select(Event.all, :id, :to_s, @poll.event_id) %>                   
+          Event <%= f.select :event_id, options_from_collection_for_select(Event.where( :course_id => @course.id), :id, :to_s, @poll.event_id) %>           
+          <%= link_to 'create an event', new_event_path %>      
 
           
           <label for="questiontext" class="accessibility"> question of the poll</label>
