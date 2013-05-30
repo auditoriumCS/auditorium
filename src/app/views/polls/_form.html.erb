@@ -19,7 +19,12 @@
         <div class="controls">
 
           <!-- Select the refering course -->
-          Event <%= f.select :event_id, options_from_collection_for_select(Event.where( :course_id => @course.id), :id, :to_s, @poll.event_id) %>           
+          Event
+          <% if @poll.event_id? %>
+           <%= f.select :event_id, options_from_collection_for_select(Event.where( :course_id => @course.id), :id, :to_s, @poll.event_id) %>           
+          <% else %>
+            <%= f.select :event_id, options_from_collection_for_select(Event.all, :id, :to_s, nil) %>  
+          <% end %>
           <%= link_to 'create an event', new_event_path %>      
 
           
