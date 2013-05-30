@@ -34,7 +34,8 @@ class CoursesController < ApplicationController
     @users = User.order('first_name ASC, last_name ASC, username ASC, email ASC').keep_if{|u| u != current_user} if can? :manage_users, @course
     @infos = Post.order('last_activity DESC, updated_at DESC, created_at DESC').where('post_type = ? and course_id = ?', 'info', @course.id)
     @questions = Post.order('last_activity DESC, updated_at DESC, created_at DESC').where('post_type = ? and course_id = ?', 'question', @course.id).page(params[:page]).per(15)
-    @events = Event.where( :course_id => params[:id])
+    @events =  @course.events
+	#Event.where( :course_id => params[:id])
 
     if current_user.nil?
       @questions.delete_if { |post| post.is_private }
