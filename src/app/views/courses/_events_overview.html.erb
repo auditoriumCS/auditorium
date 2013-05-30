@@ -1,5 +1,8 @@
 <div style="overflow:hidden; max-height:0px; -webkit-transition: all .5s ease; -moz-transition: all .5s ease; transition: all .5s ease;" id="course_events">
+<<<<<<< HEAD
 
+=======
+>>>>>>> d215c7b5bfe780925c6e2134db6a935574ac06c4
 <% if @events.count == 0 %>  
    No events, yet.
 <% else %> 
@@ -42,3 +45,10 @@
 </div>
 
 
+<<<<<<< HEAD
+=======
+<% if current_user and current_user.may_edit_course(@course) %>
+  <%= link_to 'Add a new event.', new_event_path(:post_type => 'info', :course_id => @course.id) %>
+<% end %>
+</div>
+>>>>>>> d215c7b5bfe780925c6e2134db6a935574ac06c4
