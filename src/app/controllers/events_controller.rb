@@ -1,6 +1,7 @@
 class EventsController < ApplicationController
 
-  load_and_authorize_resource
+  # auskommentiert weil authentifizierung deaktiviert
+  #load_and_authorize_resource
 
   # GET /events
   # GET /events.json

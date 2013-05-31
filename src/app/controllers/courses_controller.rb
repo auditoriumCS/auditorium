@@ -1,6 +1,7 @@
 class CoursesController < ApplicationController
 
-  load_and_authorize_resource
+  # auskommentiert weil authentifizierung deaktiviert
+  #load_and_authorize_resource
 
   
   include ActionView::Helpers::DateHelper 
