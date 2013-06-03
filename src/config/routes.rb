@@ -101,7 +101,11 @@ Auditorium::Application.routes.draw do
   resources :institutes
 
   resources :events
+  match "events/pull/:id" => "events#get_json"
+  match "events/push/:id" => "events#post_json"
+  match "events/check/:id" => "events#check_version"
 
+  
   resources :lectures
 
   resources :polls

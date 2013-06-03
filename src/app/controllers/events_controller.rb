@@ -73,6 +73,31 @@ class EventsController < ApplicationController
     end
   end
 
+  # GET /events/pull/x.json
+  # retrieve event as JSON
+  def get_json
+	@event = Event.find(params[:id])
+
+	respond_to do |format|
+		format.json { render :json => @event.to_json(:include =>{ :polls => {:include => :choices}})}
+	end
+  end
+  
+  # POST /events/push/x.json
+  def post_json
+	
+	
+	
+  end
+  
+  # GET /events/check/x.json
+  def check_version
+	@event = Event.find(params[:id])
+	respond_to do |format|
+		format.json { render :version => @event.version, :updated_at => @event.updated_at}
+	end
+  end
+  
   # DELETE /events/1
   # DELETE /events/1.json
   def destroy
