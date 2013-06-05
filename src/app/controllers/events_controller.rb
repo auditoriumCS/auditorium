@@ -77,7 +77,6 @@ class EventsController < ApplicationController
   # retrieve event as JSON
   def get_json
 	@event = Event.find(params[:id])
-
 	respond_to do |format|
 		format.json { render :json => @event.to_json(:include =>{ :polls => {:include => :choices}})}
 	end
@@ -86,8 +85,9 @@ class EventsController < ApplicationController
   # POST /events/push/x.json
   def post_json
 	
-	
-	
+	respond_to do |format|
+		format.json { render :success => s, :error => @event.errors}
+	end
   end
   
   # GET /events/check/x.json
