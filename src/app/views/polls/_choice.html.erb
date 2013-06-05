@@ -1,9 +1,17 @@
-	<p class="fields">
+		<br>
 		<label class="category-select">
             <%= f.check_box :is_correct %>
   			answer is correct
+  			<span class="pull-right">
+  				Version:
+        	<%= f.text_field :version, :disabled => true, :class => "span1" %>
+        	</span>
 		</label>
         <label for="answertext" class="accessibility"> answer of the poll</label>
         <%= f.text_field :answertext, :placeholder => "a possible answer...", :class => "span8" , :id => 'choices'%>
-        <%= link_to_remove_fields "remove", f %>
-	</p>
+        <span class="pull-right">
+        	<%= link_to_remove_fields "remove", f %>
+    	</span>
+    	<br>
+    	<br>
+    	<br>
