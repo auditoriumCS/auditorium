@@ -4,7 +4,7 @@
   			answer is correct
   			<span class="pull-right">
   				Version:
-        	<%= f.text_field :version, :disabled => true, :class => "span1" %>
+          <%= f.object.version %>
         	</span>
 		</label>
         <label for="answertext" class="accessibility"> answer of the poll</label>
@@ -12,4 +12,5 @@
         <%= link_to_remove_fields "remove", f, {:class => "pull-right"} %>
     	<br>
     	<br>
+      <br>
     	</div>
