@@ -38,6 +38,8 @@ function actualize(eId) {
 				}
 				if(r[q].total > 0)
 					snippet +=  '<span class="sparklines" values="'+pie.join(",")+'" decisive="'+decisive+'"></span>'
+				else
+					snippet += 'no result yet.'
 				jQuery("#poll_result_"+q).html(snippet);
 				
 			}
@@ -152,6 +154,17 @@ jQuery(function(){
 				</ol>
 			</div>
 			<div class="span6">
+				<h4> Result </h4>
+				<% if can? :manage, @course or can_manage_course%>
+						<div class="pull-right">
+							<% if poll.result_enabled == true %>
+    						<%= link_to content_tag('span', 'disable', :class=> 'icon-lock'), toggle_visibility_of_result_path(poll) %>
+    						<% else %>
+    						<%= link_to content_tag('span', 'enable', :class=> 'icon-unlock'), toggle_visibility_of_result_path(poll) %>    						
+    						<% end %>
+
+						</div>
+				<% end %>
 				<div class="poll-result" id='<%= "poll_result_#{poll.id}" %>'>
 
 				</div>

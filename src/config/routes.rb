@@ -110,6 +110,7 @@ Auditorium::Application.routes.draw do
 
   resources :polls
   match '/polls/:id/toggle_visibility_of_poll', :as => "toggle_visibility_of_poll", :controller => :polls, :action => :toggle_visibility
+  match '/polls/:id/toggle_visibility_of_result', :as => "toggle_visibility_of_result", :controller => :polls, :action => :toggle_result
     
 # run "rake db:jexam_sync" instead of GETting an url
 #  resources :jexamwebservice

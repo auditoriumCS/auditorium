@@ -155,10 +155,22 @@ def toggle_visibility
       format.html { redirect_to(@event, :notice => 'poll was successfully updated.') }
       format.json  { render :json => @poll.errors,
                     :status => :unprocessable_entity }
-    end
-
-
+  end
 
 end
+
+def toggle_result
+  @poll = Poll.find(params[:id])
+  @event = Event.find(@poll.event_id)
+
+  @poll.result_enabled = !@poll.result_enabled
+  @poll.save  
+
+    respond_to do |format|
+      format.html { redirect_to(@event, :notice => 'poll was successfully updated.') }
+      format.json  { render :json => @poll.errors,
+                    :status => :unprocessable_entity }
+      end                
+  end
 
 end
