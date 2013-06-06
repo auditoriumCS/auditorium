@@ -100,6 +100,7 @@ end
 
 def show
   @poll = Poll.find(params[:id])
+  @event = Event.find(@poll.event_id)
  
   respond_to do |format|
     format.html  # show.html.erb
@@ -137,13 +138,14 @@ def update
   @poll = Poll.find(params[:id])
 
   if @poll.update_attributes(params[:poll])
-      flash[:notice] = "Successfully updated poll."
+      flash[:notice] = "Successfully updated poll. #{params[:poll]}"
       redirect_to @poll
   else
       render :action => 'edit'
   end
 end
 
+  # GET /polls/:id/toggle_visibility_of_poll
 def toggle_visibility
   @poll = Poll.find(params[:id])
   @event = Event.find(@poll.event_id)
@@ -159,6 +161,7 @@ def toggle_visibility
 
 end
 
+  # GET /polls/:id/toggle_visibility_of_result
 def toggle_result
   @poll = Poll.find(params[:id])
   @event = Event.find(@poll.event_id)

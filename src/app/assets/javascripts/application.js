@@ -44,7 +44,7 @@
 
 
 function remove_fields(link) {
-  $(link).prev("input[type=hidden]").value = "1";
+  $(link).parent(".fields").children("input[type=hidden]")[0].value = "1";
   $(link).parent(".fields").hide();
 }
 

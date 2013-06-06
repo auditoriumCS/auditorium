@@ -1,9 +1,11 @@
 module PollsHelper
   
+  #link_to_function "Greeting", "alert('Hello world!')", :class => "nav_link"
+  # => <a class="nav_link" href="#" onclick="alert('Hello world!'); return false;">Greeting</a>
   
   # Choices FORM
-  def link_to_remove_fields(name, f)
-    f.hidden_field(:_destroy) + link_to_function(name, "remove_fields(this)")
+  def link_to_remove_fields(name, f, options)
+    f.hidden_field(:_destroy) + link_to_function(name, "remove_fields(this)", options)
   end
   
   # Choices FORM
