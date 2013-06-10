@@ -58,13 +58,13 @@ group :assets do
 
   gem 'uglifier', '>= 1.0.3'
 
-  gem 'twitter-bootstrap-rails'
+  gem 'twitter-bootstrap-rails', '2.2.6'
 
   gem 'jquery-ui-rails'
   gem 'jquery-ui-themes'
 end
 
-gem 'jquery-rails'
+gem "jquery-rails", "2.3.0"
 gem 'savon', '~> 1.2.0'
 
 # To use ActiveModel has_secure_password
