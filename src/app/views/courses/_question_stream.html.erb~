@@ -11,4 +11,7 @@
 
   <%= paginate @questions %>
 <% end %>
+ <p><%= link_to 'Ask a public question', new_post_path(:post_type => 'question', :course_id => @course.id) %></p>
+
+      <p><%= link_to 'Ask a private question', new_post_path(:post_type => 'question', :course_id => @course.id, :is_private => true) %></p>
 </div>

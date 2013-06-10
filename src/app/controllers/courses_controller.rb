@@ -35,6 +35,7 @@ class CoursesController < ApplicationController
     @infos = Post.order('last_activity DESC, updated_at DESC, created_at DESC').where('post_type = ? and course_id = ?', 'info', @course.id)
     @questions = Post.order('last_activity DESC, updated_at DESC, created_at DESC').where('post_type = ? and course_id = ?', 'question', @course.id).page(params[:page]).per(15)
 <<<<<<< HEAD
+^
     @events =  @course.events 
     #Event.where( :course_id => params[:id])
 =======

@@ -92,6 +92,7 @@
 <!--event-->
 
 <script>
+<<<<<<< HEAD
    function toggleEventsShow(id) {
     if(jQuery(id).height() == 0) {
      jQuery(id).css("max-height","99999px");
@@ -104,12 +105,34 @@
 
 <% if can? :manage_events, @course %>
 <table style="width:100%;"><tr><th>     	
+=======
+	function toggleEventsShow(id) {
+		if(jQuery(id).height() == 0) {
+			jQuery(id).css("max-height","99999px");
+		} else {
+			jQuery(id).css("max-height","0px");
+		}
+	}
+</script>
+<% if can? :manage_events, @course %>
+      <h3>Events</h3>
+        <% if @events.count > 1 %>
+        <p class="pull-right"><small>
+			<div onclick="toggleEventsShow('#course_events')" >Show all events</div>
+			
+				<%= render 'courses/events_overview'%>
+			
+		</p>
+        <% end %>
+      
+    <% end %>  
+>>>>>>> d215c7b5bfe780925c6e2134db6a935574ac06c4
 
 <span style="cursor:pointer;float:left;" onclick="toggleEventsShow('#course_events')"><h3>Events</h3></span>
 </th><th>
 <span style="float:right;border:solid 1px #7777DD;border-radius:3px;padding:5px;font-weight:none;">
 		<% if current_user and current_user.may_edit_course(@course) %>
-  		<%= link_to '  add new event  ', new_event_path(:post_type => 'info', :course_id => @course.id) %>
+  		<%= link_to '  add new event  ', new_event_path(:post_type => 'info', :course_id => @course.id), :class => 'btn btn-link' %>
 <% end %>
 </span>
 </th></tr></table>
