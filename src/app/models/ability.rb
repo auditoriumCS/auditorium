@@ -3,7 +3,7 @@ class Ability
 
   def initialize(user)
   
-    Define abilities for the passed in user here. For example:
+    #Define abilities for the passed in user here. For example:
     alias_action :following, :to => :follow
     alias_action :answering, :to => :answer
     alias_action :commenting, :to => :comment
