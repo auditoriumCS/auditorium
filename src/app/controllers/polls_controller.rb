@@ -2,7 +2,11 @@ class PollsController < ApplicationController
 
   def initpoll
 
- poll = Poll.create(:questiontext => "What is the meaning of life?", :event_id => 2)
+ poll = Poll.create(
+        :questiontext => "What is the meaning of life?", 
+        :event_id => 2,
+        :time_to_answer => 60,
+        :slide_id => 19384533)
 
     choice1 = Choice.create(
          :answertext => "42",
@@ -19,7 +23,11 @@ class PollsController < ApplicationController
      poll.choices << choice2
 
 
-  poll2 = Poll.create(:questiontext => "To be or not to be!", :event_id => 2)
+  poll2 = Poll.create(
+        :questiontext => "To be or not to be!", 
+        :event_id => 2,
+        :time_to_answer => 120,
+        :slide_id => 123456)
 
     choice1 = Choice.create(
          :answertext => "To be",
@@ -78,23 +86,10 @@ def create
 
   respond_to do |format|
     if @poll.save
-
-      @choice = Choice.new(params[:choice])
-      @choice.poll_id = @poll.id
-
-      if @choice.save
           format.html  { redirect_to(@poll,
                     :notice => 'poll and its choices were successfully created.') }
           format.json  { render :json => @poll,
                     :status => :created, :location => @poll }
-      # cant save choice
-      else
-        # redirect_to( { :action => "show", :id => @project }, { :notice => 'Project was successfully created.' } )
-        format.html  { redirect_to( { :id => @poll, :action => "edit" }, 
-                                    {:notice => 'Created poll without any answers. Please add answers now.' }) }
-        format.json  { render :json => @choice.errors,
-                    :status => :unprocessable_entity }
-      end
     else
       format.html  { render :action => "new" }
       format.json  { render :json => @poll.errors,
@@ -105,6 +100,7 @@ end
 
 def show
   @poll = Poll.find(params[:id])
+  @event = Event.find(@poll.event_id)
  
   respond_to do |format|
     format.html  # show.html.erb
@@ -142,12 +138,42 @@ def update
   @poll = Poll.find(params[:id])
 
   if @poll.update_attributes(params[:poll])
-      flash[:notice] = "Successfully updated poll."
+      flash[:notice] = "Successfully updated poll. #{params[:poll]}"
       redirect_to @poll
   else
       render :action => 'edit'
   end
 end
 
+  # GET /polls/:id/toggle_visibility_of_poll
+def toggle_visibility
+  @poll = Poll.find(params[:id])
+  @event = Event.find(@poll.event_id)
+
+  @poll.poll_enabled = !@poll.poll_enabled
+  @poll.save  
+
+    respond_to do |format|
+      format.html { redirect_to(@event, :notice => 'poll was successfully updated.') }
+      format.json  { render :json => @poll.errors,
+                    :status => :unprocessable_entity }
+  end
+
+end
+
+  # GET /polls/:id/toggle_visibility_of_result
+def toggle_result
+  @poll = Poll.find(params[:id])
+  @event = Event.find(@poll.event_id)
+
+  @poll.result_enabled = !@poll.result_enabled
+  @poll.save  
+
+    respond_to do |format|
+      format.html { redirect_to(@event, :notice => 'poll was successfully updated.') }
+      format.json  { render :json => @poll.errors,
+                    :status => :unprocessable_entity }
+      end                
+  end
 
 end

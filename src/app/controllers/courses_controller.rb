@@ -1,7 +1,6 @@
 class CoursesController < ApplicationController
 
   load_and_authorize_resource
-
   
   include ActionView::Helpers::DateHelper 
 
@@ -35,13 +34,16 @@ class CoursesController < ApplicationController
     @infos = Post.order('last_activity DESC, updated_at DESC, created_at DESC').where('post_type = ? and course_id = ?', 'info', @course.id)
     @questions = Post.order('last_activity DESC, updated_at DESC, created_at DESC').where('post_type = ? and course_id = ?', 'question', @course.id).page(params[:page]).per(15)
 <<<<<<< HEAD
+<<<<<<< HEAD
 ^
     @events =  @course.events 
     #Event.where( :course_id => params[:id])
 =======
+=======
+
+>>>>>>> bb449f29fe423d6e838705878583aecda91d1790
     @events =  @course.events
-	#Event.where( :course_id => params[:id])
->>>>>>> d215c7b5bfe780925c6e2134db6a935574ac06c4
+    #Event.where( :course_id => params[:id])
 
     if current_user.nil?
       @questions.delete_if { |post| post.is_private }

@@ -15,8 +15,21 @@
   <div class="well span8">
     <%= form_for (@poll), :class => 'form-horizontal', :remote => false do |f| %>
       <div class="control-group">
-      <% if signed_in? %>
+      <% test_signed_in = true %>
+      <% if signed_in? or test_signed_in %>
         <div class="controls">
+
+
+          <span class="pull-right">
+          Version:  <%= @poll.version %>
+          </span>
+          
+          <label for="questiontext" class="accessibility"> question of the poll</label>
+          <%= f.text_field :questiontext, :placeholder => "Write the question...", :class => "span8"%>
+
+          <p class='hint'>
+            <strong> Preferences </strong>
+          </p>
 
           <!-- Select the refering course -->
           Event
@@ -25,12 +38,13 @@
           <% else %>
             <%= f.select :event_id, options_from_collection_for_select(Event.all, :id, :to_s, nil) %>  
           <% end %>
-          <%= link_to 'create an event', new_event_path %>      
+          <span class="pull-right">
+            <%= link_to 'create an event', new_event_path %>   
+          </span>
 
-          
-          <label for="questiontext" class="accessibility"> question of the poll</label>
-          <%= f.text_field :questiontext, :placeholder => "Write the question...", :class => "span8"%>
-         
+          <%= f.text_field :time_to_answer, :placeholder => "Time in seconds to answer this. Leave Empty if there is no limit.", :class => "span8"%>
+
+          <p> Slide: <%= f.object.slide_id %></p>
 
           <p class='hint'>
             <strong> Answers </strong> (mark correct answer with a check)
@@ -53,9 +67,7 @@
             
             <%= f.submit "Submit poll", { :class => 'btn btn-large btn-primary', 'data-disable-with' => 'Submitting...', :id => 'submit-button-label'}  %>
             <%= link_to "Cancel", polls_path, class: 'btn btn-large' %>
-            <% if !current_user.is_admin? %>
-              <p class="hint">a hint</p>
-            <% end %>
+            
           <% end %>
  
 

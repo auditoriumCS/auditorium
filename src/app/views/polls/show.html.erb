@@ -1,26 +1,30 @@
-<p id="notice"><%= notice %></p>
-
-<h3>Poll Information</h3>
-
-<p>
-  <strong>Text:</strong><br>
+<h2>
   <%= @poll.questiontext %>
+</h2>
+  <% %>
+  <%= link_to content_tag('span', 'edit', :class=>'icon-edit') , edit_poll_path(@poll)  %> <br>
+  <%= link_to content_tag('span', 'new poll', :class=>'icon-plus') , new_poll_path(@poll)  %> <br>
+  <%= link_to content_tag('span', 'view event', :class=>'icon-eye') , @event  %> <br>
+
+  <h3>Preferences:</h3>
+<p>
+  <strong>Time to answer:</strong>  <%= @poll.time_to_answer %><br>
+  <strong>Poll available?:</strong>  <%= @poll.poll_enabled %><br>
+  <strong>Result available?:</strong>  <%= @poll.result_enabled %><br>
+  <strong>Presentation Slide id:</strong>  <%= @poll.slide_id %><br>
+  <strong>Version number:</strong>  <%= @poll.version %><br>
 </p>
 
+
+  <h3>Answers:</h3>
 <p>
-  <strong>Answers:</strong><br>
     <% i = 0 %>
 	<% @poll.choices.each do |c| %>
 			<% i = i+1 %>
 			<p>
-			  Answer <%= i %> <br>
-              <%= c.answertext %><br>
-              <%= c.is_correct ? "is correct" : "is not correct" %>
+			  Answer <%= i %>: <%= c.answertext %><br>
+              <%= c.is_correct ? "is correct" : "is not correct" %><br>
+              Version <%= c.version %>
           </p>
     <% end %>
 </p>
- 
- 
- 
-<%= link_to 'Edit', edit_poll_path(@poll) %> |
-<%= link_to 'Back', polls_path %>

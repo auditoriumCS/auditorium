@@ -2,7 +2,8 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    # Define abilities for the passed in user here. For example:
+  
+    #Define abilities for the passed in user here. For example:
     alias_action :following, :to => :follow
     alias_action :answering, :to => :answer
     alias_action :commenting, :to => :comment
@@ -46,7 +47,7 @@ class Ability
 
       can :comment,  Post
       can :report,   Post do |post|
-        user.id != post.author.id
+        user.id != post.author.id if post.author.presence
       end
       can :answer,   Post
       can :rate, Post do |post|
@@ -54,11 +55,11 @@ class Ability
       end
 
       can :mark_as_answered, Post do |post|
-        user.id == post.parent.author.id or user.is_course_editor? post.course or user.is_course_maintainer? post.course
+        post.parent.author.presence and (user.id == post.parent.author.id or user.is_course_editor? post.course or user.is_course_maintainer? post.course)
       end
 
       can :convert, Post do |post|
-        user.admin? or user.id == post.author.id or user.is_moderator? post.course
+        user.admin? or (post.author.presence and user.id == post.author.id) or user.is_moderator? post.course
       end
 
       # can :post_in, Course do |course|
@@ -128,18 +129,18 @@ class Ability
     end
 
 
-    # The first argument to `can` is the action you are giving the user permission to do.
-    # If you pass :manage it will apply to every action. Other common actions here are
-    # :read, :create, :update and :destroy.
-    #
-    # The second argument is the resource the user can perform the action on. If you pass
-    # :all it will apply to every resource. Otherwise pass a Ruby class of the resource.
-    #
-    # The third argument is an optional hash of conditions to further filter the objects.
-    # For example, here the user can only update published articles.
-    #
-    #   can :update, Article, :published => true
-    #
-    # See the wiki for details: https://github.com/ryanb/cancan/wiki/Defining-Abilities
-  end
+  #   # The first argument to `can` is the action you are giving the user permission to do.
+  #   # If you pass :manage it will apply to every action. Other common actions here are
+  #   # :read, :create, :update and :destroy.
+  #   #
+  #   # The second argument is the resource the user can perform the action on. If you pass
+  #   # :all it will apply to every resource. Otherwise pass a Ruby class of the resource.
+  #   #
+  #   # The third argument is an optional hash of conditions to further filter the objects.
+  #   # For example, here the user can only update published articles.
+  #   #
+  #   #   can :update, Article, :published => true
+  #   #
+  #   # See the wiki for details: https://github.com/ryanb/cancan/wiki/Defining-Abilities
+   end
 end

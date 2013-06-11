@@ -101,17 +101,16 @@ Auditorium::Application.routes.draw do
   resources :institutes
 
   resources :events
+  match "events/:id/pull" => "events#get_json"
+  match "events/:id/push" => "events#post_json"
+  match "events/:id/check" => "events#check_version"
 
+  
   resources :lectures
 
   resources :polls
-
-
-  #has no controller anyway
-  resources :choices
-  #match "/choices" => redirect("/polls")
-  #match "/choices/:id" => redirect("/polls")
-  #match "/choices/new" => redirect("/polls/new")
+  match '/polls/:id/toggle_visibility_of_poll', :as => "toggle_visibility_of_poll", :controller => :polls, :action => :toggle_visibility
+  match '/polls/:id/toggle_visibility_of_result', :as => "toggle_visibility_of_result", :controller => :polls, :action => :toggle_result
     
 # run "rake db:jexam_sync" instead of GETting an url
 #  resources :jexamwebservice
