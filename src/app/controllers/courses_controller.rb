@@ -33,15 +33,12 @@ class CoursesController < ApplicationController
     @users = User.order('first_name ASC, last_name ASC, username ASC, email ASC').keep_if{|u| u != current_user} if can? :manage_users, @course
     @infos = Post.order('last_activity DESC, updated_at DESC, created_at DESC').where('post_type = ? and course_id = ?', 'info', @course.id)
     @questions = Post.order('last_activity DESC, updated_at DESC, created_at DESC').where('post_type = ? and course_id = ?', 'question', @course.id).page(params[:page]).per(15)
-<<<<<<< HEAD
-<<<<<<< HEAD
-^
+
     @events =  @course.events 
     #Event.where( :course_id => params[:id])
-=======
-=======
 
->>>>>>> bb449f29fe423d6e838705878583aecda91d1790
+
+
     @events =  @course.events
     #Event.where( :course_id => params[:id])
 
