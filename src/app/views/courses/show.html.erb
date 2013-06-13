@@ -90,7 +90,7 @@
 
 <div class="row-fluid">
 <!--event-->
-<!--
+
 <script>
 
    function toggleEventsShow(id) {
@@ -102,47 +102,23 @@
      }
    }
  </script> 
-
+  <div class="span8">
 <% if can? :manage_events, @course %>
-<table style="width:100%;"><tr><th>     	
-<<<<<<< HEAD
-
-=======
->>>>>>> bb449f29fe423d6e838705878583aecda91d1790
-	function toggleEventsShow(id) {
-		if(jQuery(id).height() == 0) {
-			jQuery(id).css("max-height","99999px");
-		} else {
-			jQuery(id).css("max-height","0px");
-		}
-	}
-</script>
-<% if can? :manage_events, @course %>
-      <h3>Events</h3>
-        <% if @events.count > 1 %>
-        <p class="pull-right"><small>
-			<div onclick="toggleEventsShow('#course_events')" >Show all events</div>
-			
-				<%= render 'courses/events_overview'%>
-			
-		</p>
-        <% end %>
-      
-    <% end %>  
-<<<<<<< HEAD
-
-=======
->>>>>>> d215c7b5bfe780925c6e2134db6a935574ac06c4 
 
 
-<span style="cursor:pointer;float:left;" onclick="toggleEventsShow('#course_events')"><h3>Events</h3></span>
-</th><th>
-<span style="float:right;border:solid 1px #7777DD;border-radius:3px;padding:5px;font-weight:none;">
-		<% if current_user and current_user.may_edit_course(@course) %>
-  		<%= link_to '  add new event  ', new_event_path(:post_type => 'info', :course_id => @course.id), :class => 'btn btn-link' %>
-<% end %>
+<table><tr><th>
+<span style="cursor:pointer;float:left;" onclick="toggleEventsShow('#course_events')"><h3>Events</h3>
 </span>
+</th><th>
+<span style="float:right; padding:5px;font-weight:none;">
+		<% if current_user and current_user.may_edit_course(@course) %>
+  		
+		<%= link_to content_tag('span', ' Add new event', :class=> 'icon-plus'), new_event_path(:post_type => 'info', :course_id => @course.id), :class => 'btn btn-link' %>
+		<% end %>
+</span>
+
 </th></tr></table>
+
 	<% if @events.count > 1 %>
          	<p class="pull-right">
      			<%= render 'courses/events_overview'%> 
@@ -151,7 +127,7 @@
 <% end %> 
 
 
-  <div class="span8">
+
 	<% if can? :manage, @course %>
 <table style="width:100%;">
 	<tr><th>
@@ -159,8 +135,8 @@
 	
 	</th>
 	<th>
-<span style="float:right;border:solid 1px #7777DD;border-radius:3px;padding:5px;font-weight:none;">
-        <%= link_to 'Add new announcement', new_post_path(:post_type => 'info', :course_id => 		@course.id), :class => 'btn btn-link' %>
+<span style="float:right;padding:5px;font-weight:none;">
+        <%= link_to content_tag('span', ' Add new Announcements', :class=> 'icon-plus'), new_post_path(:post_type => 'info', :course_id => @course.id), :class => 'btn btn-link' %>
       	<% end %> 
 	</span>
 
@@ -176,11 +152,14 @@
       
 
     <table style="width:100%;">
-	<tr>
+	<tr><th>
  <span style="cursor:pointer;float:left;" onclick="toggleEventsShow('#course_questions')">
 	<h3> Questions  </h3>
+	    </th>
+	    <th>
+	<%= link_to content_tag('span', ' Add new Question', :class=> 'icon-plus'), new_post_path(:post_type => 'question', :course_id => @course.id), :class => 'btn btn-link' %>
  </span>
-	</tr>
+	</th></tr>
     	
 	</table>
  
