@@ -22,8 +22,9 @@
 	<% @poll.choices.each do |c| %>
 			<% i = i+1 %>
 			<p>
-			  Answer <%= i %>: <%= c.answertext %><br>
+			  <strong> Answer <%= i %>:</strong> <%= c.answertext %><br>
               <%= c.is_correct ? "is correct" : "is not correct" %><br>
+              Feedback: <%= c.feedback %><br>
               Version <%= c.version %>
           </p>
     <% end %>

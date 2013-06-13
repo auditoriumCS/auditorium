@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130609155359) do
+ActiveRecord::Schema.define(:version => 20130613135228) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(:version => 20130609155359) do
     t.boolean "is_correct",                :null => false
     t.integer "poll_id",                   :null => false
     t.integer "version",    :default => 1, :null => false
+    t.string  "feedback"
   end
 
   add_index "choices", ["poll_id"], :name => "index_choices_on_poll_id"

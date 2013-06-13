@@ -9,6 +9,8 @@
 		</label>
         <label for="answertext" class="accessibility"> answer of the poll</label>
         <%= f.text_field :answertext, :placeholder => "a possible answer...", :class => "span8" , :id => 'choices'%>
+        <label for="feedback" class="accessibility"> feedback of the poll</label>
+        <%= f.text_field :feedback, :placeholder => "a possible feedback...", :class => "span8" %>
         <%= link_to_remove_fields "remove", f, {:class => "pull-right"} %>
     	<br>
     	<br>

@@ -138,7 +138,7 @@ def update
   @poll = Poll.find(params[:id])
 
   if @poll.update_attributes(params[:poll])
-      flash[:notice] = "Successfully updated poll. #{params[:poll]}"
+      flash[:notice] = "Successfully updated poll."
       redirect_to @poll
   else
       render :action => 'edit'
