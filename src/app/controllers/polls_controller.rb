@@ -80,12 +80,16 @@ class PollsController < ApplicationController
 def create
   @poll = Poll.new(params[:poll])
   @poll.event_id = params[:poll][:event_id]
+
   
 
-  #TODO: one of the answers must be correct
-
   respond_to do |format|
-    if @poll.save
+    if !is_singlebestchoice(@poll)
+      format.html  { render :action => "new", :notice => 'poll needs to have one correct answer.'}
+      format.json  { render :json => @poll.errors,
+                    :status => :unprocessable_entity }
+
+    elsif @poll.save
           format.html  { redirect_to(@poll,
                     :notice => 'poll and its choices were successfully created.') }
           format.json  { render :json => @poll,
@@ -134,10 +138,12 @@ end
   end
 
 def update 
-  #params[:poll][:existing_choice_attributes] ||= {}
   @poll = Poll.find(params[:id])
 
-  if @poll.update_attributes(params[:poll])
+  if !is_singlebestchoice(@poll)
+      flash[:notice] = "poll needs to have one correct answer."
+      redirect_to @poll
+  elsif @poll.update_attributes(params[:poll])
       flash[:notice] = "Successfully updated poll."
       redirect_to @poll
   else
@@ -174,6 +180,29 @@ def toggle_result
       format.json  { render :json => @poll.errors,
                     :status => :unprocessable_entity }
       end                
+  end
+
+  def is_singlebestchoice poll
+    is_okay = true
+    single = false
+    poll.choices.each do |c|
+      if c.is_correct && single
+        is_okay = false
+        # poll.errors.add(:choices, "cannot have more than one correct answer.")
+      end
+
+      if c.is_correct
+        single = true
+      end
+
+    end
+
+    if !single
+      is_okay = false
+      # poll.errors.add(:choices, "must have one correct answer.")
+    end
+
+    return is_okay
   end
 
 end
