@@ -86,7 +86,7 @@ jQuery(function(){
 				<td class="show_td"> <strong>Date</strong> </td>
 				<td>
 					<% if @event.beginDate == @event.endDate %>
-  						<%= @event.beginDaten %>
+  						<%= @event.beginDate %>
 					<% else %>
   						<%= "from #{@event.beginDate} to #{@event.endDate}" %> 
 					<% end %>
