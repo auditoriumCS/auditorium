@@ -21,7 +21,7 @@ class PollResultsController < InheritedResources::Base
 			c["text"] = e.answertext
 			c["correct"] = e.is_correct
 			c["correct_class"] = (e.is_correct) ? "correct" : "incorrect" 
-			c["count"] = PollResult.select("COUNT(*) AS count").where("choiceId = #{e.id}").count
+			c["count"] = PollResult.select("COUNT(*) AS count").where("choiceId = 0x#{e.id.hexdigest}").count
 			total += c["count"].to_i
 			@p["choices"] << c
 		end
@@ -53,7 +53,7 @@ class PollResultsController < InheritedResources::Base
 				c["text"] = e.answertext
 				c["correct"] = e.is_correct
 				c["correct_class"] = (e.is_correct) ? "correct" : "incorrect" 
-				c["count"] = PollResult.select("COUNT(*) AS count").where("choiceId = #{e.id}").count
+				c["count"] = PollResult.select("COUNT(*) AS count").where("choiceId = 0x#{e.id.hexdigest}").count
 				total += c["count"].to_i
 				p["choices"] << c
 			end
