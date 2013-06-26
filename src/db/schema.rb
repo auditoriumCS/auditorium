@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130613135228) do
+ActiveRecord::Schema.define(:version => 20130626115116) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -58,11 +58,11 @@ ActiveRecord::Schema.define(:version => 20130613135228) do
   add_index "chairs", ["institute_id"], :name => "index_chairs_on_institute_id"
 
   create_table "choices", :force => true do |t|
-    t.string  "answertext",                :null => false
-    t.boolean "is_correct",                :null => false
-    t.integer "poll_id",                   :null => false
-    t.integer "version",    :default => 1, :null => false
+    t.string  "answertext", :null => false
+    t.boolean "is_correct", :null => false
+    t.uuid    "poll_id",    :null => false
     t.string  "feedback"
+    t.integer "version"
   end
 
   add_index "choices", ["poll_id"], :name => "index_choices_on_poll_id"
@@ -124,6 +124,7 @@ ActiveRecord::Schema.define(:version => 20130613135228) do
     t.string   "url",        :default => ""
     t.string   "building",   :default => ""
     t.string   "room",       :default => ""
+    t.integer  "version"
   end
 
   add_index "events", ["course_id"], :name => "index_events_on_course_id"
@@ -245,11 +246,12 @@ ActiveRecord::Schema.define(:version => 20130613135228) do
   add_index "periods", ["event_id"], :name => "index_periods_on_event_id"
 
   create_table "poll_results", :force => true do |t|
-    t.integer  "userId"
-    t.integer  "questionId"
+    t.integer  "user_id"
+    t.integer  "poll_id"
     t.integer  "choiceId"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.integer  "answer_time"
   end
 
   create_table "polls", :force => true do |t|
@@ -259,7 +261,6 @@ ActiveRecord::Schema.define(:version => 20130613135228) do
     t.boolean "poll_enabled",   :default => false, :null => false
     t.boolean "result_enabled", :default => false, :null => false
     t.integer "slide_id"
-    t.integer "version",        :default => 1,     :null => false
   end
 
   add_index "polls", ["event_id"], :name => "index_polls_on_event_id"
