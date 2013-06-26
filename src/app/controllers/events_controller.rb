@@ -97,6 +97,24 @@ class EventsController < ApplicationController
 	end
   end
   
+  #GET /events/getVisibleContent
+  def get_visible_content
+  res = Map.new
+  polls = Event.polls
+  res['polls'] = Array.new
+  res['poll_results'] = Array.new
+  polls.each do |p|
+    if p.poll_enabled
+      res['polls'] < p.id
+    if p.result_enabled
+      res['poll_results'] < p.id
+  end
+
+  respond_to do |format|
+    format.json { render :json => res}
+  end  
+  end
+
   # DELETE /events/1
   # DELETE /events/1.json
   def destroy
