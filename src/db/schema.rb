@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130627155412) do
+ActiveRecord::Schema.define(:version => 20130627170751) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(:version => 20130627155412) do
     t.uuid    "poll_id",                   :null => false
     t.integer "version",    :default => 1, :null => false
     t.string  "feedback"
+    t.uuid    "on_slide"
   end
 
   add_index "choices", ["poll_id"], :name => "index_choices_on_poll_id"
@@ -260,7 +261,6 @@ ActiveRecord::Schema.define(:version => 20130627155412) do
     t.integer "time_to_answer"
     t.boolean "poll_enabled",   :default => false, :null => false
     t.boolean "result_enabled", :default => false, :null => false
-    t.integer "slide_id"
     t.integer "version",        :default => 1,     :null => false
     t.uuid    "on_slide"
   end
