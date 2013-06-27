@@ -97,22 +97,31 @@ class EventsController < ApplicationController
 	end
   end
   
-  #GET /events/getVisibleContent
+  #GET /events/:id/getVisibleContent
   def get_visible_content
-  res = Map.new
-  polls = Event.polls
-  res['polls'] = Array.new
-  res['poll_results'] = Array.new
-  polls.each do |p|
-    if p.poll_enabled
-      res['polls'] < p.id
-    if p.result_enabled
-      res['poll_results'] < p.id
+    res = Hash.new
+    e = Event.find(params[:id])
+    polls = e.polls
+    res['polls'] = Array.new
+    res['poll_results'] = Array.new
+    polls.each do |p|
+      if p.poll_enabled
+        res['polls'] << p.id
+      end
+      if p.result_enabled
+        res['poll_results'] << p.id
+      end
+    end
+    res['chat_active'] = e.chat_active
+
+    respond_to do |format|
+      format.json { render :json => res}
+    end  
   end
 
-  respond_to do |format|
-    format.json { render :json => res}
-  end  
+  #POST /events/:id/setChatActive
+  def set_chat_active
+    puts request.body.read  
   end
 
   # DELETE /events/1

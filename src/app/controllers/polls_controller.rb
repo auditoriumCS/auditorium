@@ -167,6 +167,8 @@ def toggle_visibility
 
 end
 
+
+
   # GET /polls/:id/toggle_visibility_of_result
 def toggle_result
   @poll = Poll.find(params[:id])
@@ -204,5 +206,21 @@ def toggle_result
 
     return is_okay
   end
+
+# GET /polls/:id/is_visible
+def is_visible
+  res  = Map.new
+  res['']
+end  
+
+
+# GET /polls/:id/is_result_visible
+def is_result_visible
+  res = Map.new
+  res['visible'] = Poll.find(params[:id]).result_enabled
+  respond_to do |format|
+    format.json {render :json => res}
+  end
+end
 
 end

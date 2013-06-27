@@ -6,7 +6,7 @@ class Event < ActiveRecord::Base
   belongs_to :tutor, class_name: 'User'
 
   attr_accessible :course_id, :tutor_id, :event_type # lecture, exercise, seminar, lab
-  attr_accessible :weekday, :beginDate, :endDate, :week, :url, :building, :room
+  attr_accessible :weekday, :beginDate, :version, :endDate, :chat_active, :week, :url, :building, :room
   attr_accessible :polls
   
   validates :event_type,  presence: true,
