@@ -106,6 +106,7 @@ Auditorium::Application.routes.draw do
   match "events/:id/check" => "events#check_version"
   match "events/:id/rtc" => "events#rtc"
   match "events/:id/setChatActive" => "events#set_chat_active"
+  match "events/:id/update_slide" => "events#update_slide"
   
   resources :lectures
 

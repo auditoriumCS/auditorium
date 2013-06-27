@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130627195812) do
+ActiveRecord::Schema.define(:version => 20130627231537) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -58,12 +58,13 @@ ActiveRecord::Schema.define(:version => 20130627195812) do
   add_index "chairs", ["institute_id"], :name => "index_chairs_on_institute_id"
 
   create_table "choices", :force => true do |t|
-    t.string  "answertext", :null => false
-    t.boolean "is_correct", :null => false
-    t.uuid    "poll_id",    :null => false
+    t.string  "answertext",                      :null => false
+    t.boolean "is_correct",                      :null => false
+    t.uuid    "poll_id",                         :null => false
+    t.integer "version",          :default => 1, :null => false
     t.string  "feedback"
-    t.integer "version"
     t.uuid    "on_slide"
+    t.boolean "feedback_enabled"
   end
 
   add_index "choices", ["poll_id"], :name => "index_choices_on_poll_id"
@@ -115,22 +116,18 @@ ActiveRecord::Schema.define(:version => 20130627195812) do
   create_table "events", :force => true do |t|
     t.string   "event_type"
     t.integer  "course_id"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
     t.integer  "tutor_id"
     t.integer  "weekday"
     t.date     "beginDate"
     t.date     "endDate"
     t.integer  "week"
-    t.string   "url",                    :default => ""
-    t.string   "building",               :default => ""
-    t.string   "room",                   :default => ""
-    t.integer  "version"
+    t.string   "url",          :default => ""
+    t.string   "building",     :default => ""
+    t.string   "room",         :default => ""
     t.integer  "chat_active"
-    t.integer  "prof_speed"
-    t.integer  "prof_volume"
-    t.integer  "prof_comprehensibility"
-    t.integer  "viewers"
+    t.uuid     "active_slide"
   end
 
   add_index "events", ["course_id"], :name => "index_events_on_course_id"
@@ -254,7 +251,7 @@ ActiveRecord::Schema.define(:version => 20130627195812) do
   create_table "poll_results", :force => true do |t|
     t.integer  "user_id"
     t.integer  "poll_id"
-    t.integer  "choiceId"
+    t.integer  "choice_id"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.integer  "answer_time"
@@ -266,7 +263,7 @@ ActiveRecord::Schema.define(:version => 20130627195812) do
     t.integer "time_to_answer"
     t.boolean "poll_enabled",   :default => false, :null => false
     t.boolean "result_enabled", :default => false, :null => false
-    t.integer "version"
+    t.integer "version",        :default => 1,     :null => false
     t.uuid    "on_slide"
   end
 

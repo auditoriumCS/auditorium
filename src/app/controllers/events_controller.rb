@@ -17,10 +17,10 @@ class EventsController < ApplicationController
   # GET /events/1.json
   def show
     @event = Event.find(params[:id])
-    if !session['logged_in_events'][:id]
-      session['logged_in_events'][:id] = true
-      @event.viewers ++
-    end
+    #if !session['logged_in_events'][:id]
+    #  session['logged_in_events'][:id] = true
+    #  @event.viewers ++
+    #end
     @event.save
 
     respond_to do |format|
@@ -75,6 +75,45 @@ class EventsController < ApplicationController
         format.json { render json: @event.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  # POST /events/1/update_slide
+  def update_slide
+    #r = JSON.parse(request.body.read)
+    # test
+    slideId = '34390000-0000-0000-0000-000000000000'
+    event = Event.find(params[:id])
+    event.active_slide = slideId
+
+    respond_to do |format|
+      if event.save
+
+        
+        event.polls.each do |p|
+
+          #check for polls
+          if p.on_slide == event.active_slide
+            p.poll_enabled = true
+            p.save
+          end
+
+          #check for feedback
+          p.choices.each do |c|
+            if c.on_slide == event.active_slide
+              # TODO: set feedback_enabled false on create and update
+              c.feedback_enabled = true
+              c.save
+            end
+          end
+
+        end
+
+        format.json { render json: event, status: :updated, location: event }
+      else
+        format.json { render json: event.errors, status: :unprocessable_entity }
+      end
+    end
+
   end
 
   # GET /events/pull/x.json
