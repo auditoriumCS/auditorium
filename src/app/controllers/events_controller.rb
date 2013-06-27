@@ -83,10 +83,40 @@ class EventsController < ApplicationController
   
   # POST /events/push/x.json
   def post_json
-	
-	respond_to do |format|
-		format.json { render :success => s, :error => @event.errors}
-	end
+	r = request.body.read
+  
+
+  respond_to do |format|
+    format.json { render :r => r}
+  end
+  
+ #  e = Event.find(params[:id])
+ #  e.version = r.version
+ #  r.polls each do |rp|
+ #    p  = Poll.find(rp.id)
+ #    if p == null
+ #      p = Poll.new
+ #      p.id = rp.id
+ #      p.questiontext = rp.questiontext
+ #      p.event_id = e.id
+ #      p.version = rp.version
+ #      rp.choices each do |rc|
+
+ #      end
+ #      p.save
+ #    else
+ #      p.questiontext = rp.questiontext
+ #      p.version = rp.version
+ #      rp.choices each do |rc|
+
+ #      end
+ #      p.save
+ #    end  
+ #  end
+
+	# respond_to do |format|
+	# 	format.json { render :success => s, :error => @event.errors}
+	# end
   end
   
   # GET /events/check/x.json
@@ -121,7 +151,9 @@ class EventsController < ApplicationController
 
   #POST /events/:id/setChatActive
   def set_chat_active
-    puts request.body.read  
+    r = request.body.read  
+    e = Event.find(params[:id])
+    e.chat_active = r.chat_active
   end
 
   # DELETE /events/1
