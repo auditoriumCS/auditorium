@@ -75,45 +75,43 @@ class EventsController < ApplicationController
   # GET /events/pull/x.json
   # retrieve event as JSON
   def get_json
-	@event = Event.find(params[:id])
-	respond_to do |format|
-		format.json { render :json => @event.to_json(:include =>{ :polls => {:include => :choices}})}
-	end
+  	@event = Event.find(params[:id])
+  	respond_to do |format|
+  		format.json { render :json => @event.to_json(:include =>{ :polls => {:include => :choices}})}
+    end
   end
   
   # POST /events/push/x.json
   def post_json
-	r = request.body.read
-  
+  	r = JSON.parse(request.body.read)
+    e = Event.find(params[:id])
+    e.version = r['version'].to_i
+    r['polls'].each do |rp|
+      begin
+        p  = Poll.find(rp['id'])
+        p.questiontext = rp['questiontext']
+        p.version = rp['version']
+        rp.choices each do |rc|
+        end
+      rescue 
+        p = Poll.new
+        p.id = rp['id']
+        p.questiontext = rp['questiontext']
+        p.event_id = e['id']
+        p.version = rp['version']
+        p.slide_id = rp['slide_id']
+        rp.choices each do |rc|
+        end
+      end  
+      p.save      
+    end
+    e.save
 
-  respond_to do |format|
-    format.json { render :r => r}
-  end
-  
- #  e = Event.find(params[:id])
- #  e.version = r.version
- #  r.polls each do |rp|
- #    p  = Poll.find(rp.id)
- #    if p == null
- #      p = Poll.new
- #      p.id = rp.id
- #      p.questiontext = rp.questiontext
- #      p.event_id = e.id
- #      p.version = rp.version
- #      rp.choices each do |rc|
+    e = Event.find(params[:id])
 
- #      end
- #      p.save
- #    else
- #      p.questiontext = rp.questiontext
- #      p.version = rp.version
- #      rp.choices each do |rc|
-
- #      end
- #      p.save
- #    end  
- #  end
-
+    respond_to do |format|
+      format.json { render :json => o}# e.to_json(:include =>{ :polls => {:include => :choices}})}
+    end
 	# respond_to do |format|
 	# 	format.json { render :success => s, :error => @event.errors}
 	# end
@@ -121,10 +119,10 @@ class EventsController < ApplicationController
   
   # GET /events/check/x.json
   def check_version
-	@event = Event.find(params[:id])
-	respond_to do |format|
-		format.json { render :version => @event.version, :updated_at => @event.updated_at}
-	end
+  	@event = Event.find(params[:id])
+  	respond_to do |format|
+  		format.json { render :version => @event.version, :updated_at => @event.updated_at}
+  	end
   end
   
   #GET /events/:id/getVisibleContent
