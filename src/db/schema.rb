@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130627195352) do
+ActiveRecord::Schema.define(:version => 20130627195812) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -130,6 +130,7 @@ ActiveRecord::Schema.define(:version => 20130627195352) do
     t.integer  "prof_speed"
     t.integer  "prof_volume"
     t.integer  "prof_comprehensibility"
+    t.integer  "viewers"
   end
 
   add_index "events", ["course_id"], :name => "index_events_on_course_id"

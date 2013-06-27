@@ -17,6 +17,11 @@ class EventsController < ApplicationController
   # GET /events/1.json
   def show
     @event = Event.find(params[:id])
+    if !session['logged_in_events'][:id]
+      session['logged_in_events'][:id] = true
+      @event.viewers ++
+    end
+    @event.save
 
     respond_to do |format|
       format.html # show.html.erb
@@ -153,7 +158,7 @@ class EventsController < ApplicationController
   	end
   end
   
-  #GET /events/:id/realtimeContent
+  #GET /events/:id/rtc
   def rtc
     res = Hash.new
     e = Event.find(params[:id])
@@ -188,11 +193,14 @@ class EventsController < ApplicationController
     res['prof_comprehensibility'] = e.prof_comprehensibility
     res['prof_speed'] = e.prof_speed
     res['prof_volume']  = e.prof_volume
+    res['viewers'] = e.viewers
 
     respond_to do |format|
       format.json { render :json => res}
     end  
   end
+
+
 
   #POST /events/:id/pushMsgToProf.json 
   def push_msg_to_prof
@@ -204,10 +212,21 @@ class EventsController < ApplicationController
     e.prof_volume = e.prof_volume + r['prof_volume'].to_i
 
     respond_to do |format|
-      format.json { render :success => s, :error => @event.errors}
+      format.json { render :success => true}
     end
   end
- 
+  
+  #POST /events/:id/logout
+  def viewer_logout
+    e = Event.find(params[:id])
+    e.viewers = e.viewers - 1
+    e.save
+
+    respond_to do |format|
+      format.json { render :success => true}
+    end
+  end
+
   #POST /events/:id/setChatActive
   def set_chat_active
     r = request.body.read  
