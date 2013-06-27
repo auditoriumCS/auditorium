@@ -5,8 +5,7 @@ class PollsController < ApplicationController
  poll = Poll.create(
         :questiontext => "What is the meaning of life?", 
         :event_id => 2,
-        :time_to_answer => 60,
-        :slide_id => 19384533)
+        :time_to_answer => 60)
 
     choice1 = Choice.create(
          :answertext => "42",
@@ -26,8 +25,7 @@ class PollsController < ApplicationController
   poll2 = Poll.create(
         :questiontext => "To be or not to be!", 
         :event_id => 2,
-        :time_to_answer => 120,
-        :slide_id => 123456)
+        :time_to_answer => 120)
 
     choice1 = Choice.create(
          :answertext => "To be",

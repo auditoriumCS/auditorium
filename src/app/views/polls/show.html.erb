@@ -3,7 +3,7 @@
 </h2>
   <% %>
   <%= link_to content_tag('span', 'edit', :class=>'icon-edit') , edit_poll_path(@poll)  %> <br>
-  <%= link_to content_tag('span', 'new poll', :class=>'icon-plus') , new_poll_path(@poll)  %> <br>
+  <%= link_to content_tag('span', 'new poll', :class=>'icon-plus') , new_poll_path()  %> <br>
   <%= link_to content_tag('span', 'view event', :class=>'icon-eye') , @event  %> <br>
 
   <h3>Preferences:</h3>
@@ -11,7 +11,7 @@
   <strong>Time to answer:</strong>  <%= @poll.time_to_answer %><br>
   <strong>Poll available?:</strong>  <%= @poll.poll_enabled %><br>
   <strong>Result available?:</strong>  <%= @poll.result_enabled %><br>
-  <strong>Presentation Slide id:</strong>  <%= @poll.slide_id %><br>
+  <strong>activated on Presentation Slide id:</strong>  <%= @poll.on_slide %><br>
   <strong>Version number:</strong>  <%= @poll.version %><br>
 </p>
 
@@ -25,7 +25,8 @@
 			  <strong> Answer <%= i %>:</strong> <%= c.answertext %><br>
               <%= c.is_correct ? "is correct" : "is not correct" %><br>
               Feedback: <%= c.feedback %><br>
-              Version <%= c.version %>
+              Version <%= c.version %> <br>
+              activation slide <%= c.on_slide %><br>
           </p>
     <% end %>
 </p>
