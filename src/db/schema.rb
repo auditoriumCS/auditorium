@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130627170751) do
+ActiveRecord::Schema.define(:version => 20130627195352) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -115,18 +115,21 @@ ActiveRecord::Schema.define(:version => 20130627170751) do
   create_table "events", :force => true do |t|
     t.string   "event_type"
     t.integer  "course_id"
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
     t.integer  "tutor_id"
     t.integer  "weekday"
     t.date     "beginDate"
     t.date     "endDate"
     t.integer  "week"
-    t.string   "url",         :default => ""
-    t.string   "building",    :default => ""
-    t.string   "room",        :default => ""
+    t.string   "url",                    :default => ""
+    t.string   "building",               :default => ""
+    t.string   "room",                   :default => ""
     t.integer  "version"
     t.integer  "chat_active"
+    t.integer  "prof_speed"
+    t.integer  "prof_volume"
+    t.integer  "prof_comprehensibility"
   end
 
   add_index "events", ["course_id"], :name => "index_events_on_course_id"
