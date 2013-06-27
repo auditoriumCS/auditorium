@@ -104,7 +104,7 @@ Auditorium::Application.routes.draw do
   match "events/:id/pull" => "events#get_json"
   match "events/:id/push" => "events#post_json"
   match "events/:id/check" => "events#check_version"
-  match "events/:id/getVisibleContent" => "events#get_visible_content"
+  match "events/:id/rtc" => "events#rtc"
   match "events/:id/setChatActive" => "events#set_chat_active"
   
   resources :lectures
