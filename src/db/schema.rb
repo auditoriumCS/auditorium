@@ -58,11 +58,11 @@ ActiveRecord::Schema.define(:version => 20130627170751) do
   add_index "chairs", ["institute_id"], :name => "index_chairs_on_institute_id"
 
   create_table "choices", :force => true do |t|
-    t.string  "answertext",                :null => false
-    t.boolean "is_correct",                :null => false
-    t.uuid    "poll_id",                   :null => false
-    t.integer "version",    :default => 1, :null => false
+    t.string  "answertext", :null => false
+    t.boolean "is_correct", :null => false
+    t.uuid    "poll_id",    :null => false
     t.string  "feedback"
+    t.integer "version"
     t.uuid    "on_slide"
   end
 
@@ -125,6 +125,7 @@ ActiveRecord::Schema.define(:version => 20130627170751) do
     t.string   "url",         :default => ""
     t.string   "building",    :default => ""
     t.string   "room",        :default => ""
+    t.integer  "version"
     t.integer  "chat_active"
   end
 
@@ -249,7 +250,7 @@ ActiveRecord::Schema.define(:version => 20130627170751) do
   create_table "poll_results", :force => true do |t|
     t.integer  "user_id"
     t.integer  "poll_id"
-    t.integer  "choice_id"
+    t.integer  "choiceId"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.integer  "answer_time"
@@ -261,7 +262,7 @@ ActiveRecord::Schema.define(:version => 20130627170751) do
     t.integer "time_to_answer"
     t.boolean "poll_enabled",   :default => false, :null => false
     t.boolean "result_enabled", :default => false, :null => false
-    t.integer "version",        :default => 1,     :null => false
+    t.integer "version"
     t.uuid    "on_slide"
   end
 

@@ -86,35 +86,63 @@ class EventsController < ApplicationController
   	r = JSON.parse(request.body.read)
     e = Event.find(params[:id])
     e.version = r['version'].to_i
+    pids = Hash.new
+    cids = Hash.new
+
+    # Add and modify all polls and choices in given event
     r['polls'].each do |rp|
+      pids[rp['id']] = true
       begin
         p  = Poll.find(rp['id'])
-        p.questiontext = rp['questiontext']
-        p.version = rp['version']
-        rp.choices each do |rc|
-        end
       rescue 
         p = Poll.new
         p.id = rp['id']
-        p.questiontext = rp['questiontext']
         p.event_id = e['id']
-        p.version = rp['version']
-        p.slide_id = rp['slide_id']
-        rp.choices each do |rc|
-        end
-      end  
-      p.save      
+      end 
+      
+      p.questiontext = rp['questiontext']
+      p.version = rp['version']
+      p.on_slide  = rp['on_slide'] 
+      rp['choices'].each do |rc|
+        cids[rc['id']] = true
+        begin
+          c = Choice.find(rc['id'])
+        rescue
+          c = Choice.new
+          c.poll_id = rp['id']
+          c.id = rc['id']
+          p.choices << c
+        end 
+        c.answertext = rc['answertext']
+        c.version = rc['version']
+        c.is_correct = rc['is_correct'] 
+        c.save!
+      end
+      p.save!      
     end
-    e.save
+    
 
+    # wipe out the rest
+    e.polls.each do |p|
+      p.choices.each do |c|
+        if !cids[c.id.to_s.gsub("-", "").upcase]
+          c.destroy
+        end
+      end
+      if !pids[p.id.to_s.gsub("-", "").upcase]
+        p.destroy
+      end
+    end
+    
+    e.save!
     e = Event.find(params[:id])
 
-    respond_to do |format|
-      format.json { render :json => o}# e.to_json(:include =>{ :polls => {:include => :choices}})}
-    end
-	# respond_to do |format|
-	# 	format.json { render :success => s, :error => @event.errors}
-	# end
+    # respond_to do |format|
+    #   format.json { render :json => e.to_json(:include =>{ :polls => {:include => :choices}})}
+    # end
+	 respond_to do |format|
+	 	format.json { render :success => s, :error => @event.errors}
+	 end
   end
   
   # GET /events/check/x.json
@@ -125,28 +153,61 @@ class EventsController < ApplicationController
   	end
   end
   
-  #GET /events/:id/getVisibleContent
-  def get_visible_content
+  #GET /events/:id/realtimeContent
+  def rtc
     res = Hash.new
     e = Event.find(params[:id])
     polls = e.polls
     res['polls'] = Array.new
     res['poll_results'] = Array.new
-    polls.each do |p|
-      if p.poll_enabled
-        res['polls'] << p.id
+    polls.each do |poll|
+      if poll.poll_enabled
+        res['open_polls'] << poll
       end
       if p.result_enabled
-        res['poll_results'] << p.id
+        p = Hash.new
+        p["text"] = poll.questiontext;
+        p["choices"] = Array.new
+        total = 0;
+        
+        poll.choices.each do |e|
+          c = Hash.new
+          c["text"] = e.answertext
+          c["correct"] = e.is_correct
+          c["correct_class"] = (e.is_correct) ? "correct" : "incorrect" 
+          c["count"] = PollResult.select("COUNT(*) AS count").where("choice_id = 0x#{e.id.hexdigest}").count
+          total += c["count"].to_i
+          p["choices"] << c
+        end
+        p["total"] = total
+        res['poll_results'] << p
       end
     end
+
     res['chat_active'] = e.chat_active
+    res['prof_comprehensibility'] = e.prof_comprehensibility
+    res['prof_speed'] = e.prof_speed
+    res['prof_volume']  = e.prof_volume
 
     respond_to do |format|
       format.json { render :json => res}
     end  
   end
 
+  #POST /events/:id/pushMsgToProf.json 
+  def push_msg_to_prof
+    r = JSON.parse(request.body.read)
+    e = Event.find(params[:id])
+    
+    e.prof_comprehensibility = e.prof_comprehensibility + r['prof_comprehensibility'].to_i
+    e.prof_speed = e.prof_speed  + r['prof_speed'].to_i
+    e.prof_volume = e.prof_volume + r['prof_volume'].to_i
+
+    respond_to do |format|
+      format.json { render :success => s, :error => @event.errors}
+    end
+  end
+ 
   #POST /events/:id/setChatActive
   def set_chat_active
     r = request.body.read  
