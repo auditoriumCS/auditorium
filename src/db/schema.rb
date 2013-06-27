@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130627155411) do
+ActiveRecord::Schema.define(:version => 20130627155412) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -262,6 +262,7 @@ ActiveRecord::Schema.define(:version => 20130627155411) do
     t.boolean "result_enabled", :default => false, :null => false
     t.integer "slide_id"
     t.integer "version",        :default => 1,     :null => false
+    t.uuid    "on_slide"
   end
 
   add_index "polls", ["event_id"], :name => "index_polls_on_event_id"
