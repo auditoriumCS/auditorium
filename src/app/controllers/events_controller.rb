@@ -17,10 +17,10 @@ class EventsController < ApplicationController
   # GET /events/1.json
   def show
     @event = Event.find(params[:id])
-    if !session['logged_in_events'][:id]
-      session['logged_in_events'][:id] = true
-      @event.viewers = @event.viewers + 1
-    end
+    # if !session['logged_in_events'][:id]
+    #   session['logged_in_events'][:id] = true
+    #   @event.viewers = @event.viewers + 1
+    # end
     @event.save
 
     respond_to do |format|
@@ -135,7 +135,7 @@ class EventsController < ApplicationController
 
     # Add and modify all polls and choices in given event
     r['polls'].each do |rp|
-      pids[rp['id']] = true
+      pids[rp['id'].to_s.gsub("-", "").upcase] = true
       begin
         p  = Poll.find(rp['id'])
       rescue 
@@ -148,7 +148,7 @@ class EventsController < ApplicationController
       p.version = rp['version']
       p.on_slide  = rp['on_slide'] 
       rp['choices'].each do |rc|
-        cids[rc['id']] = true
+        cids[rc['id'].to_s.gsub("-", "").upcase] = true
         begin
           c = Choice.find(rc['id'])
         rescue
@@ -184,8 +184,10 @@ class EventsController < ApplicationController
     # respond_to do |format|
     #   format.json { render :json => e.to_json(:include =>{ :polls => {:include => :choices}})}
     # end
+    res = Hash.new 
+    res['success'] = true
 	 respond_to do |format|
-	 	format.json { render :success => true}
+	 	format.json { render :json => res}
 	 end
   end
   
@@ -198,17 +200,17 @@ class EventsController < ApplicationController
   end
   
   #GET /events/:id/rtc
-  def rtc
+  def realtime_client
     res = Hash.new
     e = Event.find(params[:id])
     polls = e.polls
-    res['polls'] = Array.new
+    res['open_polls'] = Array.new
     res['poll_results'] = Array.new
     polls.each do |poll|
       if poll.poll_enabled
         res['open_polls'] << poll
       end
-      if p.result_enabled
+      if poll.result_enabled
         p = Hash.new
         p["text"] = poll.questiontext;
         p["choices"] = Array.new
@@ -219,7 +221,7 @@ class EventsController < ApplicationController
           c["text"] = e.answertext
           c["correct"] = e.is_correct
           c["correct_class"] = (e.is_correct) ? "correct" : "incorrect" 
-          c["count"] = PollResult.select("COUNT(*) AS count").where("choice_id = 0x#{e.id.hexdigest}").count
+          c["count"] = PollResult.select("COUNT(*) AS count").where("choice_id = '#{e.id}'").count
           total += c["count"].to_i
           p["choices"] << c
         end
