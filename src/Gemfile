@@ -20,6 +20,7 @@ gem 'whenever'
 gem 'mathjax-rails'
 gem 'libv8', '~> 3.11.8'
 gem 'rails-dev-tweaks', '~> 0.6.1'
+gem 'activeuuid'
 #active admin
 gem 'activeadmin'
 gem "meta_search",    '>= 1.1.0.pre'

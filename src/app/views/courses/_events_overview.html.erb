@@ -41,8 +41,3 @@
 
 </div>
 
-
-<% if current_user and current_user.may_edit_course(@course) %>
-  <%= link_to 'Add a new event.', new_event_path(:post_type => 'info', :course_id => @course.id) %>
-<% end %>
-</div>

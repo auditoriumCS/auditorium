@@ -5,8 +5,7 @@ class PollsController < ApplicationController
  poll = Poll.create(
         :questiontext => "What is the meaning of life?", 
         :event_id => 2,
-        :time_to_answer => 60,
-        :slide_id => 19384533)
+        :time_to_answer => 60)
 
     choice1 = Choice.create(
          :answertext => "42",
@@ -26,8 +25,7 @@ class PollsController < ApplicationController
   poll2 = Poll.create(
         :questiontext => "To be or not to be!", 
         :event_id => 2,
-        :time_to_answer => 120,
-        :slide_id => 123456)
+        :time_to_answer => 120)
 
     choice1 = Choice.create(
          :answertext => "To be",
@@ -167,6 +165,8 @@ def toggle_visibility
 
 end
 
+
+
   # GET /polls/:id/toggle_visibility_of_result
 def toggle_result
   @poll = Poll.find(params[:id])
@@ -205,4 +205,23 @@ def toggle_result
     return is_okay
   end
 
+<<<<<<< HEAD
+=======
+# GET /polls/:id/is_visible
+def is_visible
+  res  = Map.new
+  res['']
+end  
+
+
+# GET /polls/:id/is_result_visible
+def is_result_visible
+  res = Map.new
+  res['visible'] = Poll.find(params[:id]).result_enabled
+  respond_to do |format|
+    format.json {render :json => res}
+  end
+end
+
+>>>>>>> 61f4a84b84a953fa84b817a7c67572a59053571a
 end
