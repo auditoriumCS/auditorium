@@ -205,8 +205,6 @@ def toggle_result
     return is_okay
   end
 
-<<<<<<< HEAD
-=======
 # GET /polls/:id/is_visible
 def is_visible
   res  = Map.new
@@ -223,5 +221,4 @@ def is_result_visible
   end
 end
 
->>>>>>> 61f4a84b84a953fa84b817a7c67572a59053571a
 end
