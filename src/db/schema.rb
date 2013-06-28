@@ -160,13 +160,6 @@ ActiveRecord::Schema.define(:version => 20130627231537) do
     t.boolean  "read",       :default => false
   end
 
-  create_table "groups", :force => true do |t|
-    t.string   "title"
-    t.text     "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-  end
-
   create_table "institutes", :force => true do |t|
     t.string   "name"
     t.integer  "faculty_id"
