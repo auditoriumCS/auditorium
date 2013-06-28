@@ -19,7 +19,7 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
     if !session['logged_in_events'][:id]
       session['logged_in_events'][:id] = true
-      @event.viewers ++
+      @event.viewers = @event.viewers + 1
     end
     @event.save
 
@@ -146,7 +146,7 @@ class EventsController < ApplicationController
     #   format.json { render :json => e.to_json(:include =>{ :polls => {:include => :choices}})}
     # end
 	 respond_to do |format|
-	 	format.json { render :success => s, :error => @event.errors}
+	 	format.json { render :success => true}
 	 end
   end
   
