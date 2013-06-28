@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable, :trackable
   # TODO turn on confirmable in production
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable, :confirmable, :token_authenticatable
+         :recoverable, :rememberable, :validatable, :token_authenticatable, :confirmable
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :remember_me, :email, :alternative_email, :password, :password_confirmation

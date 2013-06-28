@@ -35,8 +35,10 @@
 			</div>
 
 		</div>
+
 		<div class="span4" id="mood">
 			Geschwindigkeit 
+
 			<div id="speed">
 				<span ng-click="speedDown()"> &lt; </span>
 				<span class="left" ng-style="{width: speed.down}">{{speed.down}}</span>
@@ -45,7 +47,9 @@
 				<span class="back"></span>
 				<span ng-click="speedUp()"> &gt; </span>
 			</div>
+
 			Lautstärke
+
 			<div id="volume">
 				<span ng-click="volumeDown()"> &lt; </span>
 				<span class="left" ng-style="{width: volume.down}">{{volume.down}}</span>
@@ -54,7 +58,9 @@
 				<span class="back"></span>
 				<span ng-click="volumeUp()"> &gt; </span>
 			</div>
+
 			Verständlichkeit
+
 			<div id="comprehensibility">
 				<span ng-click="comprehensibilityDown()"> &lt; </span>
 				<span class="left" ng-style="{width: comprehensibility.down}">{{comprehensibility.down}}</span>
@@ -67,7 +73,9 @@
 	</div>
 	<div class="row">
 		<div class="span6" id="polls"> 
+
 			<div ng-show="pollslength > 1">
+
 				<span ng-click="decrementActivePoll()"> &lt;</span>
 				<span>
 					{{activePoll + 1}}
@@ -89,6 +97,7 @@
 		</div>
 		<div class="span4" id="results">
 			<div ng-show="results.length > 1">
+
 				<span ng-click="decrementActiveResult()"> &lt;</span>
 				<span>
 					{{activeResult + 1}}
@@ -123,7 +132,6 @@
 		$scope.activeResult = 0;
 		$scope.pollslength = 0;
 
-
 		$scope.speed = {
 			up: 0,
 			down : 0	
@@ -138,6 +146,7 @@
 			up: 0,
 			down : 0	
 		}
+
 
 		$scope.submitPoll = function(cid,pid){
 			data = {}
@@ -162,6 +171,7 @@
 
 		$scope.decrementActivePoll = function() {
 			$scope.activePoll = ($scope.pollslength + $scope.activePoll - 1) % $scope.pollslength
+
 		}
 		$scope.incrementActiveResult = function () {
 			$scope.activeResult = ($scope.activeResult + 1) % $scope.results.length

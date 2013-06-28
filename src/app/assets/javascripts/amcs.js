@@ -59,20 +59,22 @@
             classRoom.Utils.registerHandlers();
             classRoom.Action.Presence(classRoom.nickName);
 			
-            $('#create_room').hide();
-            $('#connect_room').hide();
-            $('#page').show();
+
+            jQuery('#create_room').hide();
+            jQuery('#connect_room').hide();
+            jQuery('#page').show();
         },
 		
 		disconnected: function() {
             classRoom.connection = null;
 
-            $('#memberList').empty();
-            $('#chatContainer').empty();
-            $('#avatar').empty();
-            $('#page').hide();
-            $('#create_room').show();
-            $('#connect_room').show();
+
+            jQuery('#memberList').empty();
+            jQuery('#chatContainer').empty();
+            jQuery('#avatar').empty();
+            jQuery('#page').hide();
+            jQuery('#create_room').show();
+            jQuery('#connect_room').show();
         },
 			
 		register: function() {
@@ -89,7 +91,9 @@
                 } else if (status === Strophe.Status.CONNECTED) {
                     console.log("logged in!");
                 } else if (status === Strophe.Status.DISCONNECTED) {
-                    //$(document).trigger('connect');
+
+                    //jQuery(document).trigger('connect');
+
                     classRoom.connect({jid: classRoom.jid, password: classRoom.pw});
                 } else {
                     console.log("status: " + status);
@@ -113,7 +117,8 @@
                 var actualSlide = classRoom.FeedBack.actualSlide.toString();
                 var time = classRoom.Utils.time();
 
-                $('#slideStatus').text(actualSlide + ' / ' + count);
+
+                jQuery('#slideStatus').text(actualSlide + ' / ' + count);
                 classRoom.FeedBack.enableItems();
 
                 classRoom.Action.SlideChange(actualSlide, time);
@@ -121,7 +126,8 @@
 			
             setSlideStatus: function() {
                 var count = classRoom.FeedBack.slideCount;
-                $('#slideStatus').text(classRoom.FeedBack.actualSlide + ' / ' + count);
+
+                jQuery('#slideStatus').text(classRoom.FeedBack.actualSlide + ' / ' + count);
             },
 		},
 		 /**
@@ -135,10 +141,11 @@
              *	function: adding new lines at the bottom and fix scrollbar position
              */
             addMessage: function(message) {
-                var chatContainer = $('#chatContainer').get(0);
+
+                var chatContainer = jQuery('#chatContainer').get(0);
                 var bool_bottom = chatContainer.scrollTop >= chatContainer.scrollHeight - chatContainer.clientHeight;
 
-                $('#chatContainer').append(message);
+                jQuery('#chatContainer').append(message);
 
                 if (bool_bottom) {
                     chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -236,7 +243,8 @@
 
             sendConfig: function(msg) {
                 console.log("sendConfig");
-                var msg = $(msg);
+
+                var msg = jQuery(msg);
                 var fields = msg.find('field');
                 classRoom.connection.muc.saveConfiguration(classRoom.ROOM, fields);
             },
@@ -267,56 +275,67 @@
              *	function: populate member area, nickname conflict, handle own presence, set joined
              */
             onPresence: function(presence) {
-                var from = $(presence).attr('from');
+
+                var from = jQuery(presence).attr('from');
                 var nick = Strophe.getResourceFromJid(from);
 				
                 /*if theres no error, user is available and user has not joined the room yet set add
                  the user to participants*/
-                if ($(presence).attr('type') === 'error' && !classRoom.joined) {
+
+                if (jQuery(presence).attr('type') === 'error' && !classRoom.joined) {
+
                     classRoom.connection.disconnect();
                     //alert('error');
                 }
                 else
-                if (!classRoom.participants[nick] && $(presence).attr('type') !== 'unavailable') {
+
+                if (!classRoom.participants[nick] && jQuery(presence).attr('type') !== 'unavailable') {
                     classRoom.participants[nick] = true;
                     /*now that the user has joined watch up for adding to list or to avatar and handle pause Stuff*/
                     if (nick === classRoom.nickName) {
-                        $('#avatar').text(nick);
+                        jQuery('#avatar').text(nick);
 						
-						if ($(presence).find('x[xmlns="http://jabber.org/protocol/muc#user"]').length > 0) {
-							$(presence).find('x > item').each(function() {
+						if (jQuery(presence).find('x[xmlns="http://jabber.org/protocol/muc#user"]').length > 0) {
+							jQuery(presence).find('x > item').each(function() {
 								
-								if( $(this).attr('role') === 'moderator') {
+								if( jQuery(this).attr('role') === 'moderator') {
 									classRoom.role = 'moderator';
 									classRoom.View.activateStop();
-								}else if( $(this).attr('role') === 'participant') classRoom.role = 'participant';
+								}else if( jQuery(this).attr('role') === 'participant') classRoom.role = 'participant';
+
 									  else classRoom.role ='none';
 							});
 						}	
                     }
                     else {
-                        $('#memberList').append("<li id='" + nick + "'>" + "<div class='member'>"
+
+                        jQuery('#memberList').append("<li id='" + nick + "'>" + "<div class='member'>"
+
                                 + "<div class='image'><img src='img/member.png' alt='pic'></div>"
                                 + "<div class='nick'>" + nick + "</div></li>");
                     }
                 }
                 else
                 /*user leaves the room, remove him from list*/
-                if (classRoom.participants[nick] && $(presence).attr('type') === 'unavailable') {
-                    $('#memberList li').each(function() {
-                        if (nick === $(this).attr('id')) {
-                            $(this).remove();
+
+                if (classRoom.participants[nick] && jQuery(presence).attr('type') === 'unavailable') {
+                    jQuery('#memberList li').each(function() {
+                        if (nick === jQuery(this).attr('id')) {
+                            jQuery(this).remove();
+
                             return false;
                         }
                     });
                 }
 
                 /*handle own presence, nick changed?*/
-                if ($(presence).attr('type') !== 'error' && !classRoom.joined) {
 
-                    if ($(presence).find("status[code ='110']").length > 0) {
+                if (jQuery(presence).attr('type') !== 'error' && !classRoom.joined) {
 
-                        if ($(presence).find("status[code ='210']").length > 0) {
+                    if (jQuery(presence).find("status[code ='110']").length > 0) {
+
+                        if (jQuery(presence).find("status[code ='210']").length > 0) {
+
                             classRoom.nickName = Strophe.getResourceFromJid(from);
                         }
                     }
@@ -333,24 +352,28 @@
              *	function: populate chat messages and also feedback messages (hidden)
              */
             onPublicMessage: function(message) {
-                var from = $(message).attr('from')
+
+                var from = jQuery(message).attr('from')
 
                 var nick = Strophe.getResourceFromJid(from);
 
                 if (nick === null)
                     nick = "Server";
 
-                var text = $(message).children('body').text();
-                var time = $(message).children('time').text();
 
-                if ($(message).find('feedback').length > 0 || $(message).find('interruption').length > 0) {
+                var text = jQuery(message).children('body').text();
+                var time = jQuery(message).children('time').text();
+
+                if (jQuery(message).find('feedback').length > 0 || jQuery(message).find('interruption').length > 0) {
+
                     classRoom.Utils.addMessage("<div class='message hidden'>"
                             + "<div class='head'>" + time + " | " + nick + ":" + "</div>"
                             + "<div class='body'>" + text + "</div></div>");
                     return true;
                 }
                 else
-                if ($(message).find('body').length > 0) {
+
+                if (jQuery(message).find('body').length > 0) {
                     classRoom.Utils.addMessage("<div class='message'>"
                             + "<div class='head'>" + time + " | " + nick + ":" + "</div>"
                             + "<div class='body'>" + text + "</div></div>");
@@ -362,11 +385,13 @@
              *	function: populate private chat messages
              */
             onPrivateMessage: function(message) {
-                var from = $(message).attr('from')
+
+                var from = jQuery(message).attr('from')
                 var nick = Strophe.getResourceFromJid(from);
 
-                var text = $(message).children('body').text();
-                var time = $(message).children('time').text();
+                var text = jQuery(message).children('body').text();
+                var time = jQuery(message).children('time').text();
+
 
                 classRoom.Utils.addMessage("<div class='message private'>" +
                         "<div class='head'>" + time + " | " + nick + ":" + "</div>" +
@@ -380,9 +405,11 @@
             onSlideChange: function(message) {
                 var sSlide;
 
-                if ($(message).find('feedback').length > 0) {
-                    $(message).find('feedback > slide').each(function() {
-                        sSlide = $(this).text();
+
+                if (jQuery(message).find('feedback').length > 0) {
+                    jQuery(message).find('feedback > slide').each(function() {
+                        sSlide = jQuery(this).text();
+
                     });
                 }
 
@@ -399,9 +426,10 @@
             },
 			
 			onInterruption: function(message) {
-				if ($(message).find('interruption').length > 0) {
-                    $(message).find('interruption > type').each(function() {
-							kind = $(this).text();
+
+				if (jQuery(message).find('interruption').length > 0) {
+                    jQuery(message).find('interruption > type').each(function() {
+							kind = jQuery(this).text();
 							
 							if( kind === "true") {
 								console.log('pause');
@@ -419,36 +447,43 @@
 		
 		 View: {
             showLoginBox: function(style) {
+
+                jQuery("#loginDialog").show();
+                
                 if (style === "connect") {
                     console.log("showLoginBox connect");
-                    $("#login_user").hide();
-                    $("#login_pw").hide();
+                    jQuery("#login_user").hide();
+                    jQuery("#login_pw").hide();
                 } else if (style === "create") {
-                    $("#login_user").show();
-                    $("#login_pw").show();
+                    jQuery("#login_user").show();
+                    jQuery("#login_pw").show();
                     console.log("showLoginBox create");
                 } else {
                     console.log("showLoginBox else");
-                    $(".ui-dialog-titlebar-close").hide();
-                    $(".ui-dialog-titlebar").css({'background': '#3B5998', border: '0'});
+                    jQuery(".ui-dialog-titlebar-close").hide();
+                    jQuery(".ui-dialog-titlebar").css({'background': '#3B5998', border: '0'});
                 }
-                $('#loginDialog').dialog({
+                jQuery('#loginDialog').dialog({
                     autoOpen: true,
                     draggable: false,
                     modal: true,
                     resizable: false,
                     open: function() {
-//                        $(".ui-dialog-titlebar-close").hide();
-							$(".ui-dialog-titlebar").css({'background': '#3B5998', border: '0'});
+
+//                        jQuery(".ui-dialog-titlebar-close").hide();
+							jQuery(".ui-dialog-titlebar").css({'background': '#3B5998', border: '0'});
+
                     },
                     title: 'LOGIN',
                     buttons: {
                         'Enter': function()
                         {
-                            classRoom.nickName = $('#nickname').val();
+
+                            classRoom.nickName = jQuery('#nickname').val();
                             if (style === "create") {
-                                classRoom.jid = $('#jid').val() + "@" + classRoom.OPENFIREDOMAIN;
-                                classRoom.pw = $('#password').val();
+                                classRoom.jid = jQuery('#jid').val() + "@" + classRoom.OPENFIREDOMAIN;
+                                classRoom.pw = jQuery('#password').val();
+
 
                             } else if (style === "connect") {
                                 $.ajax({
@@ -467,24 +502,27 @@
                             classRoom.connection = new Strophe.Connection(classRoom.BOSH);
                             classRoom.connect({jid: classRoom.jid, password: classRoom.pw});
 
-                            $('#password').val('');
-                            $(this).dialog('close');
+                            jQuery('#password').val('');
+                            jQuery(this).dialog('close');
                         }
                     },
 					
                     focus: function() {
-                        $(':input', this).keyup(function(event) {
+
+                        jQuery(':input', this).keyup(function(event) {
                             if (event.keyCode == 13) {
-                                $('.ui-dialog-buttonpane button:first').click();
+                                jQuery('.ui-dialog-buttonpane button:first').click();
                             }
                         });
                     }
                 });
+
+                jQuery(".ui-dialog-titlebar-close").text('X');
             },
 			
 			onStop: function() {
-				$('#page').hide();
-				$('body').css(
+				jQuery('#page').hide();
+				jQuery('body').css(
 				{	'background-image': 'url(img/amcs_logo.png)',
 					'background-size':'50%',
 					'background-repeat':'no-repeat',
@@ -494,21 +532,26 @@
 			},
 			
 			onGo: function() {
-				$('#page').show();
-				//$('#activate').remove();
-				$('body').find('#activate').each(function() { $(this).remove(); });
-				$('body').removeAttr('style');
+
+				jQuery('#page').show();
+				//jQuery('#activate').remove();
+				jQuery('body').find('#activate').each(function() { jQuery(this).remove(); });
+				jQuery('body').removeAttr('style');
+
 			},
 			
 			activateStop: function() {
 				if(classRoom.role === 'moderator') 
-					$('#stop').removeClass("hidden");
+
+					jQuery('#stop').removeClass("hidden");
 			},
 			
 			activateGo : function() {
 				if(classRoom.role === 'moderator') {
-					$('body').find('#activate').each(function() { $(this).remove(); });
-					$('body').append('<div id ="activate" style="margin: 0 auto; text-align:right;">'
+
+					jQuery('body').find('#activate').each(function() { jQuery(this).remove(); });
+					jQuery('body').append('<div id ="activate" style="margin: 0 auto; text-align:right;">'
+
 					+'<img style="width:40px;height:40px;" id="go" src="img/go.png" alt="Enable Chat" title="Enable Chat"></div>');
 				}
 			}
@@ -523,8 +566,9 @@
      *
      *
      */
-	$(document).ready(function() {
-		$('#page').hide();
+
+	jQuery(document).ready(function() {
+		jQuery('#page').hide();
         classRoom.ROOM = document.title.toLowerCase() + "@conference." + classRoom.OPENFIREDOMAIN; //?????
         classRoom.ROOM = "test" + "@conference." + classRoom.OPENFIREDOMAIN; //??????
     });
@@ -538,59 +582,63 @@
      *
      */
 	 
-	 $(document).on('click', '#disconnect', function() {
+
+	 jQuery(document).on('click', '#disconnect', function() {
         classRoom.Action.Disconnect(classRoom.nickName);
         classRoom.connection.disconnect();
     });
 	
-	$(document).on('keypress', '#input', function(e) {
+
+	jQuery(document).on('keypress', '#input', function(e) {
         if (e.which === 13) {
             e.preventDefault();
-            var text = $(this).val();
+            var text = jQuery(this).val();
             var time = classRoom.Utils.time();
             classRoom.Action.PublicMessage(text, time);
-            $(this).val('');
+            jQuery(this).val('');
         }
     });
 	
-	$(document).on('click', 'ul#memberList li div.member', function(e) {
+	jQuery(document).on('click', 'ul#memberList li div.member', function(e) {
 		e.preventDefault();
-		var nick = $(this).parent().attr('id');
+		var nick = jQuery(this).parent().attr('id');
 
-		$('#pmDialog').dialog({
+		jQuery('#pmDialog').dialog({
 			autoOpen: true,
 			draggable: true,
 			modal: false,
 			resizable: true,
 			title: 'PM to: ' + nick,
 			open: function() {
-				$(".ui-dialog-titlebar").css({'background': '#3B5998', border: '0'});
+
+				jQuery(".ui-dialog-titlebar").css({'background': '#3B5998', border: '0'});
 			},
 			buttons: {
 				'SEND': function() {
-					var text = $('#pmMessage').val();
+					var text = jQuery('#pmMessage').val();
 					var time = classRoom.Utils.time();
 					classRoom.Action.PrivateMessage(text, time, nick);
-					$('#pmMessage').val('');
-					$(this).dialog('close');
+					jQuery('#pmMessage').val('');
+					jQuery(this).dialog('close');
 				}
 			}
 		});
 	});
 	 
-	$(document).on('click', '#create_room', function() {
+
+	jQuery(document).on('click', '#create_room', function() {
         classRoom.View.showLoginBox("create");
     });
 	
-    $(document).on('click', '#connect_room', function() {
+    jQuery(document).on('click', '#connect_room', function() {
         classRoom.View.showLoginBox("connect");
     });
 	
-	$(document).on('click', '#stop', function() {
+	jQuery(document).on('click', '#stop', function() {
 		classRoom.Action.interruption(true);
     });
 	
-	$(document).on('click', '#go', function() {
+	jQuery(document).on('click', '#go', function() {
 		classRoom.Action.interruption(false);
     });
 	
