@@ -5,8 +5,9 @@
         /**
          *	NameSpaces
          */
-        BOSH: "http://localhost/http-bind",
+        //BOSH: "http://localhost/http-bind",
         //BOSH: "/http-bind",
+        BOSH: "http://mobilis.inf.tu-dresden.de/http-bind",
         MUC: "http://jabber.org/protocol/muc",
         OPENFIREDOMAIN: "jabber",
         //ROOM: "test@conference.kp",
