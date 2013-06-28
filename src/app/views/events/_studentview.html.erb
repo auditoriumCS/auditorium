@@ -1,8 +1,402 @@
-<div class="row">
-	<div class="span6"> Chat </div>
-	<div class="span4"> Stimmungsbarometer</div>
+<div ng-app ng-controller="UserViewCtrl">
+	<div class="row">
+		<div class="span6"> 
+			<div id="page">
+				<header>
+					<div id="icon"><img src="img/amcs_logo.png" alt="logo"></div>
+					<div id="avatar"></div>
+					<div id="stopIcon">
+						<img class="hidden" id="stop" src="img/stop.png" alt="Disable Chat" title="Disable Chat">
+					</div>
+					<div id="status">
+				<!--			<div id="slideStatus" style="float:left; padding: 0 3% 0 3%;"></div>    -->
+					</div>
+
+					<div id="logout"><img id="disconnect" alt="Logout" title="Logout" src ="img/logout.png"> </div>
+				</header>
+
+				<div id="memberContainer">
+					<ul id="memberList"></ul>
+				</div>
+
+				<div id="chatContainer"></div>
+
+				 <div id="inputContainer">
+					<textArea id="input"></textArea>
+				</div>
+			</div>
+				<button id="connect_room">Connect</button> 
+				
+			<!--  Login Dialog  -->
+
+			<!--  Private Message Dialog  -->
+			<div id="pmDialog" class="hidden">
+					<textarea id="pmMessage"></textarea>	
+			</div>
+
+		</div>
+		<div class="span4" id="mood">
+			Geschwindigkeit 
+			<div id="speed">
+				<span ng-click="speedDown()"> &lt; </span>
+				<span class="left" ng-style="{width: speed.down}">{{speed.down}}</span>
+				<span class="center"></span>
+				<span class="right" ng-style="{width: speed.up}">{{speed.up}}</span>
+				<span class="back"></span>
+				<span ng-click="speedUp()"> &gt; </span>
+			</div>
+			Lautstärke
+			<div id="volume">
+				<span ng-click="volumeDown()"> &lt; </span>
+				<span class="left" ng-style="{width: volume.down}">{{volume.down}}</span>
+				<span class="center"></span>
+				<span class="right" ng-style="{width: volume.up}">{{volume.up}}</span>
+				<span class="back"></span>
+				<span ng-click="volumeUp()"> &gt; </span>
+			</div>
+			Verständlichkeit
+			<div id="comprehensibility">
+				<span ng-click="comprehensibilityDown()"> &lt; </span>
+				<span class="left" ng-style="{width: comprehensibility.down}">{{comprehensibility.down}}</span>
+				<span class="center"></span>
+				<span class="right" ng-style="{width: comprehensibility.up}">{{comprehensibility.up}}</span>
+				<span class="back"></span>
+				<span ng-click="comprehensibilityUp()"> &gt; </span>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="span6" id="polls"> 
+			<div ng-show="pollslength > 1">
+				<span ng-click="decrementActivePoll()"> &lt;</span>
+				<span>
+					{{activePoll + 1}}
+				</span>
+				|
+				<span>{{pollslength}}</span>
+				<span ng-click="incrementActivePoll()"> &gt;</span>
+			</div>
+
+			<div ng-repeat="(key, poll) in polls" ng-show="$index == activePoll">
+				<h3>{{poll.questiontext}}</h3>
+				<span class="alert alert-error" ng-repeat="msg in poll.messages"> {{msg}}<span ng-click="poll.messages[$index] = undefined" class="close">[x]</span></span>
+				<div ng-repeat="c in poll.choices">
+					<input type="radio" ng-model="poll.choice_id" value="{{c.id}}" name="choice"/>	
+					{{c.answertext}}
+				</div>
+				<button ng-click="submitPoll(poll.choice_id, key)" class="btn btn-primary">submit</button>
+			</div>
+		</div>
+		<div class="span4" id="results">
+			<div ng-show="results.length > 1">
+				<span ng-click="decrementActiveResult()"> &lt;</span>
+				<span>
+					{{activeResult + 1}}
+				</span>
+				|
+				<span>{{results.length}}</span>
+				<span ng-click="incrementActiveResult()"> &gt;</span>
+			</div>
+			<div ng-repeat="p in results">
+				<div ng-repeat="c in p.choices">
+					
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-<div class="row">
-	<div class="span6"> Umfragen </div>
-	<div class="span4"> Ergebnisse </div>
-</div>
+<script>
+	function UserViewCtrl($scope, $http, $timeout){
+		$scope.rtcInterval = 10000;
+		$scope.pform;
+		$scope.eid = <%= @event.id %>
+		
+
+		$scope.url = {}
+		$scope.url.rtc = $scope.eid+"/rtc.json";
+		$scope.url.submitPoll  = "/poll_results/0/rtc_create";
+		$scope.url.submitControl = "";
+
+		$scope.polls = {};
+		$scope.results = [];
+		$scope.activePoll = 0;
+		$scope.activeResult = 0;
+		$scope.pollslength = 0;
+
+
+		$scope.speed = {
+			up: 0,
+			down : 0	
+		}
+
+		$scope.volume  = {
+			up: 0,
+			down : 0	
+		}
+
+		$scope.comprehensibility = {
+			up: 0,
+			down : 0	
+		}
+
+		$scope.submitPoll = function(cid,pid){
+			data = {}
+			data.choice_id = cid;
+			data.poll_id = pid;
+			data.t_delta = Date.now() - $scope.polls[pid].t_start;
+			$http.post($scope.url.submitPoll,data).then(function(s){
+				var d = s.data;
+				d.msg = "Leider nicht korrekt Flachzange!";
+				if(!d.is_correct){
+					if($scope.polls[data.poll_id].messages == undefined)
+						$scope.polls[data.poll_id].messages = [];
+					$scope.polls[data.poll_id].messages.push(d.msg);
+				} else
+					$scope.polls[data.poll_id] = undefined
+			});
+		}
+
+		$scope.incrementActivePoll = function () {
+			$scope.activePoll = ($scope.activePoll + 1) % $scope.pollslength
+		}
+
+		$scope.decrementActivePoll = function() {
+			$scope.activePoll = ($scope.pollslength + $scope.activePoll - 1) % $scope.pollslength
+		}
+		$scope.incrementActiveResult = function () {
+			$scope.activeResult = ($scope.activeResult + 1) % $scope.results.length
+		}
+
+		$scope.decrementActiveResult = function() {
+			$scope.activeResult = ($scope.results.length + $scope.activeResult - 1) % $scope.results.length
+		}
+		$scope.rtc = function() {
+			$http.get($scope.url.rtc).then(function(s){
+				$scope.results = s.data.poll_results;
+				
+				var idxs = {}
+				$scope.pollslength = 0;
+				angular.forEach(s.data.open_polls, function(v,k){
+					idxs[v.id] = true;
+					if($scope.polls[v.id] == undefined){
+						$scope.polls[v.id] = v;
+						$scope.polls[v.id].t_start = Date.now();
+					}
+						
+				});
+				angular.forEach($scope.polls, function(v,k){
+					if(idxs[k]==undefined)
+						$scope.polls[k] = undefined;
+					else $scope.pollslength++
+				});
+
+				$scope.speed = {
+					up:  (s.data.prof_speed > 0)?s.data.prof_speed :0,
+					down:  (s.data.prof_speed < 0)?s.data.prof_speed * -1 :0
+				};
+
+				$scope.volume = {
+					up:  (s.data.prof_volume > 0)?s.data.prof_volume :0,
+					down:  (s.data.prof_volume < 0)?s.data.prof_volume * -1 :0
+				};
+
+				$scope.comprehensibility = {
+					up:  (s.data.prof_comprehensibility > 0)?s.data.prof_comprehensibility :0,
+					down:  (s.data.prof_comprehensibility < 0)?s.data.prof_comprehensibility * -1 :0
+				}
+
+
+				//$timeout($scope.rtc,$scope.rtcInterval);
+			});
+		}
+		$scope.rtc();
+
+
+	}
+</script>
+<style>
+
+
+
+.hidden{
+    display: none;
+}
+
+header, #chatContainer, #inputContainer textarea:hover, #memberContainer ul#memberList li div.member {
+	background: #eee;
+}
+
+header div#logout img#disconnect:hover, #memberContainer ul#memberList li div.member:hover, ul#feedback li:hover,
+header div#stopIcon img#stop:hover, img#go {
+    cursor: pointer;
+}
+
+header  img, #memberContainer ul#memberList li div.image  img {
+    width: 100%;
+    height: 100%;
+}
+
+/* Dialog Styles*/
+
+div#loginDialog label {
+    display: block;
+}
+
+textarea#pmMessage {
+    width: 100%;
+    height: 100%;
+    resize: none;
+}
+
+/* END Dialog Styles*/
+/* Header */
+
+header {
+	margin: 0 0 2% 0;
+	padding: 2px 0 2px 0;
+	width: auto;
+    height: 35px;
+}
+
+header > div {
+	float: left;
+}
+
+header div#icon, header div#logout, header div#stopIcon{
+	height: 100%;
+    width: 5%;
+}
+
+header div#avatar {
+    width: 20%;
+    margin: 10px 1% 0 1%;
+}
+
+header div#stopIcon img#stop {
+	height: 35px;
+ 	max-width: 35px;
+	padding: 2px;	
+}
+
+header div#status {
+    width: 61%;
+    margin: 10px 1% 0 1%;
+}
+
+header div#logout img#disconnect{
+ 	height: 25px;
+ 	max-width: 20px;
+	float: right;
+	padding: 5px;		
+}
+
+/* END Header */
+/* Basic Layout */
+
+#page {
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    min-width: 650px;
+    min-height: 400px;
+}
+
+#chatContainer, #memberContainer {
+    height: 70%;
+    border: 1px solid #3B5998;
+	overflow: auto;
+	padding: 0.5%;
+	margin-bottom: 1%;
+}
+
+#chatContainer {	
+    width: auto;
+    word-wrap: break-word;   
+}
+
+#memberContainer {
+	margin-left: 25px;
+    width: 220px;
+    float: right;	
+}
+
+#inputContainer{
+    clear: both;
+    width: 100%;
+	float: bottom;
+}
+
+#inputContainer{
+    height: 10%;
+}
+
+#inputContainer textarea {
+	width: 99%;
+	height: 99%;
+    border: thin solid #3B5998;
+    border-radius: 10px;
+    resize: none;
+    overflow: auto;	
+	padding: 0.5%;
+}
+
+/* END Basic Layout */
+/* ChatContainer Elements */
+
+#chatContainer div {
+    font-size: 90%;
+}
+
+#chatContainer div.message {
+    padding: 2px;
+    margin: 8px;
+    background: white;
+}
+
+#chatContainer div.message div.head {
+    color: #3B5998;
+    font-style:italic;
+}
+
+#chatContainer div.private div.body {
+    background: #3B5998;
+    color: white;
+}
+
+/* END ChatContainer Elements */
+/* MemberContainer Elements */
+
+#memberContainer ul#memberList {
+    list-style-type: none;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+#memberContainer ul#memberList li div.member {
+    width: 100%;
+	height: 30px;
+    float: left;
+    margin-bottom: 1.5%;
+}
+
+#memberContainer ul#memberList li div.image {
+    float: left; 
+    width: 15%; 
+    height: 100%; 
+    margin-right: 2%;
+}
+
+#memberContainer ul#memberList li div.nick {
+    float: left;
+    width: 83%;
+	padding: 2% 0;
+}
+
+#memberContainer ul#memberList li div.member:hover {
+    background-color: white;
+}
+
+/* END MemberContainer Elements */
+
+</style>

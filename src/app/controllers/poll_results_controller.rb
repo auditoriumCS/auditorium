@@ -67,6 +67,38 @@ class PollResultsController < InheritedResources::Base
 
 	end
 
+	def rtc_create
+		r = JSON.parse(request.body.read)
+		pr = PollResult.create()
+		
+		puts "+++++++++++++current_user++++++++++"
+		puts current_user
+		
+		puts "+++++++++++++++session+++++++++++++++"
+		puts session
+
+		#TODO Lars: current_user auch bei Content-Type : application/json
+		#pr.user_id = current_user.id
+		pr.user_id = 2
+		pr.poll_id = r['poll_id']
+		pr.choice_id = r['choice_id']
+		pr.answer_time = r['t_delta']
+
+		pr.save
+		
+		choice = Choice.find(r['choice_id'])
+		choice.poll_result << pr
+		choice.save
+		
+		res = Hash.new 
+		res['success'] = true
+		res['is_correct'] = choice.is_correct
+		res['msg'] = choice.feedback
+		respond_to do |format|
+		  format.json  { render :json => res}
+		end
+	end
+
 	def create
 		pr = PollResult.create()
 		pr.userId = current_user.id
