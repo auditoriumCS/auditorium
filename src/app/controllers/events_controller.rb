@@ -221,7 +221,7 @@ class EventsController < ApplicationController
           c["text"] = e.answertext
           c["correct"] = e.is_correct
           c["correct_class"] = (e.is_correct) ? "correct" : "incorrect" 
-          c["count"] = PollResult.select("COUNT(*) AS count").where("choice_id = '#{e.id}'").count
+          c["count"] = e.poll_result.count
           total += c["count"].to_i
           p["choices"] << c
         end

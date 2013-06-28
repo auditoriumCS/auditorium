@@ -1,3 +1,4 @@
+<script src="/assets/sparklines.js"></script>
 <div ng-app ng-controller="UserViewCtrl">
 	<div class="row">
 		<div class="span6"> 
@@ -73,7 +74,7 @@
 	</div>
 	<div class="row">
 		<div class="span6" id="polls"> 
-
+			Fragen: 
 			<div ng-show="pollslength > 1">
 
 				<span ng-click="decrementActivePoll()"> &lt;</span>
@@ -87,7 +88,7 @@
 
 			<div ng-repeat="(key, poll) in polls" ng-show="$index == activePoll">
 				<h3>{{poll.questiontext}}</h3>
-				<span class="alert alert-error" ng-repeat="msg in poll.messages"> {{msg}}<span ng-click="poll.messages[$index] = undefined" class="close">[x]</span></span>
+				<span class="alert alert-error" ng-repeat="msg in poll.messages"> {{msg}}<span ng-click="poll.messages.splice($index,1)" class="close">[x]</span></span>
 				<div ng-repeat="c in poll.choices">
 					<input type="radio" ng-model="poll.choice_id" value="{{c.id}}" name="choice"/>	
 					{{c.answertext}}
@@ -96,6 +97,7 @@
 			</div>
 		</div>
 		<div class="span4" id="results">
+			Ergebnisse:
 			<div ng-show="results.length > 1">
 
 				<span ng-click="decrementActiveResult()"> &lt;</span>
@@ -107,9 +109,11 @@
 				<span ng-click="incrementActiveResult()"> &gt;</span>
 			</div>
 			<div ng-repeat="p in results">
+				<h3>{{p.text}}</h3>
 				<div ng-repeat="c in p.choices">
-					
+					{{c.text}}
 				</div>
+				<span class="sparklines" values="{{p.pie}}" decisive="{{p.decisive}}"></span>
 			</div>
 		</div>
 	</div>
@@ -160,8 +164,12 @@
 					if($scope.polls[data.poll_id].messages == undefined)
 						$scope.polls[data.poll_id].messages = [];
 					$scope.polls[data.poll_id].messages.push(d.msg);
-				} else
-					$scope.polls[data.poll_id] = undefined
+				} else {
+					$scope.polls[data.poll_id];
+					$scope.pollslength --;
+					$scope.activePoll = $scope.activePoll % $scope.pollslength;
+				}
+					
 			});
 		}
 
@@ -196,7 +204,7 @@
 				});
 				angular.forEach($scope.polls, function(v,k){
 					if(idxs[k]==undefined)
-						$scope.polls[k] = undefined;
+						delete $scope.polls[k];
 					else $scope.pollslength++
 				});
 
@@ -215,8 +223,42 @@
 					down:  (s.data.prof_comprehensibility < 0)?s.data.prof_comprehensibility * -1 :0
 				}
 
+				angular.forEach($scope.results, function(v,k){
+					v.pie = [];
+					var pieValues = [];
+					var pieColors = [];
+					v.decisive = false;
+					var firstCorrect = v.choices[0].correct;
+					
+					for(c in v.choices) if(v.choices[c].text){
+						if(v.total > 0){
+						pieValues.push({correct:v.choices[c].correct,value:v.choices[c].count});
+						if(firstCorrect!=v.choices[c].correct)
+							v.decisive = true;
+							}
+					}
+					
+					
+					if(v.total > 0)for(i in pieValues){
+						if(v.decisive){
+							var j = (pieValues[i].correct)?0:1;
+							v.pie[j] =  (v.pie[j]==undefined)?pieValues[i].value:v.pie[j]+pieValues[i].value;
+						} else {
+							v.pie.push(pieValues[i].value)
+						}
+					}
+					v.pie = v.pie.join(",")
 
-				//$timeout($scope.rtc,$scope.rtcInterval);
+				})
+				$timeout(function() {
+					jQuery(".sparklines").each(function(idx){
+						var dec = (jQuery(this).attr("decisive")=="true")?true:false;
+						jQuery(this).sparkline('html',{ width : '100', height : '100', type : 'pie', sliceColors:((dec)? ["#00ff00","#ff0000"] : undefined)})
+					});
+				}, 10);
+				
+
+				$timeout($scope.rtc,$scope.rtcInterval);
 			});
 		}
 		$scope.rtc();
