@@ -40,37 +40,147 @@
 		<div class="span4" id="mood">
 			Geschwindigkeit 
 
-			<div id="speed">
-				<span ng-click="speedDown()"> &lt; </span>
-				<span class="left" ng-style="{width: speed.down}">{{speed.down}}</span>
-				<span class="center"></span>
-				<span class="right" ng-style="{width: speed.up}">{{speed.up}}</span>
+			<div class="prof-control" id="speed">
 				<span class="back"></span>
-				<span ng-click="speedUp()"> &gt; </span>
+				<span class="left" ng-style="{width: (speed.down/2) +'%'}"></span>
+				<span class="right" ng-style="{width: (speed.up/2) +'%'}"></span>
+				<span class="center"></span>
+				<button  ng-show="speed.canVote" class="btn btn-left" ng-click="submitControl('speed',-1)"> &lt; langsamer</button>
+				<button  ng-show="speed.canVote" class="btn btn-right" ng-click="submitControl('speed',1)"> schneller &gt;</button>
+				<span class="prof-control-ammount-left" >
+					{{speed.down}} %
+				</span>
+				<span class="prof-control-ammount-right">
+					{{speed.up}} %
+				</span>
 			</div>
 
 			Lautstärke
 
-			<div id="volume">
-				<span ng-click="volumeDown()"> &lt; </span>
-				<span class="left" ng-style="{width: volume.down}">{{volume.down}}</span>
-				<span class="center"></span>
-				<span class="right" ng-style="{width: volume.up}">{{volume.up}}</span>
+			<div class="prof-control" id="volume">
 				<span class="back"></span>
-				<span ng-click="volumeUp()"> &gt; </span>
+				<span class="left" ng-style="{width: (volume.down/2) +'%'}"></span>
+				<span class="right" ng-style="{width: (volume.up/2) +'%'}"></span>
+				<span class="center"></span>
+				<button ng-show="volume.canVote"  class="btn btn-left" ng-click="submitControl('volume',-1)"> &lt; leiser</button>
+				<button ng-show="volume.canVote"  class="btn btn-right" ng-click="submitControl('volume',1)"> lauter &gt;</button>
+				<span class="prof-control-ammount-left" >
+					{{volume.down}} %
+				</span>
+				<span class="prof-control-ammount-right">
+					{{volume.up}} %
+				</span>
 			</div>
 
 			Verständlichkeit
 
-			<div id="comprehensibility">
-				<span ng-click="comprehensibilityDown()"> &lt; </span>
-				<span class="left" ng-style="{width: comprehensibility.down}">{{comprehensibility.down}}</span>
-				<span class="center"></span>
-				<span class="right" ng-style="{width: comprehensibility.up}">{{comprehensibility.up}}</span>
+			<div class="prof-control" id="comprehensibility">
 				<span class="back"></span>
-				<span ng-click="comprehensibilityUp()"> &gt; </span>
+				<span class="left" ng-style="{width: (comprehensibility.down/2) +'%'}"></span>
+				<span class="right" ng-style="{width: (comprehensibility.up/2) +'%'}"></span>
+				<span class="center"></span>
+				<button ng-show="comprehensibility.canVote" class="btn btn-left" ng-click="submitControl('comprehesibility',-1)"> &lt; nochmal</button>
+				<button ng-show="comprehensibility.canVote"  class="btn btn-right" ng-click="submitControl('comprehesibility',1)"> weiter &gt;</button>
+				<span class="prof-control-ammount-left" >
+					{{comprehensibility.down}} %
+				</span>
+				<span class="prof-control-ammount-right">
+					{{comprehensibility.up}} %
+				</span>
 			</div>
 		</div>
+		<style type="text/css">
+			/* prof controls TODO @shirin: plz outsource in some css file; */
+			#mood {
+				position:relative;
+			}
+			
+			#mood .prof-control {
+				position: relative;
+				height:40px;
+			}
+			
+			#mood .btn-left {
+				position: absolute;
+				padding: 0 9px;
+				line-height: 16px;
+				top: 17px;
+				left:0px;
+				width: 50%;
+				text-align: left;
+				border-top-left-radius: 0;
+				border-top-right-radius: 0;
+				border-bottom-right-radius: 0;
+			} 
+
+			#mood .btn-right {
+				position: absolute;
+				padding: 0 9px;
+				line-height: 16px;
+				right:0px;
+				top: 17px;
+				width: 50%;
+				text-align: right;
+				border-top-right-radius: 0;
+				border-top-left-radius: 0;
+				border-bottom-left-radius: 0;
+			} 
+			
+			
+
+			#mood .prof-control-ammount-left {
+				position: absolute;
+				line-height: 16px;
+				color: #fff;
+				left: 20px;
+			}
+
+			#mood .prof-control-ammount-right {
+				position: absolute;
+				line-height: 16px;
+				color: #fff;
+				right: 20px;
+			}
+
+
+
+			#mood .back {
+				position: absolute;
+				width: 100%;
+				height: 17px;
+				background-color: rgba(200,200,200,0.666);
+				border-radius: 4px;
+				border-bottom-right-radius: 0;
+				border-bottom-left-radius: 0;
+			}
+
+			#mood .right {
+				position: absolute;
+				height: 10px;
+				top: 3px;
+				left:50%;
+				background-color: #0f0;
+			}
+			
+
+			#mood .left {
+				position: absolute;
+				height: 10px;
+				top: 3px;
+				right:50%;
+				background-color: #f00;
+			}
+
+			#mood .center {
+				position: absolute;
+				height: 17px;
+				width: 2px;
+				right: 50%;
+				margin-right: -1px;
+				background-color: #fff;
+			}
+
+		</style>
 	</div>
 	<div class="row">
 		<div class="span6" id="polls"> 
@@ -108,7 +218,7 @@
 				<span>{{results.length}}</span>
 				<span ng-click="incrementActiveResult()"> &gt;</span>
 			</div>
-			<div ng-repeat="p in results">
+			<div  ng-show="$index == activeResult" ng-repeat="p in results">
 				<h3>{{p.text}}</h3>
 				<div ng-repeat="c in p.choices">
 					{{c.text}}
@@ -127,8 +237,9 @@
 
 		$scope.url = {}
 		$scope.url.rtc = $scope.eid+"/rtc.json";
-		$scope.url.submitPoll  = "/poll_results/0/rtc_create";
-		$scope.url.submitControl = "";
+		$scope.url.submitPoll  = "/poll_results/0/rtc_create.json";
+		$scope.url.submitControl = $scope.eid+"/prof_control.json";
+		$scope.url.logout = $scope.eid+"/logout.json";
 
 		$scope.polls = {};
 		$scope.results = [];
@@ -136,40 +247,57 @@
 		$scope.activeResult = 0;
 		$scope.pollslength = 0;
 
+		$scope.slideId = "";
+
 		$scope.speed = {
-			up: 0,
-			down : 0	
+			up: 25,
+			down : 70,
+			canVote : true	
 		}
 
 		$scope.volume  = {
-			up: 0,
-			down : 0	
+			up: 30,
+			down : 100,
+			canVote : true	
 		}
 
 		$scope.comprehensibility = {
-			up: 0,
-			down : 0	
+			up: 5,
+			down : 50,
+			canVote : true		
 		}
 
+		window.onbeforeunload = function(){
+			$http.post($scope.url.logout);
+		}
 
 		$scope.submitPoll = function(cid,pid){
-			data = {}
+			var data = {}
 			data.choice_id = cid;
 			data.poll_id = pid;
 			data.t_delta = Date.now() - $scope.polls[pid].t_start;
 			$http.post($scope.url.submitPoll,data).then(function(s){
 				var d = s.data;
-				d.msg = "Leider nicht korrekt Flachzange!";
+				d.msg = s.data.msg;
 				if(!d.is_correct){
 					if($scope.polls[data.poll_id].messages == undefined)
 						$scope.polls[data.poll_id].messages = [];
 					$scope.polls[data.poll_id].messages.push(d.msg);
 				} else {
-					$scope.polls[data.poll_id];
+					delete $scope.polls[data.poll_id];
 					$scope.pollslength --;
 					$scope.activePoll = $scope.activePoll % $scope.pollslength;
 				}
 					
+			});
+		}
+
+		$scope.submitControl = function(which, val) {
+			$scope[which].canVote = false;
+			var data = {}
+			data[which] = val;
+			$http.post($scope.url.submitControl,data).then(function(s){
+				
 			});
 		}
 
@@ -208,20 +336,14 @@
 					else $scope.pollslength++
 				});
 
-				$scope.speed = {
-					up:  (s.data.prof_speed > 0)?s.data.prof_speed :0,
-					down:  (s.data.prof_speed < 0)?s.data.prof_speed * -1 :0
-				};
+				$scope.speed.up = (s.data.prof_speed > 0)?s.data.prof_speed :0;
+				$scope.speed.down = (s.data.prof_speed < 0)?s.data.prof_speed * -1 :0;
+				$scope.volume.up = (s.data.prof_volume > 0)?s.data.prof_volume :0;
+				$scope.volume.down = (s.data.prof_volume < 0)?s.data.prof_volume * -1 :0;
+				$scope.comprehensibility.up = (s.data.prof_comprehensibility > 0)?s.data.prof_comprehensibility :0;
+				$scope.comprehensibility.down = (s.data.prof_comprehensibility < 0)?s.data.prof_comprehensibility * -1 :0;
 
-				$scope.volume = {
-					up:  (s.data.prof_volume > 0)?s.data.prof_volume :0,
-					down:  (s.data.prof_volume < 0)?s.data.prof_volume * -1 :0
-				};
 
-				$scope.comprehensibility = {
-					up:  (s.data.prof_comprehensibility > 0)?s.data.prof_comprehensibility :0,
-					down:  (s.data.prof_comprehensibility < 0)?s.data.prof_comprehensibility * -1 :0
-				}
 
 				angular.forEach($scope.results, function(v,k){
 					v.pie = [];
@@ -267,6 +389,13 @@
 	}
 </script>
 <style>
+
+
+
+
+
+
+
 
 
 

@@ -248,10 +248,15 @@ class EventsController < ApplicationController
     r = JSON.parse(request.body.read)
     e = Event.find(params[:id])
     
-    e.prof_comprehensibility = e.prof_comprehensibility + r['prof_comprehensibility'].to_i
-    e.prof_speed = e.prof_speed  + r['prof_speed'].to_i
-    e.prof_volume = e.prof_volume + r['prof_volume'].to_i
-
+    if r['prof_comprehensibility']
+      e.prof_comprehensibility = e.prof_comprehensibility + r['prof_comprehensibility'].to_i
+    end
+    if r['prof_speed']
+      e.prof_speed = e.prof_speed  + r['prof_speed'].to_i
+    end
+    if r['prof_volume']
+      e.prof_volume = e.prof_volume + r['prof_volume'].to_i
+    end
     respond_to do |format|
       format.json { render :success => true}
     end
