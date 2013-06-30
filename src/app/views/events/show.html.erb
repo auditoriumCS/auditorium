@@ -1,4 +1,4 @@
-<% if can? :manage, @event.course or can? :edit, @event.course and false%>
+<% if can? :manage, @event.course or can? :edit, @event.course %>
 	<%= render 'adminview' %>
 <% else %>
 	<%= render 'studentview' %>
