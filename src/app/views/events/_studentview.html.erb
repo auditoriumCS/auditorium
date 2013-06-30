@@ -160,6 +160,10 @@
 				top: 3px;
 				left:50%;
 				background-color: #0f0;
+				-webkit-transition: width 1s ease-in-out;
+			    -moz-transition: width 1s ease-in-out;
+			    -o-transition: width 1s ease-in-out;
+			    transition: width 1s ease-in-out;
 			}
 			
 
@@ -169,6 +173,10 @@
 				top: 3px;
 				right:50%;
 				background-color: #f00;
+				-webkit-transition: width 1s ease-in-out;
+			    -moz-transition: width 1s ease-in-out;
+			    -o-transition: width 1s ease-in-out;
+			    transition: width 1s ease-in-out;
 			}
 
 			#mood .center {
@@ -231,10 +239,7 @@
 </div>
 <script>
 	function UserViewCtrl($scope, $http, $timeout){
-		var xhr = new XMLHttpRequest();
-		xhr.open('get', '/');
-
-		$scope.rtcInterval = 10000;
+		$scope.rtcInterval = 1000;
 		$scope.pform;
 		$scope.eid = <%= @event.id %>
 		$http.defaults.headers.common['X-CSRF-Token'] = jQuery('meta[name=csrf-token]').attr('content');
@@ -254,20 +259,20 @@
 		$scope.slideId = "";
 
 		$scope.speed = {
-			up: 25,
-			down : 70,
+			up: 0,
+			down : 0,
 			canVote : true	
 		}
 
 		$scope.volume  = {
-			up: 30,
-			down : 100,
+			up: 0,
+			down : 0,
 			canVote : true	
 		}
 
 		$scope.comprehensibility = {
-			up: 5,
-			down : 50,
+			up: 0,
+			down : 0,
 			canVote : true		
 		}
 

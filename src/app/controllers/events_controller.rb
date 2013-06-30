@@ -240,12 +240,15 @@ class EventsController < ApplicationController
       puts current_user.id
       puts "+++++++++++++++++RESULT COUNT:"+res_count.to_s
       puts "+++++++++++++++++correct: "+res_correct.to_s
-      if poll.poll_enabled && (res_count < 3 && res_correct < 1) 
+      if poll.poll_enabled && (res_count < 3 && res_correct < 1) || current_user.admin
         res['open_polls'] << poll
       end
-      if poll.result_enabled
+      if poll.result_enabled || current_user.admin
         p = Hash.new
         p["text"] = poll.questiontext;
+        p['poll_enabled'] = poll.poll_enabled
+        p['result_enabled'] =  poll.result_enabled
+        p['id'] = poll.id
         p["choices"] = Array.new
         total = 0;
         
