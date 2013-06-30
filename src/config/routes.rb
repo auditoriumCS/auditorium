@@ -108,7 +108,7 @@ Auditorium::Application.routes.draw do
   match "events/:id/rtc" => "events#realtime_client"
   match "events/:id/setChatActive" => "events#set_chat_active"
   match "events/:id/update_slide" => "events#update_slide"
-  match "events/:id/prof_control" => "events#prof_control"
+  match "events/:id/prof_control" => "events#push_msg_to_prof"
   
   resources :lectures
 

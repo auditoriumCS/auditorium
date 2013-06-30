@@ -79,7 +79,7 @@ class PollResultsController < InheritedResources::Base
 
 		#TODO Lars: current_user auch bei Content-Type : application/json
 		#pr.user_id = current_user.id
-		pr.user_id = 2
+		pr.user_id = current_user.id
 		pr.poll_id = r['poll_id']
 		pr.choice_id = r['choice_id']
 		pr.answer_time = r['t_delta']

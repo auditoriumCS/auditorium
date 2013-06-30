@@ -79,8 +79,8 @@
 				<span class="left" ng-style="{width: (comprehensibility.down/2) +'%'}"></span>
 				<span class="right" ng-style="{width: (comprehensibility.up/2) +'%'}"></span>
 				<span class="center"></span>
-				<button ng-show="comprehensibility.canVote" class="btn btn-left" ng-click="submitControl('comprehesibility',-1)"> &lt; nochmal</button>
-				<button ng-show="comprehensibility.canVote"  class="btn btn-right" ng-click="submitControl('comprehesibility',1)"> weiter &gt;</button>
+				<button ng-show="comprehensibility.canVote" class="btn btn-left" ng-click="submitControl('comprehensibility',-1)"> &lt; nochmal</button>
+				<button ng-show="comprehensibility.canVote"  class="btn btn-right" ng-click="submitControl('comprehensibility',1)"> weiter &gt;</button>
 				<span class="prof-control-ammount-left" >
 					{{comprehensibility.down}} %
 				</span>
@@ -218,22 +218,26 @@
 				<span>{{results.length}}</span>
 				<span ng-click="incrementActiveResult()"> &gt;</span>
 			</div>
-			<div  ng-show="$index == activeResult" ng-repeat="p in results">
+			<div  ng-style="{ height : resHeight($index,activeResult) }" style="overflow:hidden" ng-repeat="p in results">
 				<h3>{{p.text}}</h3>
+				<span class="sparklines pull-right" values="{{p.pie}}" decisive="{{p.decisive}}"></span>
 				<div ng-repeat="c in p.choices">
 					{{c.text}}
 				</div>
-				<span class="sparklines" values="{{p.pie}}" decisive="{{p.decisive}}"></span>
+				
 			</div>
 		</div>
 	</div>
 </div>
 <script>
 	function UserViewCtrl($scope, $http, $timeout){
+		var xhr = new XMLHttpRequest();
+		xhr.open('get', '/');
+
 		$scope.rtcInterval = 10000;
 		$scope.pform;
 		$scope.eid = <%= @event.id %>
-		
+		$http.defaults.headers.common['X-CSRF-Token'] = jQuery('meta[name=csrf-token]').attr('content');
 
 		$scope.url = {}
 		$scope.url.rtc = $scope.eid+"/rtc.json";
@@ -292,6 +296,10 @@
 			});
 		}
 
+		$scope.resHeight = function(i,a) {
+			return (i==a)?"auto":"0px";
+		}
+
 		$scope.submitControl = function(which, val) {
 			$scope[which].canVote = false;
 			var data = {}
@@ -319,7 +327,6 @@
 		$scope.rtc = function() {
 			$http.get($scope.url.rtc).then(function(s){
 				$scope.results = s.data.poll_results;
-				
 				var idxs = {}
 				$scope.pollslength = 0;
 				angular.forEach(s.data.open_polls, function(v,k){
@@ -335,7 +342,11 @@
 						delete $scope.polls[k];
 					else $scope.pollslength++
 				});
+				s.data.prof_speed = Math.round((s.data.prof_speed / s.data.viewers)*100)
+				s.data.prof_volume =  Math.round((s.data.prof_volume / s.data.viewers)*100)
+				s.data.prof_comprehensibility =  Math.round((s.data.prof_comprehensibility / s.data.viewers)*100)
 
+				// rt prof feedback
 				$scope.speed.up = (s.data.prof_speed > 0)?s.data.prof_speed :0;
 				$scope.speed.down = (s.data.prof_speed < 0)?s.data.prof_speed * -1 :0;
 				$scope.volume.up = (s.data.prof_volume > 0)?s.data.prof_volume :0;
@@ -344,6 +355,9 @@
 				$scope.comprehensibility.down = (s.data.prof_comprehensibility < 0)?s.data.prof_comprehensibility * -1 :0;
 
 
+				$scope.comprehensibility.canVote = s.data.prof_comprehensibility_canVote;
+				$scope.speed.canVote = s.data.prof_speed_canVote;
+				$scope.volume.canVote = s.data.prof_volume_canVote;
 
 				angular.forEach($scope.results, function(v,k){
 					v.pie = [];

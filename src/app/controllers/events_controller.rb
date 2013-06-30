@@ -17,10 +17,33 @@ class EventsController < ApplicationController
   # GET /events/1.json
   def show
     @event = Event.find(params[:id])
-    # if !session['logged_in_events'][:id]
-    #   session['logged_in_events'][:id] = true
-    #   @event.viewers = @event.viewers + 1
-    # end
+    @event.prof_comprehensibility = 0
+    @event.prof_speed = 0
+    @event.prof_volume = 0
+    @event.viewers =3
+    if session['active_slide'] != nil
+      if @event.active_slide != session['active_slide']
+        session['active_slide'] = @event.active_slide
+        session['prof_speed_canVote'] = true
+        session['prof_comprehensibility_canVote'] = true
+        session['prof_volume_canVote'] = true
+      end
+    else  
+      session['active_slide'] = @event.active_slide
+      session['prof_speed_canVote'] = true
+      session['prof_comprehensibility_canVote'] = true
+      session['prof_volume_canVote'] = true
+    end 
+
+    if session['logged_in_events'] == nil
+      session['logged_in_events'] = Hash.new
+    end
+
+    if session['logged_in_events'][:id] == nil
+      session['logged_in_events'][:id] = true
+      @event.viewers = @event.viewers + 1
+    end
+
     @event.save
 
     respond_to do |format|
@@ -84,6 +107,11 @@ class EventsController < ApplicationController
     slideId = '34390000-0000-0000-0000-000000000000'
     event = Event.find(params[:id])
     event.active_slide = slideId
+
+    #zero out prof feedback on slide change
+    event.prof_comprehensibility = 0
+    event.prof_speed = 0
+    event.prof_volume = 0
 
     respond_to do |format|
       if event.save
@@ -207,7 +235,12 @@ class EventsController < ApplicationController
     res['open_polls'] = Array.new
     res['poll_results'] = Array.new
     polls.each do |poll|
-      if poll.poll_enabled
+      res_count = PollResult.where(poll_id: poll).where(user_id: current_user).count
+      res_correct = PollResult.where(poll_id: poll.id).where("user_id = #{current_user.id}").joins("INNER JOIN choices ON choices.id = poll_results.choice_id").where("choices.is_correct = true").count
+      puts current_user.id
+      puts "+++++++++++++++++RESULT COUNT:"+res_count.to_s
+      puts "+++++++++++++++++correct: "+res_correct.to_s
+      if poll.poll_enabled && (res_count < 3 && res_correct < 1) 
         res['open_polls'] << poll
       end
       if poll.result_enabled
@@ -231,10 +264,19 @@ class EventsController < ApplicationController
     end
 
     res['chat_active'] = e.chat_active
-    res['prof_comprehensibility'] = e.prof_comprehensibility
-    res['prof_speed'] = e.prof_speed
-    res['prof_volume']  = e.prof_volume
+
+    res['prof_comprehensibility'] = e.prof_comprehensibility 
+    res['prof_speed'] = e.prof_speed 
+    res['prof_volume']  = e.prof_volume 
+
+    res['prof_comprehensibility_canVote']  = session['prof_comprehensibility_canVote']
+    res['prof_speed_canVote'] = session['prof_speed_canVote']
+    res['prof_volume_canVote'] = session['prof_volume_canVote']
+
     res['viewers'] = e.viewers
+    res['active_slide'] = e.active_slide
+    res['x-csrf'] = request.session_options[:id]
+
 
     respond_to do |format|
       format.json { render :json => res.to_json( :include => :choices)}
@@ -243,33 +285,43 @@ class EventsController < ApplicationController
 
 
 
-  #POST /events/:id/pushMsgToProf.json 
+  #POST /events/:id/prof_control.json 
   def push_msg_to_prof
     r = JSON.parse(request.body.read)
     e = Event.find(params[:id])
     
-    if r['prof_comprehensibility']
-      e.prof_comprehensibility = e.prof_comprehensibility + r['prof_comprehensibility'].to_i
+    if r['comprehensibility'] != nil && session['prof_comprehensibility_canVote']
+      e.prof_comprehensibility = e.prof_comprehensibility + r['comprehensibility'].to_i
+      session['prof_comprehensibility_canVote']  =false
     end
-    if r['prof_speed']
-      e.prof_speed = e.prof_speed  + r['prof_speed'].to_i
+
+    if r['speed'] != nil && session['prof_speed_canVote']
+      e.prof_speed = e.prof_speed  + r['speed'].to_i
+      session['prof_speed_canVote'] = false
     end
-    if r['prof_volume']
-      e.prof_volume = e.prof_volume + r['prof_volume'].to_i
+    if r['volume'] != nil && session['prof_volume_canVote']
+      e.prof_volume = e.prof_volume + r['volume'].to_i
+      session['prof_volume_canVote'] = false
     end
+    e.save
+
+    res = Hash.new 
+    res['success']=true
     respond_to do |format|
-      format.json { render :success => true}
+      format.json { render :json => true}
     end
   end
   
   #POST /events/:id/logout
   def viewer_logout
     e = Event.find(params[:id])
+    session['logged_in_events'][:id] = nil
     e.viewers = e.viewers - 1
     e.save
-
+    res = Hash.new
+    res['success']=true
     respond_to do |format|
-      format.json { render :success => true}
+      format.json { render :json => res}
     end
   end
 
@@ -277,7 +329,13 @@ class EventsController < ApplicationController
   def set_chat_active
     r = request.body.read  
     e = Event.find(params[:id])
-    e.chat_active = r.chat_active
+    e.chat_active = r['chat_active']
+    e.save
+    res = Hash.new
+    res['success']=true
+    respond_to do |format|
+      format.json { render :json => res}
+    end
   end
 
   # DELETE /events/1
