@@ -1,0 +1,604 @@
+<div style="overflow:hidden; max-height:0px; -webkit-transition: all .5s ease; -moz-transition: all .5s ease; transition: all .5s ease;" id="events-polls">
+
+<script src="/assets/sparklines.js"></script>
+<div ng-app ng-controller="UserViewCtrl">
+	<div class="row">
+		<div class="span6"> 
+			<div id="page">
+				<header>
+					<div id="icon"><img src="img/amcs_logo.png" alt="logo"></div>
+					<div id="avatar"></div>
+					<div id="stopIcon">
+						<img class="hidden" id="stop" src="img/stop.png" alt="Disable Chat" title="Disable Chat">
+					</div>
+					<div id="status">
+				<!--			<div id="slideStatus" style="float:left; padding: 0 3% 0 3%;"></div>    -->
+					</div>
+
+					<div id="logout"><img id="disconnect" alt="Logout" title="Logout" src ="img/logout.png"> </div>
+				</header>
+
+				<div id="memberContainer">
+					<ul id="memberList"></ul>
+				</div>
+
+				<div id="chatContainer"></div>
+
+				 <div id="inputContainer">
+					<textArea id="input"></textArea>
+				</div>
+			</div>
+				<button id="connect_room">Connect</button> 
+				
+			<!--  Login Dialog  -->
+
+			<!--  Private Message Dialog  -->
+			<div id="pmDialog" class="hidden">
+					<textarea id="pmMessage"></textarea>	
+			</div>
+
+		</div>
+
+		<div class="span4" id="mood">
+			Geschwindigkeit 
+
+			<div class="prof-control" id="speed">
+				<span class="back"></span>
+				<span class="left" ng-style="{width: (speed.down/2) +'%'}"></span>
+				<span class="right" ng-style="{width: (speed.up/2) +'%'}"></span>
+				<span class="center"></span>
+				<button  ng-show="speed.canVote" class="btn btn-left" ng-click="submitControl('speed',-1)"> &lt; langsamer</button>
+				<button  ng-show="speed.canVote" class="btn btn-right" ng-click="submitControl('speed',1)"> schneller &gt;</button>
+				<span class="prof-control-ammount-left" >
+					{{speed.down}} %
+				</span>
+				<span class="prof-control-ammount-right">
+					{{speed.up}} %
+				</span>
+			</div>
+
+			Lautstärke
+
+			<div class="prof-control" id="volume">
+				<span class="back"></span>
+				<span class="left" ng-style="{width: (volume.down/2) +'%'}"></span>
+				<span class="right" ng-style="{width: (volume.up/2) +'%'}"></span>
+				<span class="center"></span>
+				<button ng-show="volume.canVote"  class="btn btn-left" ng-click="submitControl('volume',-1)"> &lt; leiser</button>
+				<button ng-show="volume.canVote"  class="btn btn-right" ng-click="submitControl('volume',1)"> lauter &gt;</button>
+				<span class="prof-control-ammount-left" >
+					{{volume.down}} %
+				</span>
+				<span class="prof-control-ammount-right">
+					{{volume.up}} %
+				</span>
+			</div>
+
+			Verständlichkeit
+
+			<div class="prof-control" id="comprehensibility">
+				<span class="back"></span>
+				<span class="left" ng-style="{width: (comprehensibility.down/2) +'%'}"></span>
+				<span class="right" ng-style="{width: (comprehensibility.up/2) +'%'}"></span>
+				<span class="center"></span>
+				<button ng-show="comprehensibility.canVote" class="btn btn-left" ng-click="submitControl('comprehensibility',-1)"> &lt; nochmal</button>
+				<button ng-show="comprehensibility.canVote"  class="btn btn-right" ng-click="submitControl('comprehensibility',1)"> weiter &gt;</button>
+				<span class="prof-control-ammount-left" >
+					{{comprehensibility.down}} %
+				</span>
+				<span class="prof-control-ammount-right">
+					{{comprehensibility.up}} %
+				</span>
+			</div>
+		</div>
+		<style type="text/css">
+			/* prof controls TODO @shirin: plz outsource in some css file; */
+			#mood {
+				position:relative;
+			}
+			
+			#mood .prof-control {
+				position: relative;
+				height:40px;
+			}
+			
+			#mood .btn-left {
+				position: absolute;
+				padding: 0 9px;
+				line-height: 16px;
+				top: 17px;
+				left:0px;
+				width: 50%;
+				text-align: left;
+				border-top-left-radius: 0;
+				border-top-right-radius: 0;
+				border-bottom-right-radius: 0;
+			} 
+
+			#mood .btn-right {
+				position: absolute;
+				padding: 0 9px;
+				line-height: 16px;
+				right:0px;
+				top: 17px;
+				width: 50%;
+				text-align: right;
+				border-top-right-radius: 0;
+				border-top-left-radius: 0;
+				border-bottom-left-radius: 0;
+			} 
+			
+			
+
+			#mood .prof-control-ammount-left {
+				position: absolute;
+				line-height: 16px;
+				color: #fff;
+				left: 20px;
+			}
+
+			#mood .prof-control-ammount-right {
+				position: absolute;
+				line-height: 16px;
+				color: #fff;
+				right: 20px;
+			}
+
+
+
+			#mood .back {
+				position: absolute;
+				width: 100%;
+				height: 17px;
+				background-color: rgba(200,200,200,0.666);
+				border-radius: 4px;
+				border-bottom-right-radius: 0;
+				border-bottom-left-radius: 0;
+			}
+
+			#mood .right {
+				position: absolute;
+				height: 10px;
+				top: 3px;
+				left:50%;
+				background-color: #0f0;
+				-webkit-transition: width 1s ease-in-out;
+			    -moz-transition: width 1s ease-in-out;
+			    -o-transition: width 1s ease-in-out;
+			    transition: width 1s ease-in-out;
+			}
+			
+
+			#mood .left {
+				position: absolute;
+				height: 10px;
+				top: 3px;
+				right:50%;
+				background-color: #f00;
+				-webkit-transition: width 1s ease-in-out;
+			    -moz-transition: width 1s ease-in-out;
+			    -o-transition: width 1s ease-in-out;
+			    transition: width 1s ease-in-out;
+			}
+
+			#mood .center {
+				position: absolute;
+				height: 17px;
+				width: 2px;
+				right: 50%;
+				margin-right: -1px;
+				background-color: #fff;
+			}
+
+		</style>
+	</div>
+	<div class="row">
+		<div class="span6" id="polls"> 
+			Fragen: 
+			<div ng-show="pollslength > 1">
+
+				<span ng-click="decrementActivePoll()"> &lt;</span>
+				<span>
+					{{activePoll + 1}}
+				</span>
+				|
+				<span>{{pollslength}}</span>
+				<span ng-click="incrementActivePoll()"> &gt;</span>
+			</div>
+
+			<div ng-repeat="(key, poll) in polls" ng-show="$index == activePoll">
+				<h3>{{poll.questiontext}}</h3>
+				<span class="alert alert-error" ng-repeat="msg in poll.messages"> {{msg}}<span ng-click="poll.messages.splice($index,1)" class="close">[x]</span></span>
+				<div ng-repeat="c in poll.choices">
+					<input type="radio" ng-model="poll.choice_id" value="{{c.id}}" name="choice"/>	
+					{{c.answertext}}
+				</div>
+				<button ng-click="submitPoll(poll.choice_id, key)" class="btn btn-primary">submit</button>
+			</div>
+		</div>
+		<div class="span4" id="results">
+			Ergebnisse:
+			<div ng-show="results.length > 1">
+
+				<span ng-click="decrementActiveResult()"> &lt;</span>
+				<span>
+					{{activeResult + 1}}
+				</span>
+				|
+				<span>{{results.length}}</span>
+				<span ng-click="incrementActiveResult()"> &gt;</span>
+			</div>
+			<div  ng-style="{ height : resHeight($index,activeResult) }" style="overflow:hidden" ng-repeat="p in results">
+				<h3>{{p.text}}</h3>
+				<span class="sparklines pull-right" values="{{p.pie}}" decisive="{{p.decisive}}"></span>
+				<div ng-repeat="c in p.choices">
+					{{c.text}}
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	function UserViewCtrl($scope, $http, $timeout){
+		$scope.rtcInterval = 1000;
+		$scope.pform;
+		$scope.eid = <%= @event.id %>
+		$http.defaults.headers.common['X-CSRF-Token'] = jQuery('meta[name=csrf-token]').attr('content');
+
+		$scope.url = {}
+		$scope.url.rtc = $scope.eid+"/rtc.json";
+		$scope.url.submitPoll  = "/poll_results/0/rtc_create.json";
+		$scope.url.submitControl = $scope.eid+"/prof_control.json";
+		$scope.url.logout = $scope.eid+"/logout.json";
+
+		$scope.polls = {};
+		$scope.results = [];
+		$scope.activePoll = 0;
+		$scope.activeResult = 0;
+		$scope.pollslength = 0;
+
+		$scope.slideId = "";
+
+		$scope.speed = {
+			up: 0,
+			down : 0,
+			canVote : true	
+		}
+
+		$scope.volume  = {
+			up: 0,
+			down : 0,
+			canVote : true	
+		}
+
+		$scope.comprehensibility = {
+			up: 0,
+			down : 0,
+			canVote : true		
+		}
+
+		window.onbeforeunload = function(){
+			$http.post($scope.url.logout);
+		}
+
+		$scope.submitPoll = function(cid,pid){
+			var data = {}
+			data.choice_id = cid;
+			data.poll_id = pid;
+			data.t_delta = Date.now() - $scope.polls[pid].t_start;
+			$http.post($scope.url.submitPoll,data).then(function(s){
+				var d = s.data;
+				d.msg = s.data.msg;
+				if(!d.is_correct){
+					if($scope.polls[data.poll_id].messages == undefined)
+						$scope.polls[data.poll_id].messages = [];
+					$scope.polls[data.poll_id].messages.push(d.msg);
+				} else {
+					delete $scope.polls[data.poll_id];
+					$scope.pollslength --;
+					$scope.activePoll = $scope.activePoll % $scope.pollslength;
+				}
+					
+			});
+		}
+
+		$scope.resHeight = function(i,a) {
+			return (i==a)?"auto":"0px";
+		}
+
+		$scope.submitControl = function(which, val) {
+			$scope[which].canVote = false;
+			var data = {}
+			data[which] = val;
+			$http.post($scope.url.submitControl,data).then(function(s){
+				
+			});
+		}
+
+		$scope.incrementActivePoll = function () {
+			$scope.activePoll = ($scope.activePoll + 1) % $scope.pollslength
+		}
+
+		$scope.decrementActivePoll = function() {
+			$scope.activePoll = ($scope.pollslength + $scope.activePoll - 1) % $scope.pollslength
+
+		}
+		$scope.incrementActiveResult = function () {
+			$scope.activeResult = ($scope.activeResult + 1) % $scope.results.length
+		}
+
+		$scope.decrementActiveResult = function() {
+			$scope.activeResult = ($scope.results.length + $scope.activeResult - 1) % $scope.results.length
+		}
+		$scope.rtc = function() {
+			$http.get($scope.url.rtc).then(function(s){
+				$scope.results = s.data.poll_results;
+				var idxs = {}
+				$scope.pollslength = 0;
+				angular.forEach(s.data.open_polls, function(v,k){
+					idxs[v.id] = true;
+					if($scope.polls[v.id] == undefined){
+						$scope.polls[v.id] = v;
+						$scope.polls[v.id].t_start = Date.now();
+					}
+						
+				});
+				angular.forEach($scope.polls, function(v,k){
+					if(idxs[k]==undefined)
+						delete $scope.polls[k];
+					else $scope.pollslength++
+				});
+				s.data.prof_speed = Math.round((s.data.prof_speed / s.data.viewers)*100)
+				s.data.prof_volume =  Math.round((s.data.prof_volume / s.data.viewers)*100)
+				s.data.prof_comprehensibility =  Math.round((s.data.prof_comprehensibility / s.data.viewers)*100)
+
+				// rt prof feedback
+				$scope.speed.up = (s.data.prof_speed > 0)?s.data.prof_speed :0;
+				$scope.speed.down = (s.data.prof_speed < 0)?s.data.prof_speed * -1 :0;
+				$scope.volume.up = (s.data.prof_volume > 0)?s.data.prof_volume :0;
+				$scope.volume.down = (s.data.prof_volume < 0)?s.data.prof_volume * -1 :0;
+				$scope.comprehensibility.up = (s.data.prof_comprehensibility > 0)?s.data.prof_comprehensibility :0;
+				$scope.comprehensibility.down = (s.data.prof_comprehensibility < 0)?s.data.prof_comprehensibility * -1 :0;
+
+
+				$scope.comprehensibility.canVote = s.data.prof_comprehensibility_canVote;
+				$scope.speed.canVote = s.data.prof_speed_canVote;
+				$scope.volume.canVote = s.data.prof_volume_canVote;
+
+				angular.forEach($scope.results, function(v,k){
+					v.pie = [];
+					var pieValues = [];
+					var pieColors = [];
+					v.decisive = false;
+					var firstCorrect = v.choices[0].correct;
+					
+					for(c in v.choices) if(v.choices[c].text){
+						if(v.total > 0){
+						pieValues.push({correct:v.choices[c].correct,value:v.choices[c].count});
+						if(firstCorrect!=v.choices[c].correct)
+							v.decisive = true;
+							}
+					}
+					
+					
+					if(v.total > 0)for(i in pieValues){
+						if(v.decisive){
+							var j = (pieValues[i].correct)?0:1;
+							v.pie[j] =  (v.pie[j]==undefined)?pieValues[i].value:v.pie[j]+pieValues[i].value;
+						} else {
+							v.pie.push(pieValues[i].value)
+						}
+					}
+					v.pie = v.pie.join(",")
+
+				})
+				$timeout(function() {
+					jQuery(".sparklines").each(function(idx){
+						var dec = (jQuery(this).attr("decisive")=="true")?true:false;
+						jQuery(this).sparkline('html',{ width : '100', height : '100', type : 'pie', sliceColors:((dec)? ["#00ff00","#ff0000"] : undefined)})
+					});
+				}, 10);
+				
+
+				$timeout($scope.rtc,$scope.rtcInterval);
+			});
+		}
+		$scope.rtc();
+
+
+	}
+</script>
+<style>
+
+
+
+
+
+
+
+
+
+
+.hidden{
+    display: none;
+}
+
+header, #chatContainer, #inputContainer textarea:hover, #memberContainer ul#memberList li div.member {
+	background: #eee;
+}
+
+header div#logout img#disconnect:hover, #memberContainer ul#memberList li div.member:hover, ul#feedback li:hover,
+header div#stopIcon img#stop:hover, img#go {
+    cursor: pointer;
+}
+
+header  img, #memberContainer ul#memberList li div.image  img {
+    width: 100%;
+    height: 100%;
+}
+
+/* Dialog Styles*/
+
+div#loginDialog label {
+    display: block;
+}
+
+textarea#pmMessage {
+    width: 100%;
+    height: 100%;
+    resize: none;
+}
+
+/* END Dialog Styles*/
+/* Header */
+
+header {
+	margin: 0 0 2% 0;
+	padding: 2px 0 2px 0;
+	width: auto;
+    height: 35px;
+}
+
+header > div {
+	float: left;
+}
+
+header div#icon, header div#logout, header div#stopIcon{
+	height: 100%;
+    width: 5%;
+}
+
+header div#avatar {
+    width: 20%;
+    margin: 10px 1% 0 1%;
+}
+
+header div#stopIcon img#stop {
+	height: 35px;
+ 	max-width: 35px;
+	padding: 2px;	
+}
+
+header div#status {
+    width: 61%;
+    margin: 10px 1% 0 1%;
+}
+
+header div#logout img#disconnect{
+ 	height: 25px;
+ 	max-width: 20px;
+	float: right;
+	padding: 5px;		
+}
+
+/* END Header */
+/* Basic Layout */
+
+#page {
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    min-width: 650px;
+    min-height: 400px;
+}
+
+#chatContainer, #memberContainer {
+    height: 70%;
+    border: 1px solid #3B5998;
+	overflow: auto;
+	padding: 0.5%;
+	margin-bottom: 1%;
+}
+
+#chatContainer {	
+    width: auto;
+    word-wrap: break-word;   
+}
+
+#memberContainer {
+	margin-left: 25px;
+    width: 220px;
+    float: right;	
+}
+
+#inputContainer{
+    clear: both;
+    width: 100%;
+	float: bottom;
+}
+
+#inputContainer{
+    height: 10%;
+}
+
+#inputContainer textarea {
+	width: 99%;
+	height: 99%;
+    border: thin solid #3B5998;
+    border-radius: 10px;
+    resize: none;
+    overflow: auto;	
+	padding: 0.5%;
+}
+
+/* END Basic Layout */
+/* ChatContainer Elements */
+
+#chatContainer div {
+    font-size: 90%;
+}
+
+#chatContainer div.message {
+    padding: 2px;
+    margin: 8px;
+    background: white;
+}
+
+#chatContainer div.message div.head {
+    color: #3B5998;
+    font-style:italic;
+}
+
+#chatContainer div.private div.body {
+    background: #3B5998;
+    color: white;
+}
+
+/* END ChatContainer Elements */
+/* MemberContainer Elements */
+
+#memberContainer ul#memberList {
+    list-style-type: none;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+#memberContainer ul#memberList li div.member {
+    width: 100%;
+	height: 30px;
+    float: left;
+    margin-bottom: 1.5%;
+}
+
+#memberContainer ul#memberList li div.image {
+    float: left; 
+    width: 15%; 
+    height: 100%; 
+    margin-right: 2%;
+}
+
+#memberContainer ul#memberList li div.nick {
+    float: left;
+    width: 83%;
+	padding: 2% 0;
+}
+
+#memberContainer ul#memberList li div.member:hover {
+    background-color: white;
+}
+
+/* END MemberContainer Elements */
+
+</style>

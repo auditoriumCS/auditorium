@@ -41,6 +41,10 @@
 //= require terms
 //= require users
 //= require url_helper
+//= require_tree ./BOSH
+//= require amcs
+//= require angular-min
+
 
 
 function remove_fields(link) {

@@ -4,6 +4,7 @@ Auditorium::Application.routes.draw do
   match "poll_results/:id" => "poll_results#index"
   match "poll_results/new/:pollId/:eventId" => "poll_results#new"
   match "poll_results/refresh/:id" => "poll_results#showjax"
+  match "poll_results/:id/rtc_create" => "poll_results#rtc_create"
   
   resources :membership_requests, :only => [:index, :create, :destroy]
 
@@ -104,7 +105,10 @@ Auditorium::Application.routes.draw do
   match "events/:id/pull" => "events#get_json"
   match "events/:id/push" => "events#post_json"
   match "events/:id/check" => "events#check_version"
-
+  match "events/:id/rtc" => "events#realtime_client"
+  match "events/:id/setChatActive" => "events#set_chat_active"
+  match "events/:id/update_slide" => "events#update_slide"
+  match "events/:id/prof_control" => "events#push_msg_to_prof"
   
   resources :lectures
 

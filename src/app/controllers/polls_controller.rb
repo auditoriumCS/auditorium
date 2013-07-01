@@ -5,8 +5,7 @@ class PollsController < ApplicationController
  poll = Poll.create(
         :questiontext => "What is the meaning of life?", 
         :event_id => 2,
-        :time_to_answer => 60,
-        :slide_id => 19384533)
+        :time_to_answer => 60)
 
     choice1 = Choice.create(
          :answertext => "42",
@@ -26,8 +25,7 @@ class PollsController < ApplicationController
   poll2 = Poll.create(
         :questiontext => "To be or not to be!", 
         :event_id => 2,
-        :time_to_answer => 120,
-        :slide_id => 123456)
+        :time_to_answer => 120)
 
     choice1 = Choice.create(
          :answertext => "To be",
@@ -80,12 +78,16 @@ class PollsController < ApplicationController
 def create
   @poll = Poll.new(params[:poll])
   @poll.event_id = params[:poll][:event_id]
+
   
 
-  #TODO: one of the answers must be correct
-
   respond_to do |format|
-    if @poll.save
+    if !is_singlebestchoice(@poll)
+      format.html  { render :action => "new", :notice => 'poll needs to have one correct answer.'}
+      format.json  { render :json => @poll.errors,
+                    :status => :unprocessable_entity }
+
+    elsif @poll.save
           format.html  { redirect_to(@poll,
                     :notice => 'poll and its choices were successfully created.') }
           format.json  { render :json => @poll,
@@ -134,10 +136,12 @@ end
   end
 
 def update 
-  #params[:poll][:existing_choice_attributes] ||= {}
   @poll = Poll.find(params[:id])
 
-  if @poll.update_attributes(params[:poll])
+  if !is_singlebestchoice(@poll)
+      flash[:notice] = "poll needs to have one correct answer."
+      redirect_to @poll
+  elsif @poll.update_attributes(params[:poll])
       flash[:notice] = "Successfully updated poll."
       redirect_to @poll
   else
@@ -161,6 +165,8 @@ def toggle_visibility
 
 end
 
+
+
   # GET /polls/:id/toggle_visibility_of_result
 def toggle_result
   @poll = Poll.find(params[:id])
@@ -175,5 +181,44 @@ def toggle_result
                     :status => :unprocessable_entity }
       end                
   end
+
+  def is_singlebestchoice poll
+    is_okay = true
+    single = false
+    poll.choices.each do |c|
+      if c.is_correct && single
+        is_okay = false
+        # poll.errors.add(:choices, "cannot have more than one correct answer.")
+      end
+
+      if c.is_correct
+        single = true
+      end
+
+    end
+
+    if !single
+      is_okay = false
+      # poll.errors.add(:choices, "must have one correct answer.")
+    end
+
+    return is_okay
+  end
+
+# GET /polls/:id/is_visible
+def is_visible
+  res  = Map.new
+  res['']
+end  
+
+
+# GET /polls/:id/is_result_visible
+def is_result_visible
+  res = Map.new
+  res['visible'] = Poll.find(params[:id]).result_enabled
+  respond_to do |format|
+    format.json {render :json => res}
+  end
+end
 
 end

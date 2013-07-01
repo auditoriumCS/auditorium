@@ -44,7 +44,13 @@
 
           <%= f.text_field :time_to_answer, :placeholder => "Time in seconds to answer this. Leave Empty if there is no limit.", :class => "span8"%>
 
-          <p> Slide: <%= f.object.slide_id %></p>
+          <p> activate poll on slide: 
+            <% if f.object.on_slide %> 
+              <%= f.object.on_slide %> 
+            <% else %>
+                not selected yet 
+            <% end %>
+          </p>
 
           <p class='hint'>
             <strong> Answers </strong> (mark correct answer with a check)
