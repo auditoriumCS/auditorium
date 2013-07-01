@@ -62,7 +62,7 @@ jQuery(function(){
 %>
 
 <h2>
-	You have a new <%= @event.event_type.camelize %> on <%= @event.beginDate %> inserted.
+	You have a new <%= @event.event_type.capitalize %> on <%= @event.beginDate %> inserted.
 </h2>
 
 <div class="row">
@@ -86,7 +86,7 @@ jQuery(function(){
 				<td class="show_td"> <strong>Date</strong> </td>
 				<td>
 					<% if @event.beginDate == @event.endDate %>
-  						<%= @event.beginDaten %>
+  						<%= @event.beginDate %>
 					<% else %>
   						<%= "from #{@event.beginDate} to #{@event.endDate}" %> 
 					<% end %>
@@ -104,15 +104,15 @@ jQuery(function(){
 							
 			
 		</table>
-		<table>
+		<table class="link-btn">
 		<tr>
 		<% if can? :manage, @course or can_manage_course%>
 
-    				<td class="show_btn"><%= link_to content_tag('span', ' Add new event', :class=> 'icon-plus'), new_event_path()  %></td>
-    				<td class="show_btn"><%= link_to content_tag('span', ' edit event', :class=>'icon-edit'), edit_event_path(@event) %></td>
-    				<td class="show_btn"><%= link_to content_tag('span', ' delete event', :class=>'icon-trash'), @event, confirm: 'Are you sure that you want to delete this event?', method: :delete %></td>
-    				<td class="show_btn"><%= link_to 'All events', events_path %></td>
-					<td class="show_btn"><%= link_to "Go to all Courses", courses_path %></td>
+    				<td class="show_btn"><%= link_to content_tag('span', ' Add new event', :class=> 'icon-plus'), new_event_path(), :class => 'btn btn-primary btn-mini'  %></td>
+    				<td class="show_btn"><%= link_to content_tag('span', ' edit event', :class=>'icon-edit'), edit_event_path(@event), :class => 'btn btn-primary btn-mini'  %></td>
+    				<td class="show_btn"><%= link_to content_tag('span', ' delete event', :class=>'icon-trash'), @event, confirm: 'Are you sure that you want to delete this event?', method: :delete, :class => 'btn btn-warning btn-mini' %></td>
+ 					<td class="show_btn"></td>
+					
 		<% end %>
 		</tr>
 		</table>
@@ -120,18 +120,65 @@ jQuery(function(){
 
 
   </div>  <!-- end of row -->
+  <script>
 
+   function toggleEventsShow(id) {
+    if(jQuery(id).height() == 0) {
+     jQuery(id).css("max-height","99999px");
+     } else {
 
-<h3>Polls</h3>
+      jQuery(id).css("max-height","0px");
+     }
+   }
+ 
 
+function change_events_arrow(arrow) 
+{
+    		
+			if(jQuery(arrow).height() == 0) 
+			{
+     				jQuery('#polls_arrow_up').css("height","20px");
+				jQuery('#polls_arrow_down').css("height","0px");
+     		} else 
+     		{
+				jQuery('#polls_arrow_down').css("height","20px");
+      				jQuery('#polls_arrow_up').css("height","0px");
+    		}
+  }
+ 
+ </script>
+ 
+<table class="event-polls">
+<tr>
+	<th class="polls-row">
+		<span onclick="toggleEventsShow('#events-polls');change_events_arrow('#events-polls');">
+		<div class="polls_arrow">
+			<%= image_tag("courses_arrow_down.png", :alt => "arrow down", :id=> "polls_arrow_down") %>
+		</div>
+		<div class="polls_arrow"><%= image_tag("courses_arrow_up.png", :alt => "arrow up", :id=> "polls_arrow_up") %>
+		</div>
+	</span>	
+	</th>
+	<th> 
+		<span onclick="toggleEventsShow('#events-polls');change_events_arrow('#events-polls');">
+	
+			<h3>Polls</h3>  
 
+		</span>
+	</th>	
+	<th>
+		<span class="add-new">
+			<% if can? :manage, @course or can_manage_course%>
+	
+				<%= link_to content_tag('span', 'add new poll', :class=>'icon-plus') , new_poll_path  %> 
+	
+			<% end %>
+		</span>
+	</th>
+</tr>	
 
-<% if can? :manage, @course or can_manage_course%>
-	<div class="pull-right">
-		<%= link_to content_tag('span', 'add new poll', :class=>'icon-plus') , new_poll_path  %> 
-	</div>
-<% end %>
-
+</table>
+<div style="overflow:hidden; max-height:0px; -webkit-transition: all .5s ease; -moz-transition: all .5s ease; transition: all .5s ease;" id="events-polls">
 <% if @event.polls.count == 0 %>
 	<p> no polls yet </p>
 <% end %>
@@ -179,4 +226,4 @@ jQuery(function(){
 		</div>  <!-- end of row -->
 	<% end %>  <!-- end of each -->
 
-
+</div>
