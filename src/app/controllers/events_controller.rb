@@ -237,9 +237,6 @@ class EventsController < ApplicationController
     polls.each do |poll|
       res_count = PollResult.where(poll_id: poll).where(user_id: current_user).count
       res_correct = PollResult.where(poll_id: poll.id).where("user_id = #{current_user.id}").joins("INNER JOIN choices ON choices.id = poll_results.choice_id").where("choices.is_correct = true").count
-      puts current_user.id
-      puts "+++++++++++++++++RESULT COUNT:"+res_count.to_s
-      puts "+++++++++++++++++correct: "+res_correct.to_s
       if poll.poll_enabled && (res_count < 3 && res_correct < 1) || current_user.admin
         res['open_polls'] << poll
       end
