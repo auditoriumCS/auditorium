@@ -58,11 +58,11 @@ ActiveRecord::Schema.define(:version => 20130628165026) do
   add_index "chairs", ["institute_id"], :name => "index_chairs_on_institute_id"
 
   create_table "choices", :force => true do |t|
-    t.string  "answertext",       :null => false
-    t.boolean "is_correct",       :null => false
-    t.uuid    "poll_id",          :null => false
+    t.string  "answertext",                      :null => false
+    t.boolean "is_correct",                      :null => false
+    t.uuid    "poll_id",                         :null => false
+    t.integer "version",          :default => 1, :null => false
     t.string  "feedback"
-    t.integer "version"
     t.uuid    "on_slide"
     t.boolean "feedback_enabled"
   end
@@ -126,13 +126,12 @@ ActiveRecord::Schema.define(:version => 20130628165026) do
     t.string   "url",                    :default => ""
     t.string   "building",               :default => ""
     t.string   "room",                   :default => ""
-    t.integer  "version"
     t.integer  "chat_active"
+    t.uuid     "active_slide"
     t.integer  "prof_speed"
     t.integer  "prof_volume"
     t.integer  "prof_comprehensibility"
     t.integer  "viewers"
-    t.uuid     "active_slide"
   end
 
   add_index "events", ["course_id"], :name => "index_events_on_course_id"
@@ -163,6 +162,13 @@ ActiveRecord::Schema.define(:version => 20130628165026) do
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
     t.boolean  "read",       :default => false
+  end
+
+  create_table "groups", :force => true do |t|
+    t.string   "title"
+    t.text     "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "institutes", :force => true do |t|
@@ -268,7 +274,7 @@ ActiveRecord::Schema.define(:version => 20130628165026) do
     t.integer "time_to_answer"
     t.boolean "poll_enabled",   :default => false, :null => false
     t.boolean "result_enabled", :default => false, :null => false
-    t.integer "version"
+    t.integer "version",        :default => 1,     :null => false
     t.uuid    "on_slide"
   end
 

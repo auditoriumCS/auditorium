@@ -7,9 +7,9 @@
          */
         //BOSH: "http://localhost/http-bind",
         //BOSH: "/http-bind",
-        BOSH: "http://mobilis.inf.tu-dresden.de/http-bind",
+        BOSH: "http://141.76.41.204",
         MUC: "http://jabber.org/protocol/muc",
-        OPENFIREDOMAIN: "jabber",
+        OPENFIREDOMAIN: "141.76.41.204",
         //ROOM: "test@conference.kp",
         ROOM: null,
 		SLIDE: "acms:ns:slide",
@@ -499,7 +499,8 @@
                                     }
                                 });
                             }
-
+                            var roomName = $('#room').val();
+                            classRoom.ROOM = roomName + "@conference." + classRoom.OPENFIREDOMAIN
                             classRoom.connection = new Strophe.Connection(classRoom.BOSH);
                             classRoom.connect({jid: classRoom.jid, password: classRoom.pw});
 
