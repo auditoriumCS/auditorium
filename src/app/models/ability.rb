@@ -109,6 +109,11 @@ class Ability
       can :manage, Recording do |recording|
         user.is_course_maintainer? recording.course
       end
+      can :realtime_client, Event
+      can :push_msg_to_prof, Event
+      can :viewer_logout, Event
+      can :rtc_create, PollResult
+
       
     else # Gäste
       cannot :read, :all

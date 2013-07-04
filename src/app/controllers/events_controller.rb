@@ -17,10 +17,10 @@ class EventsController < ApplicationController
   # GET /events/1.json
   def show
     @event = Event.find(params[:id])
-    @event.prof_comprehensibility = 0
-    @event.prof_speed = 0
-    @event.prof_volume = 0
-    @event.viewers =3
+    #@event.prof_comprehensibility = 0
+    #@event.prof_speed = 0
+    #@event.prof_volume = 0
+    @event.viewers = 10
     if session['active_slide'] != nil
       if @event.active_slide != session['active_slide']
         session['active_slide'] = @event.active_slide
