@@ -50,6 +50,7 @@ Auditorium::Application.routes.draw do
   
   get 'users/moderation' => 'users#moderation', :as => :users_moderation
   get 'users/moderation/search', to: 'users#search', as: :search_users
+  get 'users/events' => 'users#events', :as => :users_events
   resources :users
   get 'users/:id/questions' => 'users#questions', :as => :users_questions
   get 'users/:id/answers' => 'users#answers', :as => :users_answers
