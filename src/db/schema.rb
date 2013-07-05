@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130628165026) do
+ActiveRecord::Schema.define(:version => 20130704102902) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -63,7 +63,7 @@ ActiveRecord::Schema.define(:version => 20130628165026) do
     t.uuid    "poll_id",                         :null => false
     t.integer "version",          :default => 1, :null => false
     t.string  "feedback"
-    t.uuid    "on_slide"
+    t.integer "on_slide"
     t.boolean "feedback_enabled"
   end
 
@@ -127,11 +127,11 @@ ActiveRecord::Schema.define(:version => 20130628165026) do
     t.string   "building",               :default => ""
     t.string   "room",                   :default => ""
     t.integer  "chat_active"
-    t.uuid     "active_slide"
     t.integer  "prof_speed"
     t.integer  "prof_volume"
     t.integer  "prof_comprehensibility"
     t.integer  "viewers"
+    t.integer  "active_slide"
   end
 
   add_index "events", ["course_id"], :name => "index_events_on_course_id"
@@ -275,7 +275,7 @@ ActiveRecord::Schema.define(:version => 20130628165026) do
     t.boolean "poll_enabled",   :default => false, :null => false
     t.boolean "result_enabled", :default => false, :null => false
     t.integer "version",        :default => 1,     :null => false
-    t.uuid    "on_slide"
+    t.integer "on_slide"
   end
 
   add_index "polls", ["event_id"], :name => "index_polls_on_event_id"

@@ -104,7 +104,7 @@ class EventsController < ApplicationController
   def update_slide
     #r = JSON.parse(request.body.read)
     # test
-    slideId = '34390000-0000-0000-0000-000000000000'
+    slideId = 0x3439
     event = Event.find(params[:id])
     event.active_slide = slideId
 
