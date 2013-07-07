@@ -12,7 +12,6 @@
   <strong>Poll available?:</strong>  <%= @poll.poll_enabled %><br>
   <strong>Result available?:</strong>  <%= @poll.result_enabled %><br>
   <strong>activated on Presentation Slide id:</strong>  <%= @poll.on_slide %><br>
-  <strong>Version number:</strong>  <%= @poll.version %><br>
 </p>
 
 
@@ -25,7 +24,6 @@
 			  <strong> Answer <%= i %>:</strong> <%= c.answertext %><br>
               <%= c.is_correct ? "is correct" : "is not correct" %><br>
               Feedback: <%= c.feedback %><br>
-              Version <%= c.version %> <br>
               activation slide <%= c.on_slide %><br>
           </p>
     <% end %>

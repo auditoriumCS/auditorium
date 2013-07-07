@@ -103,8 +103,8 @@ Auditorium::Application.routes.draw do
   resources :institutes
 
   resources :events
-  match "events/:id/pull" => "events#get_json"
-  match "events/:id/push" => "events#post_json"
+  match "events/:id/pull" => "events#pull_json"
+  match "events/:id/push" => "events#push_json"
   match "events/:id/check" => "events#check_version"
   match "events/:id/rtc" => "events#realtime_client"
   match "events/:id/setChatActive" => "events#set_chat_active"

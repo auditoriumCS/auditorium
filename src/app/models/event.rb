@@ -6,7 +6,7 @@ class Event < ActiveRecord::Base
   belongs_to :tutor, class_name: 'User'
 
   attr_accessible :course_id, :tutor_id, :event_type # lecture, exercise, seminar, lab
-  attr_accessible :weekday, :beginDate, :version, :endDate, :chat_active, :week, :url, :building, :room, :active_slide
+  attr_accessible :weekday, :beginDate, :endDate, :chat_active, :week, :url, :building, :room, :active_slide
   attr_accessible :polls
   
   validates :event_type,  presence: true,
@@ -14,6 +14,14 @@ class Event < ActiveRecord::Base
   validates :course,  presence: true
   validates :tutor, presence: true
 
+  def record_modification
+    if !self.modified
+      self.version = self.version + 1
+      self.modified = true
+      self.save!
+    end
+  end
+  
   	# makes a String from every attribute within the model
 	def to_s
     result = ""

@@ -5,7 +5,7 @@ class Choice < ActiveRecord::Base
   has_many :poll_result
 
 
-  attr_accessible :answertext, :is_correct, :poll_result, :poll_id, :version, :feedback, :on_slide, :feedback_enabled
+  attr_accessible :answertext, :is_correct, :poll_result, :poll_id, :feedback, :on_slide, :feedback_enabled
   validates :answertext,  :presence => true
   # validation presence throws an error if :is_correct => false ... thats why we should avoid it.
   validates :is_correct, :inclusion => {:in => [true, false]}

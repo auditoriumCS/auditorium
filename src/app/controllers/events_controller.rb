@@ -145,19 +145,26 @@ class EventsController < ApplicationController
   end
 
   # GET /events/pull/x.json
+  # POST /events/pull/x.json
   # retrieve event as JSON
-  def get_json
-  	@event = Event.find(params[:id])
-  	respond_to do |format|
-  		format.json { render :json => @event.to_json(:include =>{ :polls => {:include => :choices}})}
+  # sets event.modified to false if requested with HTTP method POST
+  def pull_json
+    @event = Event.find(params[:id])
+    if request.post?
+      @event.modified = false
+      @event.save!
+    end
+    respond_to do |format|
+      format.json { render :json => @event.to_json(:include =>{ :polls => {:include => :choices}})}
     end
   end
   
   # POST /events/push/x.json
-  def post_json 
-  	r = JSON.parse(request.body.read)
+  def push_json 
+    r = JSON.parse(request.body.read)
     e = Event.find(params[:id])
     e.version = r['version'].to_i
+    e.modified = false;
     pids = Hash.new
     cids = Hash.new
 
@@ -173,7 +180,6 @@ class EventsController < ApplicationController
       end 
       
       p.questiontext = rp['questiontext']
-      p.version = rp['version']
       p.on_slide  = rp['on_slide'] 
       rp['choices'].each do |rc|
         cids[rc['id'].to_s.gsub("-", "").upcase] = true
@@ -186,7 +192,7 @@ class EventsController < ApplicationController
           p.choices << c
         end 
         c.answertext = rc['answertext']
-        c.version = rc['version']
+        c.feedback = rc['feedback']
         c.is_correct = rc['is_correct'] 
         c.save!
       end
@@ -207,16 +213,12 @@ class EventsController < ApplicationController
     end
     
     e.save!
-    e = Event.find(params[:id])
 
-    # respond_to do |format|
-    #   format.json { render :json => e.to_json(:include =>{ :polls => {:include => :choices}})}
-    # end
     res = Hash.new 
     res['success'] = true
-	 respond_to do |format|
-	 	format.json { render :json => res}
-	 end
+    respond_to do |format|
+      format.json { render :json => res}
+    end
   end
   
   # GET /events/check/x.json
