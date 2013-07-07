@@ -153,7 +153,7 @@ class EventsController < ApplicationController
       @event.save!
     end
     respond_to do |format|
-      format.json { render :json => @event.to_json(:include =>{ :polls => {:include => :choices}})}
+      format.json { render :json => @event.to_json(:include =>{ :polls => {:include => [:choices, :poll_rules]}})}
     end
   end
   
@@ -165,6 +165,7 @@ class EventsController < ApplicationController
     e.modified = false;
     pids = Hash.new
     cids = Hash.new
+    prids = Hash.new
 
     # Add and modify all polls and choices in given event
     r['polls'].each do |rp|
@@ -196,6 +197,19 @@ class EventsController < ApplicationController
         c.position = rc['position']
         c.save!
       end
+      rp['poll_rules'].each do |rpr|
+        prids[rpr['id'].to_s.gsub("-", "").upcase] = true
+        begin
+          pr = PollRule.find(rpr['id'])
+        rescue
+          pr = PollRule.new
+          pr.poll_id = rp['id']
+          pr.id = rpr['id']
+          p.poll_rules << pr
+        end 
+        pr.choice_id = rpr['choice_id']
+        pr.save!
+      end
       p.save!      
     end
     
@@ -205,6 +219,11 @@ class EventsController < ApplicationController
       p.choices.each do |c|
         if !cids[c.id.to_s.gsub("-", "").upcase]
           c.destroy
+        end
+      end
+      p.poll_rules.each do |pr|
+        if !prids[pr.id.to_s.gsub("-", "").upcase]
+          pr.destroy
         end
       end
       if !pids[p.id.to_s.gsub("-", "").upcase]

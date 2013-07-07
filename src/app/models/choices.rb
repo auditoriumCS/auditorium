@@ -1,8 +1,9 @@
 class Choice < ActiveRecord::Base
   include ActiveUUID::UUID
   # adds a foreign_key of polls to choices 
-  belongs_to :polls
+  belongs_to :poll
   has_many :poll_result
+  has_many :poll_rules, :dependent => :destroy
 
 
   attr_accessible :answertext, :is_correct, :poll_result, :poll_id, :feedback, :on_slide, :feedback_enabled

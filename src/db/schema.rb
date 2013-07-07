@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130708204748) do
+ActiveRecord::Schema.define(:version => 20130707155618) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -58,13 +58,12 @@ ActiveRecord::Schema.define(:version => 20130708204748) do
   add_index "chairs", ["institute_id"], :name => "index_chairs_on_institute_id"
 
   create_table "choices", :force => true do |t|
-    t.text    "answertext",                      :null => false
-    t.boolean "is_correct",                      :null => false
-    t.uuid    "poll_id",                         :null => false
+    t.uuid    "poll_id",          :null => false
+    t.text    "answertext",       :null => false
+    t.boolean "is_correct",       :null => false
     t.text    "feedback"
     t.integer "on_slide"
     t.boolean "feedback_enabled"
-    t.integer "position",         :default => 0
   end
 
   add_index "choices", ["poll_id"], :name => "index_choices_on_poll_id"
@@ -126,13 +125,13 @@ ActiveRecord::Schema.define(:version => 20130708204748) do
     t.string   "url",                    :default => ""
     t.string   "building",               :default => ""
     t.string   "room",                   :default => ""
-    t.integer  "version",                :default => 0,     :null => false
     t.integer  "chat_active"
     t.integer  "prof_speed"
     t.integer  "prof_volume"
     t.integer  "prof_comprehensibility"
     t.integer  "viewers"
     t.integer  "active_slide"
+    t.integer  "version",                :default => 0,     :null => false
     t.boolean  "modified",               :default => false, :null => false
   end
 
@@ -263,6 +262,11 @@ ActiveRecord::Schema.define(:version => 20130708204748) do
     t.integer  "answer_time"
   end
 
+  create_table "poll_rules", :force => true do |t|
+    t.uuid "poll_id"
+    t.uuid "choice_id"
+  end
+
   create_table "polls", :force => true do |t|
     t.text    "questiontext"
     t.integer "event_id"
@@ -270,7 +274,6 @@ ActiveRecord::Schema.define(:version => 20130708204748) do
     t.boolean "poll_enabled",   :default => false, :null => false
     t.boolean "result_enabled", :default => false, :null => false
     t.integer "on_slide"
-    t.integer "position",       :default => 0
   end
 
   add_index "polls", ["event_id"], :name => "index_polls_on_event_id"

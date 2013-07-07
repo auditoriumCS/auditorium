@@ -1,6 +1,7 @@
 class Poll < ActiveRecord::Base
 include ActiveUUID::UUID
   has_many :choices, :dependent => :destroy
+  has_many :poll_rules, :dependent => :destroy
   # has_one :polls_choices, :through => :choices
   belongs_to :events
 
