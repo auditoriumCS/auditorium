@@ -54,7 +54,7 @@
 
           <!-- see all existing answers -->
           <!-- add a button to add a new answer -->
-          <%= f.fields_for :choices do |builder| %>
+          <%= f.fields_for :choices, @poll.choices.sort_by(&:position) do |builder| %>
             <%= render 'choice', :f => builder %>
           <% end %>
 

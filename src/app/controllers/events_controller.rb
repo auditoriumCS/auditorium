@@ -181,6 +181,7 @@ class EventsController < ApplicationController
       
       p.questiontext = rp['questiontext']
       p.on_slide  = rp['on_slide'] 
+      p.position = rp['position']
       rp['choices'].each do |rc|
         cids[rc['id'].to_s.gsub("-", "").upcase] = true
         begin
@@ -194,6 +195,7 @@ class EventsController < ApplicationController
         c.answertext = rc['answertext']
         c.feedback = rc['feedback']
         c.is_correct = rc['is_correct'] 
+        c.position = rc['position']
         c.save!
       end
       p.save!      
@@ -251,7 +253,7 @@ class EventsController < ApplicationController
         p["choices"] = Array.new
         total = 0;
         
-        poll.choices.each do |e|
+        poll.choices.sort_by(&:position).each do |e|
           c = Hash.new
           c["text"] = e.answertext
           c["correct"] = e.is_correct

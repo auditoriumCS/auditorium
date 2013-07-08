@@ -18,7 +18,7 @@
   <h3>Answers:</h3>
 <p>
     <% i = 0 %>
-	<% @poll.choices.each do |c| %>
+	<% @poll.choices.sort_by(&:position).each do |c| %>
 			<% i = i+1 %>
 			<p>
 			  <strong> Answer <%= i %>:</strong> <%= c.answertext %><br>
