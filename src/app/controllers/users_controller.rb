@@ -16,7 +16,7 @@ class UsersController < ApplicationController
 
     unless @user.admin?
       @user.admin = params[:admin]
-      AuditoriumMailer.user_becomes_admin(@user).deliver  
+      AuditoriumMailer.user_becomes_admin(@user).deliver if @user.admin?
     end 
     
     respond_to do |format|
