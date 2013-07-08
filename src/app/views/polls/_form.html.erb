@@ -65,7 +65,7 @@
               <strong>Recipients</strong>
             </p>
             <ul>
-            <% @poll.poll_rules.each do |pr| %>
+            <% @poll.poll_rules.sort_by(&:position).each do |pr| %>
               <li>
                 Poll: <%= pr.choice.poll.questiontext %><br>
                 answered with: <%= pr.choice.answertext %>

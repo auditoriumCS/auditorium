@@ -4,6 +4,7 @@ class CreatePollRules < ActiveRecord::Migration
       t.uuid :id, :primary_key => true
       t.uuid :poll_id
       t.uuid :choice_id
+      t.integer :position, :default => 0
     end
   end
 end

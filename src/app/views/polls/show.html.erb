@@ -34,7 +34,7 @@
 <% if !@poll.poll_rules.empty? %>
 <h3>Recipients:</h3>
 <ul>
-	<% @poll.poll_rules.each do |pr| %>
+	<% @poll.poll_rules.sort_by(&:position).each do |pr| %>
 		<li>
 			<strong>Poll:</strong> <%= pr.choice.poll.questiontext %><br>
 			<strong>answered with:</strong> <%= pr.choice.answertext %>

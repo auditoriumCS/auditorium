@@ -208,6 +208,7 @@ class EventsController < ApplicationController
           p.poll_rules << pr
         end 
         pr.choice_id = rpr['choice_id']
+        pr.position = rpr['position']
         pr.save!
       end
       p.save!      
