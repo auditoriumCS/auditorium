@@ -7,7 +7,7 @@ class AuditoriumMailer < ActionMailer::Base
 
   def welcome_email(user)
   	@user = user
-    @url = "http://auditorium.inf.tu-dresden.de"
+    @url = root_url
     mail(to: @user.email, subject: 'Welcome to auditorium. Your account has been confirmed.')
   end 
 
