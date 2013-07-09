@@ -452,6 +452,11 @@ render.call(this))return;e&&a.drawCircle(d,d,Math.floor(d-e/2),c.get("borderColo
 				$scope.volume.canVote = s.data.prof_volume_canVote;
 
 				angular.forEach($scope.results, function(v,k){
+					if (!v.choices.length) {
+						// messages have no results
+						return;
+					}
+				
 					v.pie = [];
 					var pieValues = [];
 					var pieColors = [];
