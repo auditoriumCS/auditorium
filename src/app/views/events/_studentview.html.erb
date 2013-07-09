@@ -200,7 +200,7 @@ render.call(this))return;e&&a.drawCircle(d,d,Math.floor(d-e/2),c.get("borderColo
 	</div>
 	<div class="row">
 		<div class="span6" id="polls"> 
-			Fragen: 
+			Fragen/Nachrichten:
 			<div ng-show="pollslength > 1">
 
 				<span ng-click="decrementActivePoll()"> &lt;</span>
@@ -214,12 +214,12 @@ render.call(this))return;e&&a.drawCircle(d,d,Math.floor(d-e/2),c.get("borderColo
 
 			<div ng-repeat="(key, poll) in polls" ng-show="$index == activePoll">
 				<h3>{{poll.questiontext}}</h3>
-				<span class="alert alert-error" ng-repeat="msg in poll.messages"> {{msg}}<span ng-click="poll.messages.splice($index,1)" class="close">[x]</span></span>
-				<div ng-repeat="c in poll.choices">
-					<b>{{$index}}.</b> <input type="radio" ng-model="poll.choice_id" value="{{c.id}}" name="choice"/>	
+				<div class="alert alert-error" ng-repeat="msg in poll.messages"><span ng-click="poll.messages.splice($index,1)" class="close">[x]</span>{{msg}}</div>
+				<div ng-repeat="c in poll.choices | orderBy:'position'">
+					<b>{{$index}}.</b> <input type="radio" ng-model="poll.choice_id" value="{{c.id}}" name="choice"/>
 					{{c.answertext}}
 				</div>
-				<button ng-click="submitPoll(poll.choice_id, key)" class="btn btn-primary">submit</button>
+				<button ng-show="poll.choices.length != 0" ng-click="submitPoll(poll.choice_id, key)" class="btn btn-primary">submit</button>
 			</div>
 		</div>
 		<div class="span4" id="results">

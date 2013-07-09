@@ -230,7 +230,7 @@ render.call(this))return;e&&a.drawCircle(d,d,Math.floor(d-e/2),c.get("borderColo
 </style>
 <div class="row" ng-repeat="p in results">
 	<div class="span8" id="polls"> 
-		<h2>Frage:</h2> 
+		<h2 ng-show="p.choices.length != 0">Frage:</h2><h2 ng-show="p.choices.length == 0">Nachricht:</h2> 
 		<div class="btn-group">
 		  <button ng-click="toggleVisibilityOfPoll(p.id)" class="btn" ng-class="p.poll_enabled && 'icon-lock' || 'icon-unlock'" > {{p.poll_enabled && 'disable' || 'enable'}}</button>
 		  <button ng-click="editPoll(p.id)" class="btn icon-edit"> edit</button>
@@ -244,7 +244,7 @@ render.call(this))return;e&&a.drawCircle(d,d,Math.floor(d-e/2),c.get("borderColo
 			
 		</div>
 	</div>
-	<div class="span2" id="results">
+	<div ng-show="p.choices.length != 0" class="span2" id="results">
 		<h2>Ergebnis:</h2>
 		<button ng-click="toggleVisibilityOfResult(p.id)" class="btn" ng-class="p.result_enabled && 'icon-lock' || 'icon-unlock'" > {{p.result_enabled && 'disable' || 'enable'}}</button>
 		<div>
