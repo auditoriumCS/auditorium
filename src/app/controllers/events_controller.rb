@@ -102,11 +102,9 @@ class EventsController < ApplicationController
 
   # POST /events/1/update_slide
   def update_slide
-    #r = JSON.parse(request.body.read)
-    # test
-    slideId = '34390000-0000-0000-0000-000000000000'
+    r = JSON.parse(request.body.read)
     event = Event.find(params[:id])
-    event.active_slide = slideId
+    event.active_slide = r["slide_id"]
 
     #zero out prof feedback on slide change
     event.prof_comprehensibility = 0
@@ -145,21 +143,29 @@ class EventsController < ApplicationController
   end
 
   # GET /events/pull/x.json
+  # POST /events/pull/x.json
   # retrieve event as JSON
-  def get_json
-  	@event = Event.find(params[:id])
-  	respond_to do |format|
-  		format.json { render :json => @event.to_json(:include =>{ :polls => {:include => :choices}})}
+  # sets event.modified to false if requested with HTTP method POST
+  def pull_json
+    @event = Event.find(params[:id])
+    if request.post?
+      @event.modified = false
+      @event.save!
+    end
+    respond_to do |format|
+      format.json { render :json => @event.to_json(:include =>{ :polls => {:include => [:choices, :poll_rules]}})}
     end
   end
   
   # POST /events/push/x.json
-  def post_json 
-  	r = JSON.parse(request.body.read)
+  def push_json 
+    r = JSON.parse(request.body.read)
     e = Event.find(params[:id])
     e.version = r['version'].to_i
+    e.modified = false;
     pids = Hash.new
     cids = Hash.new
+    prids = Hash.new
 
     # Add and modify all polls and choices in given event
     r['polls'].each do |rp|
@@ -173,8 +179,8 @@ class EventsController < ApplicationController
       end 
       
       p.questiontext = rp['questiontext']
-      p.version = rp['version']
       p.on_slide  = rp['on_slide'] 
+      p.position = rp['position']
       rp['choices'].each do |rc|
         cids[rc['id'].to_s.gsub("-", "").upcase] = true
         begin
@@ -186,9 +192,24 @@ class EventsController < ApplicationController
           p.choices << c
         end 
         c.answertext = rc['answertext']
-        c.version = rc['version']
+        c.feedback = rc['feedback']
         c.is_correct = rc['is_correct'] 
+        c.position = rc['position']
         c.save!
+      end
+      rp['poll_rules'].each do |rpr|
+        prids[rpr['id'].to_s.gsub("-", "").upcase] = true
+        begin
+          pr = PollRule.find(rpr['id'])
+        rescue
+          pr = PollRule.new
+          pr.poll_id = rp['id']
+          pr.id = rpr['id']
+          p.poll_rules << pr
+        end 
+        pr.choice_id = rpr['choice_id']
+        pr.position = rpr['position']
+        pr.save!
       end
       p.save!      
     end
@@ -201,22 +222,23 @@ class EventsController < ApplicationController
           c.destroy
         end
       end
+      p.poll_rules.each do |pr|
+        if !prids[pr.id.to_s.gsub("-", "").upcase]
+          pr.destroy
+        end
+      end
       if !pids[p.id.to_s.gsub("-", "").upcase]
         p.destroy
       end
     end
     
     e.save!
-    e = Event.find(params[:id])
 
-    # respond_to do |format|
-    #   format.json { render :json => e.to_json(:include =>{ :polls => {:include => :choices}})}
-    # end
     res = Hash.new 
     res['success'] = true
-	 respond_to do |format|
-	 	format.json { render :json => res}
-	 end
+    respond_to do |format|
+      format.json { render :json => res}
+    end
   end
   
   # GET /events/check/x.json
@@ -249,7 +271,7 @@ class EventsController < ApplicationController
         p["choices"] = Array.new
         total = 0;
         
-        poll.choices.each do |e|
+        poll.choices.sort_by(&:position).each do |e|
           c = Hash.new
           c["text"] = e.answertext
           c["correct"] = e.is_correct
@@ -274,6 +296,18 @@ class EventsController < ApplicationController
     res['prof_volume_canVote'] = session['prof_volume_canVote']
 
     res['viewers'] = e.viewers
+
+    if(res['active_slide'] != e.active_slide)
+      session['prof_comprehensibility_canVote'] = true
+      session['prof_speed_canVote'] = true
+      session['prof_volume_canVote'] = true
+
+      f = Poll.joins("INNER JOIN poll_rules ON poll.id = poll_rules.poll_id").joins("INNER JOIN poll_results ON poll_rules.choice_id = poll_results.choice_id").where("poll_results.user_id = #{current_user.id}").first
+      if(f.questiontext != nil)
+        res['feedback'] = f.questiontext
+      end
+    end
+
     res['active_slide'] = e.active_slide
     res['x-csrf'] = request.session_options[:id]
 

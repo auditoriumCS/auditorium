@@ -12,21 +12,33 @@
   <strong>Poll available?:</strong>  <%= @poll.poll_enabled %><br>
   <strong>Result available?:</strong>  <%= @poll.result_enabled %><br>
   <strong>activated on Presentation Slide id:</strong>  <%= @poll.on_slide %><br>
-  <strong>Version number:</strong>  <%= @poll.version %><br>
 </p>
 
 
+<% if !@poll.choices.empty? %>
   <h3>Answers:</h3>
 <p>
     <% i = 0 %>
-	<% @poll.choices.each do |c| %>
+	<% @poll.choices.sort_by(&:position).each do |c| %>
 			<% i = i+1 %>
 			<p>
 			  <strong> Answer <%= i %>:</strong> <%= c.answertext %><br>
               <%= c.is_correct ? "is correct" : "is not correct" %><br>
               Feedback: <%= c.feedback %><br>
-              Version <%= c.version %> <br>
               activation slide <%= c.on_slide %><br>
           </p>
     <% end %>
 </p>
+<% end %>
+
+<% if !@poll.poll_rules.empty? %>
+<h3>Recipients:</h3>
+<ul>
+	<% @poll.poll_rules.sort_by(&:position).each do |pr| %>
+		<li>
+			<strong>Poll:</strong> <%= pr.choice.poll.questiontext %><br>
+			<strong>answered with:</strong> <%= pr.choice.answertext %>
+		</li>
+	<% end %>
+</ul>
+<% end %>

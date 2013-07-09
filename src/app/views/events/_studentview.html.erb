@@ -216,7 +216,7 @@ render.call(this))return;e&&a.drawCircle(d,d,Math.floor(d-e/2),c.get("borderColo
 				<h3>{{poll.questiontext}}</h3>
 				<span class="alert alert-error" ng-repeat="msg in poll.messages"> {{msg}}<span ng-click="poll.messages.splice($index,1)" class="close">[x]</span></span>
 				<div ng-repeat="c in poll.choices">
-					<input type="radio" ng-model="poll.choice_id" value="{{c.id}}" name="choice"/>	
+					<b>{{$index}}.</b> <input type="radio" ng-model="poll.choice_id" value="{{c.id}}" name="choice"/>	
 					{{c.answertext}}
 				</div>
 				<button ng-click="submitPoll(poll.choice_id, key)" class="btn btn-primary">submit</button>
@@ -238,7 +238,7 @@ render.call(this))return;e&&a.drawCircle(d,d,Math.floor(d-e/2),c.get("borderColo
 				<h3>{{p.text}}</h3>
 				<span class="sparklines pull-right" values="{{p.pie}}" decisive="{{p.decisive}}"></span>
 				<div ng-repeat="c in p.choices">
-					{{c.text}}
+					<b>{{$index}}.</b> {{c.text}}
 				</div>
 				
 			</div>

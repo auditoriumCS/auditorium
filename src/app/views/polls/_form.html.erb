@@ -20,10 +20,6 @@
         <div class="controls">
 
 
-          <span class="pull-right">
-          Version:  <%= @poll.version %>
-          </span>
-          
           <label for="questiontext" class="accessibility"> question of the poll</label>
           <%= f.text_field :questiontext, :placeholder => "Write the question...", :class => "span8"%>
 
@@ -58,11 +54,25 @@
 
           <!-- see all existing answers -->
           <!-- add a button to add a new answer -->
-          <%= f.fields_for :choices do |builder| %>
+          <%= f.fields_for :choices, @poll.choices.sort_by(&:position) do |builder| %>
             <%= render 'choice', :f => builder %>
           <% end %>
 
           <p><%= link_to_add_fields "Add Choice", f, :choices %></p>
+
+          <% if !@poll.poll_rules.empty? %>
+            <p class='hint'>
+              <strong>Recipients</strong>
+            </p>
+            <ul>
+            <% @poll.poll_rules.sort_by(&:position).each do |pr| %>
+              <li>
+                Poll: <%= pr.choice.poll.questiontext %><br>
+                answered with: <%= pr.choice.answertext %>
+              </li>
+            <% end %>
+            </ul>
+          <% end %>
 
         </div>
 

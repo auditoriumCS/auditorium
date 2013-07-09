@@ -16,7 +16,7 @@ class UsersController < ApplicationController
 
     unless @user.admin?
       @user.admin = params[:admin]
-      AuditoriumMailer.user_becomes_admin(@user).deliver  
+      AuditoriumMailer.user_becomes_admin(@user).deliver if @user.admin?
     end 
     
     respond_to do |format|
@@ -46,6 +46,13 @@ class UsersController < ApplicationController
   	respond_to do |format|
   		format.html
   	end
+  end
+
+  def events
+    @events = Event.where('tutor_id = ?', current_user.id)
+    respond_to do |format|
+      format.json { render :json => @events.to_json(:include => :course) }
+    end
   end
 
   def confirm

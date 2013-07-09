@@ -49,19 +49,18 @@ render.call(this))return;e&&a.drawCircle(d,d,Math.floor(d-e/2),c.get("borderColo
 							
 			
 		</table>
-		<table>
-		<tr>
+<table>
+	<tr>
 		<% if can? :manage, @course%>
 
-    				<td class="show_btn"><%= link_to content_tag('span', ' Add new event', :class=> 'icon-plus'), new_event_path()  %></td>
-    				<td class="show_btn"><%= link_to content_tag('span', ' edit event', :class=>'icon-edit'), edit_event_path(@event) %></td>
-    				<td class="show_btn"><%= link_to content_tag('span', ' delete event', :class=>'icon-trash'), @event, confirm: 'Are you sure that you want to delete this event?', method: :delete %></td>
-    				<td class="show_btn"><%= link_to 'All events', events_path %></td>
-					<td class="show_btn"><%= link_to "Go to all Courses", courses_path %></td>
-					<td class="show_btn" id="create_room"><a href="javascript:void(0)">Start Chat</a></td>
+    		<td class="show_btn"><%= link_to content_tag('span', ' Add new event', :class=> 'icon-plus'), new_event_path()  %></td>
+    		<td class="show_btn"><%= link_to content_tag('span', ' edit event', :class=>'icon-edit'), edit_event_path(@event) %></td>
+    		<td class="show_btn"><%= link_to content_tag('span', ' delete event', :class=>'icon-trash'), @event, confirm: 'Are you sure that you want to delete this event?', method: :delete %></td>
+					
+		<td class="show_btn" id="create_room"><a href="javascript:void(0)">Start Chat</a></td>
 		<% end %>
-		</tr>
-		</table>
+	</tr>
+</table>
       <!-- end of span4 or span12 -->
 
 

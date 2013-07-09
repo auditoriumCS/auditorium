@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130628165026) do
+ActiveRecord::Schema.define(:version => 20130708222257) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -58,13 +58,13 @@ ActiveRecord::Schema.define(:version => 20130628165026) do
   add_index "chairs", ["institute_id"], :name => "index_chairs_on_institute_id"
 
   create_table "choices", :force => true do |t|
-    t.string  "answertext",                      :null => false
-    t.boolean "is_correct",                      :null => false
     t.uuid    "poll_id",                         :null => false
-    t.integer "version",          :default => 1, :null => false
-    t.string  "feedback"
-    t.uuid    "on_slide"
+    t.text    "answertext",                      :null => false
+    t.boolean "is_correct",                      :null => false
+    t.text    "feedback"
+    t.integer "on_slide"
     t.boolean "feedback_enabled"
+    t.integer "position",         :default => 0
   end
 
   add_index "choices", ["poll_id"], :name => "index_choices_on_poll_id"
@@ -116,8 +116,8 @@ ActiveRecord::Schema.define(:version => 20130628165026) do
   create_table "events", :force => true do |t|
     t.string   "event_type"
     t.integer  "course_id"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
     t.integer  "tutor_id"
     t.integer  "weekday"
     t.date     "beginDate"
@@ -131,7 +131,13 @@ ActiveRecord::Schema.define(:version => 20130628165026) do
     t.integer  "prof_volume"
     t.integer  "prof_comprehensibility"
     t.integer  "viewers"
+<<<<<<< HEAD
     t.uuid     "active_slide"
+=======
+    t.integer  "active_slide"
+    t.integer  "version",                :default => 0,     :null => false
+    t.boolean  "modified",               :default => false, :null => false
+>>>>>>> 1474b4d1479660c84f8eacc815f8127729a66f85
   end
 
   add_index "events", ["course_id"], :name => "index_events_on_course_id"
@@ -261,14 +267,20 @@ ActiveRecord::Schema.define(:version => 20130628165026) do
     t.integer  "answer_time"
   end
 
+  create_table "poll_rules", :force => true do |t|
+    t.uuid    "poll_id"
+    t.uuid    "choice_id"
+    t.integer "position",  :default => 0
+  end
+
   create_table "polls", :force => true do |t|
-    t.string  "questiontext"
+    t.text    "questiontext"
     t.integer "event_id"
     t.integer "time_to_answer"
     t.boolean "poll_enabled",   :default => false, :null => false
     t.boolean "result_enabled", :default => false, :null => false
-    t.integer "version",        :default => 1,     :null => false
-    t.uuid    "on_slide"
+    t.integer "on_slide"
+    t.integer "position",       :default => 0
   end
 
   add_index "polls", ["event_id"], :name => "index_polls_on_event_id"

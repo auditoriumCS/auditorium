@@ -1,13 +1,13 @@
 class AuditoriumMailer < ActionMailer::Base
   add_template_helper(ApplicationHelper)
 
-  default from: "auditorium <notification@auditorium.inf.tu-dresden.de>",
-          'message-id' => "<notification@auditorium.inf.tu-dresden.de>"
+  default from: "auditorium <notification@auditoriumCS.inf.tu-dresden.de>",
+          'message-id' => "<notification@auditoriumCS.inf.tu-dresden.de>"
 
 
   def welcome_email(user)
   	@user = user
-    @url = "http://auditorium.inf.tu-dresden.de"
+    @url = root_url
     mail(to: @user.email, subject: 'Welcome to auditorium. Your account has been confirmed.')
   end 
 
@@ -40,7 +40,7 @@ class AuditoriumMailer < ActionMailer::Base
   		subject: "New private question in #{@post.course.name_with_term}",
   		template_path: 'auditorium_mailer',
   		template_name: @template,
-      'message-id' => "<notification-#{@post.id}@auditorium.inf.tu-dresden.de>")
+      'message-id' => "<notification-#{@post.id}@auditoriumCS.inf.tu-dresden.de>")
   end
 
   def update_in_course(user, post) 
@@ -61,10 +61,10 @@ class AuditoriumMailer < ActionMailer::Base
       in_reply_to = nil
     when 'comment'
       subject = "New #{private_flag}comment in #{@post.course.name_with_term}"
-      in_reply_to = "<notification-#{@post.parent().id}@auditorium.inf.tu-dresden.de>" if @post.parent().presence
+      in_reply_to = "<notification-#{@post.parent().id}@auditoriumCS.inf.tu-dresden.de>" if @post.parent().presence
     when 'answer'
       subject = "New #{private_flag}answer in #{@post.course.name_with_term}"
-      in_reply_to = "<notification-#{@post.parent().id}@auditorium.inf.tu-dresden.de>" if @post.parent().presence
+      in_reply_to = "<notification-#{@post.parent().id}@auditoriumCS.inf.tu-dresden.de>" if @post.parent().presence
     else
       subject = "New post in #{@course.name_with_term}."
       in_reply_to = nil
@@ -75,7 +75,7 @@ class AuditoriumMailer < ActionMailer::Base
       subject: subject,
       template_path: 'auditorium_mailer',
       template_name: 'update_in_course',
-      'message-id' => "<notification-#{@post.id}@auditorium.inf.tu-dresden.de>")
+      'message-id' => "<notification-#{@post.id}@auditoriumCS.inf.tu-dresden.de>")
   end
 
   def new_course_to_approve(course, admin)

@@ -88,6 +88,9 @@ def create
                     :status => :unprocessable_entity }
 
     elsif @poll.save
+          @event = Event.find(@poll.event_id)
+          @event.record_modification
+          
           format.html  { redirect_to(@poll,
                     :notice => 'poll and its choices were successfully created.') }
           format.json  { render :json => @poll,
@@ -126,6 +129,8 @@ end
     choices = Choice.find_all_by_poll_id(@poll.id)
     Choice.destroy(choices)
 
+    @event = Event.find(@poll.event_id)
+    @event.record_modification
 
     @poll.destroy
 
@@ -138,10 +143,13 @@ end
 def update 
   @poll = Poll.find(params[:id])
 
-  if !is_singlebestchoice(@poll)
+  if !true #s_singlebestchoice(@poll)
       flash[:notice] = "poll needs to have one correct answer."
       redirect_to @poll
   elsif @poll.update_attributes(params[:poll])
+      @event = Event.find(@poll.event_id)
+      @event.record_modification
+
       flash[:notice] = "Successfully updated poll."
       redirect_to @poll
   else
