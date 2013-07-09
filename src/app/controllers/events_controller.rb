@@ -102,11 +102,9 @@ class EventsController < ApplicationController
 
   # POST /events/1/update_slide
   def update_slide
-    #r = JSON.parse(request.body.read)
-    # test
-    slideId = 0x3439
+    r = JSON.parse(request.body.read)
     event = Event.find(params[:id])
-    event.active_slide = slideId
+    event.active_slide = r["slide_id"]
 
     #zero out prof feedback on slide change
     event.prof_comprehensibility = 0

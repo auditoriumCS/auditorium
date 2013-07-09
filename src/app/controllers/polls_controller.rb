@@ -143,7 +143,7 @@ end
 def update 
   @poll = Poll.find(params[:id])
 
-  if !is_singlebestchoice(@poll)
+  if !true #s_singlebestchoice(@poll)
       flash[:notice] = "poll needs to have one correct answer."
       redirect_to @poll
   elsif @poll.update_attributes(params[:poll])

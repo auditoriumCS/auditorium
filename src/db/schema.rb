@@ -58,9 +58,9 @@ ActiveRecord::Schema.define(:version => 20130708204748) do
   add_index "chairs", ["institute_id"], :name => "index_chairs_on_institute_id"
 
   create_table "choices", :force => true do |t|
-    t.uuid    "poll_id",                         :null => false
     t.text    "answertext",                      :null => false
     t.boolean "is_correct",                      :null => false
+    t.uuid    "poll_id",                         :null => false
     t.text    "feedback"
     t.integer "on_slide"
     t.boolean "feedback_enabled"
@@ -126,13 +126,13 @@ ActiveRecord::Schema.define(:version => 20130708204748) do
     t.string   "url",                    :default => ""
     t.string   "building",               :default => ""
     t.string   "room",                   :default => ""
+    t.integer  "version",                :default => 0,     :null => false
     t.integer  "chat_active"
     t.integer  "prof_speed"
     t.integer  "prof_volume"
     t.integer  "prof_comprehensibility"
     t.integer  "viewers"
     t.integer  "active_slide"
-    t.integer  "version",                :default => 0,     :null => false
     t.boolean  "modified",               :default => false, :null => false
   end
 
