@@ -118,19 +118,8 @@ class EventsController < ApplicationController
         event.polls.each do |p|
 
           #check for polls
-          if p.on_slide == event.active_slide
-            p.poll_enabled = true
-            p.save
-          end
-
-          #check for feedback
-          p.choices.each do |c|
-            if c.on_slide == event.active_slide
-              # TODO: set feedback_enabled false on create and update
-              c.feedback_enabled = true
-              c.save
-            end
-          end
+          p.poll_enabled = (p.on_slide == event.active_slide)
+          p.save
 
         end
 
@@ -254,13 +243,20 @@ class EventsController < ApplicationController
     res = Hash.new
     e = Event.find(params[:id])
     polls = e.polls
+    messagesForUser = Poll.where(event_id: e, poll_enabled: true).joins("INNER JOIN poll_rules ON polls.id = poll_rules.poll_id").joins("INNER JOIN poll_results ON poll_rules.choice_id = poll_results.choice_id").where("poll_results.user_id = #{current_user.id}").to_a
     res['open_polls'] = Array.new
     res['poll_results'] = Array.new
     polls.each do |poll|
-      res_count = PollResult.where(poll_id: poll).where(user_id: current_user).count
-      res_correct = PollResult.where(poll_id: poll.id).where("user_id = #{current_user.id}").joins("INNER JOIN choices ON choices.id = poll_results.choice_id").where("choices.is_correct = true").count
-      if poll.poll_enabled && (res_count < 3 && res_correct < 1) || current_user.admin
-        res['open_polls'] << poll
+      if poll.poll_rules.empty?
+        res_count = PollResult.where(poll_id: poll).where(user_id: current_user).count
+        res_correct = PollResult.where(poll_id: poll.id).where("user_id = #{current_user.id}").joins("INNER JOIN choices ON choices.id = poll_results.choice_id").where("choices.is_correct = true").count
+        if poll.poll_enabled && (res_count < 3 && res_correct < 1) || current_user.admin
+          res['open_polls'] << poll
+        end
+      else
+        if messagesForUser.find_index(poll) != nil || current_user.admin
+          res['open_polls'] << poll
+        end
       end
       if poll.result_enabled || current_user.admin
         p = Hash.new
@@ -270,7 +266,7 @@ class EventsController < ApplicationController
         p['id'] = poll.id
         p["choices"] = Array.new
         total = 0;
-        
+      
         poll.choices.sort_by(&:position).each do |e|
           c = Hash.new
           c["text"] = e.answertext
@@ -301,11 +297,6 @@ class EventsController < ApplicationController
       session['prof_comprehensibility_canVote'] = true
       session['prof_speed_canVote'] = true
       session['prof_volume_canVote'] = true
-
-      f = Poll.joins("INNER JOIN poll_rules ON poll.id = poll_rules.poll_id").joins("INNER JOIN poll_results ON poll_rules.choice_id = poll_results.choice_id").where("poll_results.user_id = #{current_user.id}").first
-      if(f.questiontext != nil)
-        res['feedback'] = f.questiontext
-      end
     end
 
     res['active_slide'] = e.active_slide
