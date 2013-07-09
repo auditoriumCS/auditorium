@@ -276,6 +276,18 @@ class EventsController < ApplicationController
     res['prof_volume_canVote'] = session['prof_volume_canVote']
 
     res['viewers'] = e.viewers
+
+    if(res['active_slide'] != e.active_slide)
+      session['prof_comprehensibility_canVote'] = true
+      session['prof_speed_canVote'] = true
+      session['prof_volume_canVote'] = true
+
+      f = Poll.joins("INNER JOIN poll_rules ON poll.id = poll_rules.poll_id").joins("INNER JOIN poll_results ON poll_rules.choice_id = poll_results.choice_id").where("poll_results.user_id = #{current_user.id}").first
+      if(f.questiontext != nil)
+        res['feedback'] = f.questiontext
+      end
+    end
+
     res['active_slide'] = e.active_slide
     res['x-csrf'] = request.session_options[:id]
 
