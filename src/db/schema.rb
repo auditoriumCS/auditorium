@@ -127,11 +127,11 @@ ActiveRecord::Schema.define(:version => 20130628165026) do
     t.string   "building",               :default => ""
     t.string   "room",                   :default => ""
     t.integer  "chat_active"
-    t.uuid     "active_slide"
     t.integer  "prof_speed"
     t.integer  "prof_volume"
     t.integer  "prof_comprehensibility"
     t.integer  "viewers"
+    t.uuid     "active_slide"
   end
 
   add_index "events", ["course_id"], :name => "index_events_on_course_id"
@@ -162,13 +162,6 @@ ActiveRecord::Schema.define(:version => 20130628165026) do
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
     t.boolean  "read",       :default => false
-  end
-
-  create_table "groups", :force => true do |t|
-    t.string   "title"
-    t.text     "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
   end
 
   create_table "institutes", :force => true do |t|

@@ -2,7 +2,7 @@ Auditorium::Application.routes.draw do
 
   resources :poll_results, :controller => "poll_results" , :type => "PollResult"
   match "poll_results/:id" => "poll_results#index"
-  match "poll_results/new/:pollId/:eventId" => "poll_results#new"
+  match "poll_results/events/:eventId/polls/:pollId/" => "poll_results#new"
   match "poll_results/refresh/:id" => "poll_results#showjax"
   match "poll_results/:id/rtc_create" => "poll_results#rtc_create"
   
