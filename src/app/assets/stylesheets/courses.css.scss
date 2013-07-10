@@ -1,0 +1,78 @@
+.info_link {
+	width: 100%;
+
+}
+
+.info_link td {
+	padding-left: 10px;
+	border-right:solid thin #bbb;
+	vertical-align:top;
+}
+
+#pass_action{
+	border-right: none;
+	padding-left: 10px;
+	vertical-align:top;
+}
+
+
+#pass_action p {
+	padding-left: 30px;
+}
+.courses_eaq {
+	width: 100%;
+}
+
+.courses_eaq span{
+	cursor:pointer;
+	float: left;
+	
+}
+
+.courses_eaq .add-new{
+	cursor:pointer;
+	float: right;
+	padding:5px;
+	font-weight:none;
+	
+}
+
+.events_arrow{
+	width: 20px;
+	display:block;
+	cursor: pointer;
+}
+
+.courses_first_row{
+	width: 30px;
+}
+
+#events_arrow_down{
+	height: 20px;
+display:block;
+}
+
+#events_arrow_up{
+	height: 0;
+	display:block;
+}
+
+#announc_arrow_down{
+	height: 20px;
+display:block;
+}
+
+#announc_arrow_up{
+	height: 0;
+	display:block;
+}
+
+#ques_arrow_down{
+	height: 20px;
+display:block;
+}
+
+#ques_arrow_up{
+	height: 0;
+	display:block;
+}
