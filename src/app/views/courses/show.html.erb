@@ -181,7 +181,7 @@
 	<% if @events.count > 0 %>
          	 <p class="pull-right"> 
      		<small>
-		<%= link_to 'Show all events', course_events_path(@course), class: "btn btn-link" %>
+		
 		</small>	 
 		</p> 
 	<% end %> 
@@ -220,7 +220,7 @@
 		</th>
 	</tr>
 </table>
-      <% if @infos.count > 5 %>
+      <% if @infos.count > 1 %>
       <p class="pull-right"><small><%= link_to 'Show all announcements', course_announcements_path(@course), class: "btn btn-link" %></small></p> 
       <% end %>
           
