@@ -131,13 +131,9 @@ ActiveRecord::Schema.define(:version => 20130708222257) do
     t.integer  "prof_volume"
     t.integer  "prof_comprehensibility"
     t.integer  "viewers"
-<<<<<<< HEAD
-    t.uuid     "active_slide"
-=======
     t.integer  "active_slide"
     t.integer  "version",                :default => 0,     :null => false
     t.boolean  "modified",               :default => false, :null => false
->>>>>>> 1474b4d1479660c84f8eacc815f8127729a66f85
   end
 
   add_index "events", ["course_id"], :name => "index_events_on_course_id"
@@ -168,6 +164,13 @@ ActiveRecord::Schema.define(:version => 20130708222257) do
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
     t.boolean  "read",       :default => false
+  end
+
+  create_table "groups", :force => true do |t|
+    t.string   "title"
+    t.text     "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "institutes", :force => true do |t|
@@ -334,14 +337,24 @@ ActiveRecord::Schema.define(:version => 20130708222257) do
 
   add_index "reports", ["reporter_id"], :name => "index_reports_on_reporter_id"
 
-  create_table "tags", :force => true do |t|
-    t.string   "name"
-    t.integer  "post_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+  create_table "taggings", :force => true do |t|
+    t.integer  "tag_id"
+    t.integer  "taggable_id"
+    t.string   "taggable_type"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
-  add_index "tags", ["post_id"], :name => "index_tags_on_post_id"
+  add_index "taggings", ["tag_id"], :name => "index_taggings_on_tag_id"
+  add_index "taggings", ["taggable_id"], :name => "index_taggings_on_taggable_id"
+  add_index "taggings", ["taggable_type"], :name => "index_taggings_on_taggable_type"
+
+  create_table "tags", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.text     "description"
+  end
 
   create_table "terms", :force => true do |t|
     t.string   "term_type"
