@@ -18,7 +18,7 @@
   </div>
   <div class="event_fields">
     <%= f.label :course_id %>
-    <%= f.select :course_id, options_from_collection_for_select(Course.all, :id, :name) %>
+    <%= f.select :course_id, options_from_collection_for_select(Course.all, :id, :name, params[:course_id]) %>
   </div>
 </div>
 
