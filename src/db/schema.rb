@@ -58,9 +58,9 @@ ActiveRecord::Schema.define(:version => 20130708222257) do
   add_index "chairs", ["institute_id"], :name => "index_chairs_on_institute_id"
 
   create_table "choices", :force => true do |t|
-    t.uuid    "poll_id",                         :null => false
     t.text    "answertext",                      :null => false
     t.boolean "is_correct",                      :null => false
+    t.uuid    "poll_id",                         :null => false
     t.text    "feedback"
     t.integer "on_slide"
     t.boolean "feedback_enabled"
@@ -127,11 +127,11 @@ ActiveRecord::Schema.define(:version => 20130708222257) do
     t.string   "building",               :default => ""
     t.string   "room",                   :default => ""
     t.integer  "chat_active"
+    t.integer  "active_slide"
     t.integer  "prof_speed"
     t.integer  "prof_volume"
     t.integer  "prof_comprehensibility"
     t.integer  "viewers"
-    t.integer  "active_slide"
     t.integer  "version",                :default => 0,     :null => false
     t.boolean  "modified",               :default => false, :null => false
   end
@@ -164,13 +164,6 @@ ActiveRecord::Schema.define(:version => 20130708222257) do
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
     t.boolean  "read",       :default => false
-  end
-
-  create_table "groups", :force => true do |t|
-    t.string   "title"
-    t.text     "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
   end
 
   create_table "institutes", :force => true do |t|
@@ -337,24 +330,14 @@ ActiveRecord::Schema.define(:version => 20130708222257) do
 
   add_index "reports", ["reporter_id"], :name => "index_reports_on_reporter_id"
 
-  create_table "taggings", :force => true do |t|
-    t.integer  "tag_id"
-    t.integer  "taggable_id"
-    t.string   "taggable_type"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
-  end
-
-  add_index "taggings", ["tag_id"], :name => "index_taggings_on_tag_id"
-  add_index "taggings", ["taggable_id"], :name => "index_taggings_on_taggable_id"
-  add_index "taggings", ["taggable_type"], :name => "index_taggings_on_taggable_type"
-
   create_table "tags", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-    t.text     "description"
+    t.integer  "post_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
+
+  add_index "tags", ["post_id"], :name => "index_tags_on_post_id"
 
   create_table "terms", :force => true do |t|
     t.string   "term_type"
