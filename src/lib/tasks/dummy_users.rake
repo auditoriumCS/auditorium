@@ -27,8 +27,8 @@ namespace :dummy_data do
   task :print => :environment do
     puts "Username - Email - Password"
     puts "---------------------------------------"
-    User.all.each do |user|
-      puts "#{user.username} - #{user.email} - testing"
+    User.order(:email).each do |user|
+      puts "#{user.email} - testing"
     end
   end
 end
