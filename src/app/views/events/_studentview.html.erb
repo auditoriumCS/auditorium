@@ -15,7 +15,7 @@
 			</div>
 
 			<div ng-repeat="(key, poll) in polls" ng-show="$index == activePoll">
-				<h3>{{poll.questiontext}}</h3>
+				<h3 class="blinkOnce">{{poll.questiontext}}</h3>
 				<div class="alert alert-error" ng-repeat="msg in poll.messages"><span ng-click="poll.messages.splice($index,1)" class="close">[x]</span>{{msg}}</div>
 				<div ng-repeat="c in poll.choices | orderBy:'position'">
 					<b>{{$index}}.</b> <input type="radio" ng-model="poll.choice_id" value="{{c.id}}" name="choice"/>
