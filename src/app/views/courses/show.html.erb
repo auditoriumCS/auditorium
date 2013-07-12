@@ -166,7 +166,7 @@
     <th>
       <span class="add-new">
       		<% if can? :manage_events, @course %>
-      		  <%= link_to content_tag('span', ' Add new event', :class=> 'icon-plus'), new_event_path(:post_type => 'info', :course_id => @course.id), :class => 'btn btn-link' %>
+      		  <%= link_to content_tag('span', ' Add new event', :class=> 'icon-plus'), new_event_path(:post_type => 'info', :course_id => @course.id), :class => 'btn btn-primary' %>
       		<% end %>
       </span>
     </th>

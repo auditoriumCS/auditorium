@@ -8,6 +8,8 @@
 <% if params[:controller].eql? 'home' %>
 <p class="hint"><%= link_to 'Show all events', events_path, class: 'link' %></p>
 <% end %>
+
+<% if @events.size > 0 %>
 <table class="table table-striped">
   <thead>
     <tr>
@@ -41,3 +43,4 @@
   <% end %>
   </tbody>
 </table>
+<% end %>
