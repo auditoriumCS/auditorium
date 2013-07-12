@@ -33,7 +33,7 @@
       </div>
     </header>
 
-    <section>
+    <section id="main-content">
       <div class="container" id="content">
         <% if current_user and !(current_user.username or current_user.first_name or current_user.last_name) and params[:controller].eql? 'home' %>
 
