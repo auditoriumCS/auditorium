@@ -3,34 +3,45 @@
 <% if @events.count == 0 %>  
    No events, yet.
 <% else %> 
-	<table class="table announcement-teaser pink-teaser">
-    <tr>
-      <th> Event </th>
-      <th> Tutor </th>
-      <th> Datum </th>
-      <th> Ort   </th>
-      <th> Action   </th>
-    </tr>
-  <% @events.first(5).each do |event| %>
-    <tr>
-      <td><%= event.event_type      ? event.event_type : " - " %></td>
-      <td><%= event.tutor.full_name ? event.tutor.full_name : " - "  %></td>
-      <td><%= event.beginDate %> <br> <%= event.endDate %></td>
-      <td><%= event.building        ? event.building : " - " %> 
-          <%= event.room            ? event.room : " - " %></td>
-      <td>
-        <small>
-          <% if can? :manage, @course %>
-            <b class="icon-question-sign">&nbsp;<%= link_to "add poll", new_poll_path %></b>
-            <b class="icon-edit">&nbsp;<%= link_to "edit", edit_event_path(event) %></b>
-            <b class="icon-trash">&nbsp;<%= link_to 'delete', event, confirm: 'Are you sure?', method: :delete %></b>
+	<p class="pull-right">
+      <% if can? :manage, @events %>
+        <%= link_to 'Create new event', new_event_path, class: 'btn btn-small' %>
+      <% end %>
+    </p>
+    </h2>
+
+    <p class="hint"><%= link_to 'Show all events', events_path, class: 'link' %></p>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>What?</th>
+          <th>When?</th>
+          <th>Course</th>
+          <th>Lecturer</th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+      <% @events.each do |event| %>
+        <tr>
+          <td><b><%= link_to event.event_type.capitalize, event %></b></td>
+          <td>
+            <%= "#{l(event.beginDate, format: :long)}" %><br />
+            <%= "From #{event.beginTime}" if event.beginTime.presence %><%= event.endTime.presence ? " to #{event.endTime}" : " (open end)" %>
+          </td>
+          <td><%= link_to event.course.name, event.course %></td>
+          <td><%= event.tutor.full_name %></td>
+          <% if can? :manage, event.course %>
+            <td><%= link_to 'Edit', edit_event_path(event) %></td>
+            <td><%= link_to 'Destroy', event, confirm: 'Are you sure?', method: :delete %></td>
           <% end %>
-            <b>&nbsp;<%= link_to "view", event_path(event) %></b>
-        </small>
-      </td>
-		</tr>  
-  <% end %>
-</table>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
 <% end %>
 
 </div>

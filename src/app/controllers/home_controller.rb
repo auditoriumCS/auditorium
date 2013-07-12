@@ -3,6 +3,7 @@ class HomeController < ApplicationController
 	
   def index
     if signed_in?
+      @events = Event.limit(5)
       @post = Post.new()
       @post.post_type = 'question'
       case params[:post_filter]

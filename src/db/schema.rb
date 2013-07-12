@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130708222257) do
+ActiveRecord::Schema.define(:version => 20130712141433) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -134,6 +134,8 @@ ActiveRecord::Schema.define(:version => 20130708222257) do
     t.integer  "viewers"
     t.integer  "version",                :default => 0,     :null => false
     t.boolean  "modified",               :default => false, :null => false
+    t.time     "beginTime"
+    t.time     "endTime"
   end
 
   add_index "events", ["course_id"], :name => "index_events_on_course_id"

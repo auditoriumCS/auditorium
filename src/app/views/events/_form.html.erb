@@ -39,6 +39,19 @@
     <%= f.select :week, options_for_select(week_rotation) %>
   </div>
   </div>
+
+
+<div class="event_group">
+  <div class="event_fields">
+    <%= f.label :beginTime %>
+    <%= f.time_select :beginTime, :ignore_time => true %>
+  </div>
+  <div class="event_fields">
+    <%= f.label :endTime %>
+    <%= f.time_select :endTime, :ignore_time => true %>
+  </div>
+</div>
+
 <div class="event_group">
   <div class="event_fields">
     <%= f.label :beginDate %>
@@ -48,7 +61,7 @@
     <%= f.label :endDate %>
     <%= f.date_select :endDate, :ignore_time => true %>
   </div>
-  </div>
+</div>
 
 <div class="event_group">
   <div class="event_fields">
