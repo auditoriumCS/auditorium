@@ -9,12 +9,11 @@
       <th>What?</th>
       <th>When?</th>
       <th>Where?</th>
-      <th>Course</th>
       <th>Lecturer</th>
+
+      <% if can? :manage, @course %>
       <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
+      <% end %>
     </tr>
   <% @events.first(5).each do |event| %>
     <tr>
@@ -24,13 +23,12 @@
         <%= "From #{event.beginTime}" if event.beginTime.presence %><%= event.endTime.presence ? " to #{event.endTime}" : " (open end)" %>
       </td>
       <td><%= event.room.presence or event.building.presence ? "#{event.building} #{event.room}" : 't.b.a.' %></td>
-      <td><%= link_to event.course.name, event.course %></td>
       <td><%= event.tutor.full_name %></td>
       <% if can? :manage, @course %>
-        <td><%= link_to "Add a new poll", new_poll_path, class: 'btn btn-small' %></td>
         <td>
+          <p class="pull-right"><%= link_to "Add a new poll", new_poll_path, class: 'btn btn-small' %>
           <%= link_to "Edit", edit_event_path(event), class: 'btn btn-small btn-warning' %>
-          <%= link_to 'Delete', event, confirm: 'Are you sure?', method: :delete, class: 'btn btn-small btn-danger' %>
+          <%= link_to 'Delete', event, confirm: 'Are you sure?', method: :delete, class: 'btn btn-small btn-danger' %></p>
         </td>
       <% end %>
 		</tr>  
