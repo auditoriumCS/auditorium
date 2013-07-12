@@ -20,7 +20,7 @@
       <td><b><%= link_to event.event_type.capitalize, event %></b></td>
       <td>
         <%= "#{l(event.beginDate, format: :long)}" %><br />
-        <%= "From #{event.beginTime}" if event.beginTime.presence %><%= event.endTime.presence ? " to #{event.endTime}" : " (open end)" %>
+        <%= "From #{event.beginTime.strftime('%H:%M')}" if event.beginTime.presence %><%= event.endTime.presence ? " to #{event.endTime.strftime('%H:%M')}" : " (open end)" %>
       </td>
       <td><%= event.room.presence or event.building.presence ? "#{event.building} #{event.room}" : 't.b.a.' %></td>
       <td><%= event.tutor.full_name %></td>

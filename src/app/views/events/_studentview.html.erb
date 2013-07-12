@@ -1,3 +1,34 @@
+<h2>Event <%= @event.event_type.capitalize %></h2>
+<p>Course <%= link_to @event.course.name, @event.course %></p>
+
+<div class="row well-small">
+		<table class="table table-striped">
+			<tr>
+				<td> <strong>Tutor</strong> </td>
+				<td><%= @event.tutor.full_name  %></td>
+			</tr>
+			<tr>
+				<td> <strong>Weekday</strong> </td>
+				<td><%= @event.weekday %> in <%= @event.week %> </td>
+			</tr>
+			<tr>
+				<td> <strong>Date</strong> </td>
+				<td>
+					<%= "#{l(@event.beginDate, format: :long)}" %><%= ", #{@event.beginTime.strftime('%H:%M')}" if @event.beginTime.presence %><%= @event.endTime.presence ? " - #{@event.endTime.strftime('%H:%M')}" : " (open end)" %>
+
+				</td>
+			</tr>
+			<tr>
+				<td> <strong>Place</strong> </td>
+				<td><%= @event.building %> <%= @event.room %></td>
+			</tr>
+			<tr>
+				<td> <strong>Website</strong> </td>
+				<td><%= @event.url %></td>
+			</tr>
+		</table>
+		</div>
+
 <div style=" -webkit-transition: all .5s ease; -moz-transition: all .5s ease; transition: all .5s ease;" id="events-polls">
 <div ng-app ng-controller="UserViewCtrl">
 	<div class="row">
