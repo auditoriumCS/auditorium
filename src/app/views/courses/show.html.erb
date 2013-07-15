@@ -185,40 +185,41 @@
 <%= render 'courses/events_overview'%>
 
 
-	<% if can? :manage, @course %>
-
-<table class="courses_eaq">
-	<tr>
-		<th class="courses_first_row">
-<span onclick="toggleEventsShow('#course_announcements');change_events_arrow('#course_announcements');">
-	<div class="events_arrow">
-
-	<%= image_tag("courses_arrow_down.png", :alt => "arrow down", :id=> "announc_arrow_down") %>
-	</div>
-	<div class="events_arrow"><%= image_tag("courses_arrow_up.png", :alt => "arrow up", :id=> "announc_arrow_up") %>
-	</div>
-</span>
-
-		</th>
-		<th>
-
-<span onclick="toggleEventsShow('#course_announcements');change_events_arrow('#course_announcements');">
-	<h3 id="announc">Announcements</h3>
-</span>
 	
-	
-		</th>
-		<th>
-			<span class="add-new">
-        <%= link_to 'Add new announcement', new_post_path(:post_type => 'info', :course_id => @course.id), :class => 'link' %>
-      	<% end %> 
 
-        
-			</span>
+        <table class="courses_eaq">
+        	<tr>
+        		<th class="courses_first_row">
+        <span onclick="toggleEventsShow('#course_announcements');change_events_arrow('#course_announcements');">
+        	<div class="events_arrow">
 
-		</th>
-	</tr>
-</table>
+        	<%= image_tag("courses_arrow_down.png", :alt => "arrow down", :id=> "announc_arrow_down") %>
+        	</div>
+        	<div class="events_arrow"><%= image_tag("courses_arrow_up.png", :alt => "arrow up", :id=> "announc_arrow_up") %>
+        	</div>
+        </span>
+
+        		</th>
+        		<th>
+
+            <span onclick="toggleEventsShow('#course_announcements');change_events_arrow('#course_announcements');">
+            	<h3 id="announc">Announcements</h3>
+            </span>
+            	
+        	
+        		</th>
+        		<th>
+        			<span class="add-new">
+              <% if can? :manage, @course %>
+                <%= link_to 'Add new announcement', new_post_path(:post_type => 'info', :course_id => @course.id), :class => 'link' %>
+              	<% end %> 
+
+                
+        			</span>
+
+        		</th>
+        	</tr>
+        </table>
       <% if @infos.count > 1 %>
       <p class="pull-right"><small><%= link_to 'Show all announcements', course_announcements_path(@course), class: "btn btn-link" %></small></p> 
       <% end %>
