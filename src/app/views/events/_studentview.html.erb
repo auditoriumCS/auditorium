@@ -1,6 +1,8 @@
 <h2>Event <%= @event.event_type.capitalize %></h2>
 <p>Course <%= link_to @event.course.name, @event.course %></p>
 
+<%= render 'events/realtime_js_code' %>
+
 <div class="row well-small">
 		<table class="table table-striped">
 			<tr>
