@@ -155,9 +155,11 @@ header {
     height: 35px;
 }
 
+/* THIS will make the auditorium header break!
 header > div {
 	float: left;
 }
+*/
 
 header div#icon, header div#logout, header div#stopIcon{
 	height: 100%;
