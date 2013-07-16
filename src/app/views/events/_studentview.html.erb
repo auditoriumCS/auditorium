@@ -36,7 +36,7 @@
 	<div class="row">
 		
 		<div class="span6"> 
-		<div>Folie {{slideId}}</div>
+		<div>Slide {{slideId}}</div>
 			<div id="page">
 				<header>
 					<div id="icon"><img src="img/amcs_logo.png" alt="logo"></div>
@@ -73,15 +73,15 @@
 		</div>
 
 		<div class="span4" id="mood">
-			Geschwindigkeit 
+			Speed 
 
 			<div class="prof-control" id="speed">
 				<span class="back"></span>
 				<span class="left" ng-style="{width: (speed.down/2) +'%'}"></span>
 				<span class="right" ng-style="{width: (speed.up/2) +'%'}"></span>
 				<span class="center"></span>
-				<button  ng-show="speed.canVote" class="btn btn-left" ng-click="submitControl('speed',-1)"> &lt; langsamer</button>
-				<button  ng-show="speed.canVote" class="btn btn-right" ng-click="submitControl('speed',1)"> schneller &gt;</button>
+				<button  ng-show="speed.canVote" class="btn btn-left" ng-click="submitControl('speed',-1)"> &lt; slower</button>
+				<button  ng-show="speed.canVote" class="btn btn-right" ng-click="submitControl('speed',1)"> faster &gt;</button>
 				<span class="prof-control-ammount-left" >
 					{{speed.down}} %
 				</span>
@@ -90,15 +90,15 @@
 				</span>
 			</div>
 
-			Lautstärke
+			Volume
 
 			<div class="prof-control" id="volume">
 				<span class="back"></span>
 				<span class="left" ng-style="{width: (volume.down/2) +'%'}"></span>
 				<span class="right" ng-style="{width: (volume.up/2) +'%'}"></span>
 				<span class="center"></span>
-				<button ng-show="volume.canVote"  class="btn btn-left" ng-click="submitControl('volume',-1)"> &lt; leiser</button>
-				<button ng-show="volume.canVote"  class="btn btn-right" ng-click="submitControl('volume',1)"> lauter &gt;</button>
+				<button ng-show="volume.canVote"  class="btn btn-left" ng-click="submitControl('volume',-1)"> &lt; lower</button>
+				<button ng-show="volume.canVote"  class="btn btn-right" ng-click="submitControl('volume',1)"> louder &gt;</button>
 				<span class="prof-control-ammount-left" >
 					{{volume.down}} %
 				</span>
@@ -107,15 +107,15 @@
 				</span>
 			</div>
 
-			Verständlichkeit
+			Comprehensibility
 
 			<div class="prof-control" id="comprehensibility">
 				<span class="back"></span>
 				<span class="left" ng-style="{width: (comprehensibility.down/2) +'%'}"></span>
 				<span class="right" ng-style="{width: (comprehensibility.up/2) +'%'}"></span>
 				<span class="center"></span>
-				<button ng-show="comprehensibility.canVote" class="btn btn-left" ng-click="submitControl('comprehensibility',-1)"> &lt; nochmal</button>
-				<button ng-show="comprehensibility.canVote"  class="btn btn-right" ng-click="submitControl('comprehensibility',1)"> weiter &gt;</button>
+				<button ng-show="comprehensibility.canVote" class="btn btn-left" ng-click="submitControl('comprehensibility',-1)"> &lt; again</button>
+				<button ng-show="comprehensibility.canVote"  class="btn btn-right" ng-click="submitControl('comprehensibility',1)"> next &gt;</button>
 				<span class="prof-control-ammount-left" >
 					{{comprehensibility.down}} %
 				</span>
@@ -124,110 +124,10 @@
 				</span>
 			</div>
 		</div>
-		<style type="text/css">
-			/* prof controls TODO @shirin: plz outsource in some css file; */
-			#mood {
-				position:relative;
-			}
-			
-			#mood .prof-control {
-				position: relative;
-				height:40px;
-			}
-			
-			#mood .btn-left {
-				position: absolute;
-				padding: 0 9px;
-				line-height: 16px;
-				top: 17px;
-				left:0px;
-				width: 50%;
-				text-align: left;
-				border-top-left-radius: 0;
-				border-top-right-radius: 0;
-				border-bottom-right-radius: 0;
-			} 
-
-			#mood .btn-right {
-				position: absolute;
-				padding: 0 9px;
-				line-height: 16px;
-				right:0px;
-				top: 17px;
-				width: 50%;
-				text-align: right;
-				border-top-right-radius: 0;
-				border-top-left-radius: 0;
-				border-bottom-left-radius: 0;
-			} 
-			
-			
-
-			#mood .prof-control-ammount-left {
-				position: absolute;
-				line-height: 16px;
-				color: #fff;
-				left: 20px;
-			}
-
-			#mood .prof-control-ammount-right {
-				position: absolute;
-				line-height: 16px;
-				color: #fff;
-				right: 20px;
-			}
-
-
-
-			#mood .back {
-				position: absolute;
-				width: 100%;
-				height: 17px;
-				background-color: rgba(200,200,200,0.666);
-				border-radius: 4px;
-				border-bottom-right-radius: 0;
-				border-bottom-left-radius: 0;
-			}
-
-			#mood .right {
-				position: absolute;
-				height: 10px;
-				top: 3px;
-				left:50%;
-				background-color: #0f0;
-				-webkit-transition: width 1s ease-in-out;
-			    -moz-transition: width 1s ease-in-out;
-			    -o-transition: width 1s ease-in-out;
-			    transition: width 1s ease-in-out;
-			}
-			
-
-			#mood .left {
-				position: absolute;
-				height: 10px;
-				top: 3px;
-				right:50%;
-				background-color: #f00;
-				-webkit-transition: width 1s ease-in-out;
-			    -moz-transition: width 1s ease-in-out;
-			    -o-transition: width 1s ease-in-out;
-			    transition: width 1s ease-in-out;
-			}
-
-			#mood .center {
-				position: absolute;
-				height: 17px;
-				width: 2px;
-				right: 50%;
-				margin-right: -1px;
-				background-color: #fff;
-			}
-
-		</style>
 	</div>
 	<div class="row">
 		<div class="span6" id="polls"> 
-			<h3>Fragen & Nachrichten:</h3>
+			<h3>Polls & Messages</h3>
 			<div ng-show="pollslength > 1">
 
 				<span ng-click="decrementActivePoll()"> &lt;</span>
@@ -244,11 +144,11 @@
 				<div ng-repeat="msg in poll.messages" ng-switch="msg.type">
 					<div ng-switch-when="0" class="alert alert-error">
 						<span ng-click="closeMessage(poll,$index,msg)" class="close">[x]</span>
-						<b>Falsch: </b>{{msg.text}}
+						<b>Wrong: </b>{{msg.text}}
 					</div>
 					<div ng-switch-when="1" class="alert alert-success">
 						<span ng-click="closeMessage(poll,$index,msg)" class="close">[x]</span>
-						<b>Richtig!: </b>{{msg.text}}
+						<b>Correct: </b>{{msg.text}}
 					</div>
 					<div ng-switch-when="2" class="alert alert-info">
 						<span ng-click="closeMessage(poll,$index,msg)" class="close">[x]</span>
@@ -264,11 +164,11 @@
 				<button ng-show="poll.choices.length != 0" ng-click="submitPoll(poll.choice_id, key)" class="btn btn-primary">submit</button>
 			</div>
 			<p ng-show="pollslength == 0">
-				Zur Zeit keine Fragen
+				Currently there are no messages.
 			</p>
 		</div>
 		<div class="span4" id="results">
-			<h3>Ergebnisse:</h3>
+			<h3>Result:</h3>
 			<div ng-show="results.length > 1">
 
 				<span ng-click="decrementActiveResult()"> &lt;</span>
@@ -289,7 +189,7 @@
 				</ul>
 			</div>
 			<p ng-show="results.length == 0">
-				Zur Zeit keine Ergebnisse
+				Currently there are no results.
 			</p>
 		</div>
 	</div>
