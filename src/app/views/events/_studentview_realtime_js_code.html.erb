@@ -6,173 +6,222 @@
 render.call(this))return;e&&a.drawCircle(d,d,Math.floor(d-e/2),c.get("borderColor"),undefined,e).append();for(g=b.length;g--;)b[g]&&(f=this.renderSlice(g).append(),this.valueShapes[g]=f.id,this.shapes[f.id]=g);a.render()}}),a.fn.sparkline.box=A=d(a.fn.sparkline._base,{type:"box",init:function(b,c,d,e,f){A._super.init.call(this,b,c,d,e,f),this.values=a.map(c,Number),this.width=d.get("width")==="auto"?"4.0em":e,this.initTarget(),this.values.length||(this.disabled=1)},getRegion:function(){return 1},getCurrentRegionFields:function(){var a=[{field:"lq",value:this.quartiles[0]},{field:"med",value:this.quartiles[1]},{field:"uq",value:this.quartiles[2]}];return this.loutlier!==undefined&&a.push({field:"lo",value:this.loutlier}),this.routlier!==undefined&&a.push({field:"ro",value:this.routlier}),this.lwhisker!==undefined&&a.push({field:"lw",value:this.lwhisker}),this.rwhisker!==undefined&&a.push({field:"rw",value:this.rwhisker}),a},render:function(){var a=this.target,b=this.values,c=b.length,d=this.options,e=this.canvasWidth,f=this.canvasHeight,h=d.get("chartRangeMin")===undefined?Math.min.apply(Math,b):d.get("chartRangeMin"),i=d.get("chartRangeMax")===undefined?Math.max.apply(Math,b):d.get("chartRangeMax"),j=0,k,l,m,n,o,p,q,r,s,t,u;if(!A._super.render.call(this))return;if(d.get("raw"))d.get("showOutliers")&&b.length>5?(l=b[0],k=b[1],n=b[2],o=b[3],p=b[4],q=b[5],r=b[6]):(k=b[0],n=b[1],o=b[2],p=b[3],q=b[4]);else{b.sort(function(a,b){return a-b}),n=g(b,1),o=g(b,2),p=g(b,3),m=p-n;if(d.get("showOutliers")){k=q=undefined;for(s=0;s<c;s++)k===undefined&&b[s]>n-m*d.get("outlierIQR")&&(k=b[s]),b[s]<p+m*d.get("outlierIQR")&&(q=b[s]);l=b[0],r=b[c-1]}else k=b[0],q=b[c-1]}this.quartiles=[n,o,p],this.lwhisker=k,this.rwhisker=q,this.loutlier=l,this.routlier=r,u=e/(i-h+1),d.get("showOutliers")&&(j=Math.ceil(d.get("spotRadius")),e-=2*Math.ceil(d.get("spotRadius")),u=e/(i-h+1),l<k&&a.drawCircle((l-h)*u+j,f/2,d.get("spotRadius"),d.get("outlierLineColor"),d.get("outlierFillColor")).append(),r>q&&a.drawCircle((r-h)*u+j,f/2,d.get("spotRadius"),d.get("outlierLineColor"),d.get("outlierFillColor")).append()),a.drawRect(Math.round((n-h)*u+j),Math.round(f*.1),Math.round((p-n)*u),Math.round(f*.8),d.get("boxLineColor"),d.get("boxFillColor")).append(),a.drawLine(Math.round((k-h)*u+j),Math.round(f/2),Math.round((n-h)*u+j),Math.round(f/2),d.get("lineColor")).append(),a.drawLine(Math.round((k-h)*u+j),Math.round(f/4),Math.round((k-h)*u+j),Math.round(f-f/4),d.get("whiskerColor")).append(),a.drawLine(Math.round((q-h)*u+j),Math.round(f/2),Math.round((p-h)*u+j),Math.round(f/2),d.get("lineColor")).append(),a.drawLine(Math.round((q-h)*u+j),Math.round(f/4),Math.round((q-h)*u+j),Math.round(f-f/4),d.get("whiskerColor")).append(),a.drawLine(Math.round((o-h)*u+j),Math.round(f*.1),Math.round((o-h)*u+j),Math.round(f*.9),d.get("medianColor")).append(),d.get("target")&&(t=Math.ceil(d.get("spotRadius")),a.drawLine(Math.round((d.get("target")-h)*u+j),Math.round(f/2-t),Math.round((d.get("target")-h)*u+j),Math.round(f/2+t),d.get("targetColor")).append(),a.drawLine(Math.round((d.get("target")-h)*u+j-t),Math.round(f/2),Math.round((d.get("target")-h)*u+j+t),Math.round(f/2),d.get("targetColor")).append()),a.render()}}),function(){document.namespaces&&!document.namespaces.v?(a.fn.sparkline.hasVML=!0,document.namespaces.add("v","urn:schemas-microsoft-com:vml","#default#VML")):a.fn.sparkline.hasVML=!1;var b=document.createElement("canvas");a.fn.sparkline.hasCanvas=!!b.getContext&&!!b.getContext("2d")}(),D=d({init:function(a,b,c,d){this.target=a,this.id=b,this.type=c,this.args=d},append:function(){return this.target.appendShape(this),this}}),E=d({_pxregex:/(\d+)(px)?\s*$/i,init:function(b,c,d){if(!b)return;this.width=b,this.height=c,this.target=d,this.lastShapeId=null,d[0]&&(d=d[0]),a.data(d,"_jqs_vcanvas",this)},drawLine:function(a,b,c,d,e,f){return this.drawShape([[a,b],[c,d]],e,f)},drawShape:function(a,b,c,d){return this._genShape("Shape",[a,b,c,d])},drawCircle:function(a,b,c,d,e,f){return this._genShape("Circle",[a,b,c,d,e,f])},drawPieSlice:function(a,b,c,d,e,f,g){return this._genShape("PieSlice",[a,b,c,d,e,f,g])},drawRect:function(a,b,c,d,e,f){return this._genShape("Rect",[a,b,c,d,e,f])},getElement:function(){return this.canvas},getLastShapeId:function(){return this.lastShapeId},reset:function(){alert("reset not implemented")},_insert:function(b,c){a(c).html(b)},_calculatePixelDims:function(b,c,d){var e;e=this._pxregex.exec(c),e?this.pixelHeight=e[1]:this.pixelHeight=a(d).height(),e=this._pxregex.exec(b),e?this.pixelWidth=e[1]:this.pixelWidth=a(d).width()},_genShape:function(a,b){var c=I++;return b.unshift(c),new D(this,c,a,b)},appendShape:function(a){alert("appendShape not implemented")},replaceWithShape:function(a,b){alert("replaceWithShape not implemented")},insertAfterShape:function(a,b){alert("insertAfterShape not implemented")},removeShapeId:function(a){alert("removeShapeId not implemented")},getShapeAt:function(a,b,c){alert("getShapeAt not implemented")},render:function(){alert("render not implemented")}}),F=d(E,{init:function(b,c,d,e){F._super.init.call(this,b,c,d),this.canvas=document.createElement("canvas"),d[0]&&(d=d[0]),a.data(d,"_jqs_vcanvas",this),a(this.canvas).css({display:"inline-block",width:b,height:c,verticalAlign:"top"}),this._insert(this.canvas,d),this._calculatePixelDims(b,c,this.canvas),this.canvas.width=this.pixelWidth,this.canvas.height=this.pixelHeight,this.interact=e,this.shapes={},this.shapeseq=[],this.currentTargetShapeId=undefined,a(this.canvas).css({width:this.pixelWidth,height:this.pixelHeight})},_getContext:function(a,b,c){var d=this.canvas.getContext("2d");return a!==undefined&&(d.strokeStyle=a),d.lineWidth=c===undefined?1:c,b!==undefined&&(d.fillStyle=b),d},reset:function(){var a=this._getContext();a.clearRect(0,0,this.pixelWidth,this.pixelHeight),this.shapes={},this.shapeseq=[],this.currentTargetShapeId=undefined},_drawShape:function(a,b,c,d,e){var f=this._getContext(c,d,e),g,h;f.beginPath(),f.moveTo(b[0][0]+.5,b[0][1]+.5);for(g=1,h=b.length;g<h;g++)f.lineTo(b[g][0]+.5,b[g][1]+.5);c!==undefined&&f.stroke(),d!==undefined&&f.fill(),this.targetX!==undefined&&this.targetY!==undefined&&f.isPointInPath(this.targetX,this.targetY)&&(this.currentTargetShapeId=a)},_drawCircle:function(a,b,c,d,e,f,g){var h=this._getContext(e,f,g);h.beginPath(),h.arc(b,c,d,0,2*Math.PI,!1),this.targetX!==undefined&&this.targetY!==undefined&&h.isPointInPath(this.targetX,this.targetY)&&(this.currentTargetShapeId=a),e!==undefined&&h.stroke(),f!==undefined&&h.fill()},_drawPieSlice:function(a,b,c,d,e,f,g,h){var i=this._getContext(g,h);i.beginPath(),i.moveTo(b,c),i.arc(b,c,d,e,f,!1),i.lineTo(b,c),i.closePath(),g!==undefined&&i.stroke(),h&&i.fill(),this.targetX!==undefined&&this.targetY!==undefined&&i.isPointInPath(this.targetX,this.targetY)&&(this.currentTargetShapeId=a)},_drawRect:function(a,b,c,d,e,f,g){return this._drawShape(a,[[b,c],[b+d,c],[b+d,c+e],[b,c+e],[b,c]],f,g)},appendShape:function(a){return this.shapes[a.id]=a,this.shapeseq.push(a.id),this.lastShapeId=a.id,a.id},replaceWithShape:function(a,b){var c=this.shapeseq,d;this.shapes[b.id]=b;for(d=c.length;d--;)c[d]==a&&(c[d]=b.id);delete this.shapes[a]},replaceWithShapes:function(a,b){var c=this.shapeseq,d={},e,f,g;for(f=a.length;f--;)d[a[f]]=!0;for(f=c.length;f--;)e=c[f],d[e]&&(c.splice(f,1),delete this.shapes[e],g=f);for(f=b.length;f--;)c.splice(g,0,b[f].id),this.shapes[b[f].id]=b[f]},insertAfterShape:function(a,b){var c=this.shapeseq,d;for(d=c.length;d--;)if(c[d]===a){c.splice(d+1,0,b.id),this.shapes[b.id]=b;return}},removeShapeId:function(a){var b=this.shapeseq,c;for(c=b.length;c--;)if(b[c]===a){b.splice(c,1);break}delete this.shapes[a]},getShapeAt:function(a,b,c){return this.targetX=b,this.targetY=c,this.render(),this.currentTargetShapeId},render:function(){var a=this.shapeseq,b=this.shapes,c=a.length,d=this._getContext(),e,f,g;d.clearRect(0,0,this.pixelWidth,this.pixelHeight);for(g=0;g<c;g++)e=a[g],f=b[e],this["_draw"+f.type].apply(this,f.args);this.interact||(this.shapes={},this.shapeseq=[])}}),G=d(E,{init:function(b,c,d){var e;G._super.init.call(this,b,c,d),d[0]&&(d=d[0]),a.data(d,"_jqs_vcanvas",this),this.canvas=document.createElement("span"),a(this.canvas).css({display:"inline-block",position:"relative",overflow:"hidden",width:b,height:c,margin:"0px",padding:"0px",verticalAlign:"top"}),this._insert(this.canvas,d),this._calculatePixelDims(b,c,this.canvas),this.canvas.width=this.pixelWidth,this.canvas.height=this.pixelHeight,e='<v:group coordorigin="0 0" coordsize="'+this.pixelWidth+" "+this.pixelHeight+'"'+' style="position:absolute;top:0;left:0;width:'+this.pixelWidth+"px;height="+this.pixelHeight+'px;"></v:group>',this.canvas.insertAdjacentHTML("beforeEnd",e),this.group=a(this.canvas).children()[0],this.rendered=!1,this.prerender=""},_drawShape:function(a,b,c,d,e){var f=[],g,h,i,j,k,l,m;for(m=0,l=b.length;m<l;m++)f[m]=""+b[m][0]+","+b[m][1];return g=f.splice(0,1),e=e===undefined?1:e,h=c===undefined?' stroked="false" ':' strokeWeight="'+e+'px" strokeColor="'+c+'" ',i=d===undefined?' filled="false"':' fillColor="'+d+'" filled="true" ',j=f[0]===f[f.length-1]?"x ":"",k='<v:shape coordorigin="0 0" coordsize="'+this.pixelWidth+" "+this.pixelHeight+'" '+' id="jqsshape'+a+'" '+h+i+' style="position:absolute;left:0px;top:0px;height:'+this.pixelHeight+"px;width:"+this.pixelWidth+'px;padding:0px;margin:0px;" '+' path="m '+g+" l "+f.join(", ")+" "+j+'e">'+" </v:shape>",k},_drawCircle:function(a,b,c,d,e,f,g){var h,i,j;return b-=d,c-=d,h=e===undefined?' stroked="false" ':' strokeWeight="'+g+'px" strokeColor="'+e+'" ',i=f===undefined?' filled="false"':' fillColor="'+f+'" filled="true" ',j='<v:oval  id="jqsshape'+a+'" '+h+i+' style="position:absolute;top:'+c+"px; left:"+b+"px; width:"+d*2+"px; height:"+d*2+'px"></v:oval>',j},_drawPieSlice:function(a,b,c,d,e,f,g,h){var i,j,k,l,m,n,o,p;if(e===f)return"";f-e===2*Math.PI&&(e=0,f=2*Math.PI),j=b+Math.round(Math.cos(e)*d),k=c+Math.round(Math.sin(e)*d),l=b+Math.round(Math.cos(f)*d),m=c+Math.round(Math.sin(f)*d);if(j===l&&k===m){if(f-e<Math.PI)return"";j=l=b+d,k=m=c}return j===l&&k===m&&f-e<Math.PI?"":(i=[b-d,c-d,b+d,c+d,j,k,l,m],n=g===undefined?' stroked="false" ':' strokeWeight="1px" strokeColor="'+g+'" ',o=h===undefined?' filled="false"':' fillColor="'+h+'" filled="true" ',p='<v:shape coordorigin="0 0" coordsize="'+this.pixelWidth+" "+this.pixelHeight+'" '+' id="jqsshape'+a+'" '+n+o+' style="position:absolute;left:0px;top:0px;height:'+this.pixelHeight+"px;width:"+this.pixelWidth+'px;padding:0px;margin:0px;" '+' path="m '+b+","+c+" wa "+i.join(", ")+' x e">'+" </v:shape>",p)},_drawRect:function(a,b,c,d,e,f,g){return this._drawShape(a,[[b,c],[b,c+e],[b+d,c+e],[b+d,c],[b,c]],f,g)},reset:function(){this.group.innerHTML=""},appendShape:function(a){var b=this["_draw"+a.type].apply(this,a.args);return this.rendered?this.group.insertAdjacentHTML("beforeEnd",b):this.prerender+=b,this.lastShapeId=a.id,a.id},replaceWithShape:function(b,c){var d=a("#jqsshape"+b),e=this["_draw"+c.type].apply(this,c.args);d[0].outerHTML=e},replaceWithShapes:function(b,c){var d=a("#jqsshape"+b[0]),e="",f=c.length,g;for(g=0;g<f;g++)e+=this["_draw"+c[g].type].apply(this,c[g].args);d[0].outerHTML=e;for(g=1;g<b.length;g++)a("#jqsshape"+b[g]).remove()},insertAfterShape:function(b,c){var d=a("#jqsshape"+b),e=this["_draw"+c.type].apply(this,c.args);d[0].insertAdjacentHTML("afterEnd",e)},removeShapeId:function(b){var c=a("#jqsshape"+b);this.group.removeChild(c[0])},getShapeAt:function(a,b,c){var d=a.id.substr(8);return d},render:function(){this.rendered||(this.group.innerHTML=this.prerender,this.rendered=!0)}})});
 
 function UserViewCtrl($scope, $http, $timeout){
-    $scope.rtcInterval = 1000;
-    $scope.pform;
-    // SPLIT HACK
-    splitted = document.URL.split('/')
-    $scope.eid = splitted[splitted.length-1]
-    $http.defaults.headers.common['X-CSRF-Token'] = jQuery('meta[name=csrf-token]').attr('content');
+		$scope.rtcInterval = 1000;
+		$scope.pform;
+		$scope.eid = <%= @event.id %>
+		$http.defaults.headers.common['X-CSRF-Token'] = jQuery('meta[name=csrf-token]').attr('content');
 
-    $scope.url = {}
-    $scope.url.rtc = $scope.eid+"/rtc.json";
-    $scope.url.submitPoll  = "/poll_results/0/rtc_create.json";
-    $scope.url.submitControl = $scope.eid+"/prof_control.json";
-    $scope.url.logout = $scope.eid+"/logout.json";
+		$scope.url = {}
+		$scope.url.rtc = $scope.eid+"/rtc.json";
+		$scope.url.submitPoll  = "/poll_results/0/rtc_create.json";
+		$scope.url.submitControl = $scope.eid+"/prof_control.json";
+		$scope.url.logout = $scope.eid+"/logout.json";
 
-    $scope.polls = {};
-    $scope.results = [];
-    $scope.activePoll = 0;
-    $scope.activeResult = 0;
-    $scope.pollslength = 0;
+		$scope.polls = {};
+		$scope.results = [];
+		$scope.activePoll = 0;
+		$scope.activeResult = 0;
+		$scope.pollslength = 0;
 
-    $scope.slideId = "";
+		$scope.slideId = "";
 
-    $scope.speed = {
-      up: 0,
-      down : 0,
-      canVote : true  
-    }
+		$scope.speed = {
+			up: 0,
+			down : 0,
+			canVote : false	
+		}
 
-    $scope.volume  = {
-      up: 0,
-      down : 0,
-      canVote : true  
-    }
+		$scope.volume  = {
+			up: 0,
+			down : 0,
+			canVote : false	
+		}
 
-    $scope.comprehensibility = {
-      up: 0,
-      down : 0,
-      canVote : true    
-    }
+		$scope.comprehensibility = {
+			up: 0,
+			down : 0,
+			canVote : false		
+		}
 
-    window.onbeforeunload = function(){
-      $http.post($scope.url.logout);
-    }
+		$scope.closeMessage = function(poll, i, msg){
+			poll.messages.splice(i,1);
+			if(!poll.decisive || msg.is_correct || poll.choices.length == 0){
+				$scope.deletePoll(poll.id);
+			}
+		}
 
-    $scope.submitPoll = function(cid,pid){
-      var data = {}
-      data.choice_id = cid;
-      data.poll_id = pid;
-      data.t_delta = Date.now() - $scope.polls[pid].t_start;
-      $http.post($scope.url.submitPoll,data).then(function(s){
-        var d = s.data;
-        d.msg = s.data.msg;
-        if(!d.is_correct){
-          if($scope.polls[data.poll_id].messages == undefined)
-            $scope.polls[data.poll_id].messages = [];
-          $scope.polls[data.poll_id].messages.push(d.msg);
-        } else {
-          delete $scope.polls[data.poll_id];
-          $scope.pollslength --;
-          $scope.activePoll = $scope.activePoll % $scope.pollslength;
-        }
-          
-      });
-    }
+		window.onbeforeunload = function(){
+			$http.post($scope.url.logout);
+		}
 
-    $scope.resHeight = function(i,a) {
-      return (i==a)?"auto":"0px";
-    }
+		$scope.deletePoll  = function(pid){
+			delete $scope.polls[pid];
+			$scope.pollslength --;
+			$scope.activePoll = ($scope.pollslength > 0)?$scope.activePoll % $scope.pollslength:0;
+		}
 
-    $scope.submitControl = function(which, val) {
-      $scope[which].canVote = false;
-      var data = {}
-      data[which] = val;
-      $http.post($scope.url.submitControl,data).then(function(s){
-        
-      });
-    }
+		$scope.submitPoll = function(cid,pid){
+			var data = {};
+			var poll = $scope.polls[pid];
 
-    $scope.incrementActivePoll = function () {
-      $scope.activePoll = ($scope.activePoll + 1) % $scope.pollslength
-    }
+			
+			data.choice_id = cid;
+			data.poll_id = pid;
+			data.t_delta = Date.now() - poll.t_start;
+			if(!poll.lock)
+				$http.post($scope.url.submitPoll,data).then(function(s){
+					var d = {};
+					d.text = s.data.msg;
+					d.type = ((!poll.decisive)?2:((s.data.is_correct)?1:0));
+					d.is_correct= s.data.is_correct;
+					if(poll.messages == undefined)
+						poll.messages = [];
+					if(d.text != null  && d.text.length > 0)
+						poll.messages.push(d);
+					if(!s.data.can_try_again){
+						poll.choices = [];
+						if(poll.messages == undefined ||  poll.messages.length == 0)
+							$scope.deletePoll(pid);
+					}
+						
 
-    $scope.decrementActivePoll = function() {
-      $scope.activePoll = ($scope.pollslength + $scope.activePoll - 1) % $scope.pollslength
-
-    }
-    $scope.incrementActiveResult = function () {
-      $scope.activeResult = ($scope.activeResult + 1) % $scope.results.length
-    }
-
-    $scope.decrementActiveResult = function() {
-      $scope.activeResult = ($scope.results.length + $scope.activeResult - 1) % $scope.results.length
-    }
-    $scope.rtc = function() {
-      $http.get($scope.url.rtc).then(function(s){
-        $scope.results = s.data.poll_results;
-        var idxs = {}
-        $scope.pollslength = 0;
-        angular.forEach(s.data.open_polls, function(v,k){
-          idxs[v.id] = true;
-          if($scope.polls[v.id] == undefined){
-            $scope.polls[v.id] = v;
-            $scope.polls[v.id].t_start = Date.now();
-          }
-            
-        });
-        angular.forEach($scope.polls, function(v,k){
-          if(idxs[k]==undefined)
-            delete $scope.polls[k];
-          else $scope.pollslength++
-        });
-        s.data.prof_speed = Math.round((s.data.prof_speed / s.data.viewers)*100)
-        s.data.prof_volume =  Math.round((s.data.prof_volume / s.data.viewers)*100)
-        s.data.prof_comprehensibility =  Math.round((s.data.prof_comprehensibility / s.data.viewers)*100)
-
-        // rt prof feedback
-        $scope.speed.up = (s.data.prof_speed > 0)?s.data.prof_speed :0;
-        $scope.speed.down = (s.data.prof_speed < 0)?s.data.prof_speed * -1 :0;
-        $scope.volume.up = (s.data.prof_volume > 0)?s.data.prof_volume :0;
-        $scope.volume.down = (s.data.prof_volume < 0)?s.data.prof_volume * -1 :0;
-        $scope.comprehensibility.up = (s.data.prof_comprehensibility > 0)?s.data.prof_comprehensibility :0;
-        $scope.comprehensibility.down = (s.data.prof_comprehensibility < 0)?s.data.prof_comprehensibility * -1 :0;
+					poll.lock = false;
+				});
+			poll.lock = true;
+		}
 
 
-        $scope.comprehensibility.canVote = s.data.prof_comprehensibility_canVote;
-        $scope.speed.canVote = s.data.prof_speed_canVote;
-        $scope.volume.canVote = s.data.prof_volume_canVote;
 
-        angular.forEach($scope.results, function(v,k){
-          v.pie = [];
-          var pieValues = [];
-          var pieColors = [];
-          v.decisive = false;
-          var firstCorrect = v.choices[0].correct;
-          
-          for(c in v.choices) if(v.choices[c].text){
-            if(v.total > 0){
-            pieValues.push({correct:v.choices[c].correct,value:v.choices[c].count});
-            if(firstCorrect!=v.choices[c].correct)
-              v.decisive = true;
-              }
-          }
-          
-          
-          if(v.total > 0)for(i in pieValues){
-            if(v.decisive){
-              var j = (pieValues[i].correct)?0:1;
-              v.pie[j] =  (v.pie[j]==undefined)?pieValues[i].value:v.pie[j]+pieValues[i].value;
-            } else {
-              v.pie.push(pieValues[i].value)
-            }
-          }
-          v.pie = v.pie.join(",")
+		$scope.resHeight = function(i,a) {
+			return (i==a)?"auto":"0px";
+		}
 
-        })
-        $timeout(function() {
-          jQuery(".sparklines").each(function(idx){
-            var dec = (jQuery(this).attr("decisive")=="true")?true:false;
-            jQuery(this).sparkline('html',{ width : '100', height : '100', type : 'pie', sliceColors:((dec)? ["#00ff00","#ff0000"] : undefined)})
-          });
-        }, 10);
-        
+		$scope.submitControl = function(which, val) {
+			$scope[which].canVote = false;
+			
+			var data = {}
+			data[which] = val;
+			(!$scope[which].lock)
+				$http.post($scope.url.submitControl,data).then(function(s){
+					$scope[which].lock = false;
+				});
+			$scope[which].lock = true;
+		}
 
-        $timeout($scope.rtc,$scope.rtcInterval);
-      });
-    }
-    $scope.rtc();
+		$scope.incrementActivePoll = function () {
+			$scope.activePoll = ($scope.activePoll + 1) % $scope.pollslength
+		}
+
+		$scope.decrementActivePoll = function() {
+			$scope.activePoll = ($scope.pollslength + $scope.activePoll - 1) % $scope.pollslength
+
+		}
+		$scope.incrementActiveResult = function () {
+			$scope.activeResult = ($scope.activeResult + 1) % $scope.results.length
+		}
+
+		$scope.decrementActiveResult = function() {
+			$scope.activeResult = ($scope.results.length + $scope.activeResult - 1) % $scope.results.length
+		}
+		$scope.rtc = function() {
+			$http.get($scope.url.rtc).then(function(s){
+				$scope.results = s.data.poll_results;
+				var idxs = {}
+				$scope.pollslength = 0;
+				angular.forEach(s.data.open_polls, function(v,k){
+					idxs[v.id] = true;
+
+					if($scope.polls[v.id] == undefined){
+						$scope.decisive = false;
+						var fv = v.choices[0].is_correct;
+						angular.forEach(v.choices, function(v1,k1){
+							if(v1.is_correct != fv) v.decisive = true;
+						});
+						$scope.polls[v.id] = v;
+						$scope.polls[v.id].t_start = Date.now();
+					}
+				});
+				angular.forEach($scope.polls, function(v,k){
+					$scope.pollslength++
+				});
+				s.data.prof_speed = Math.round((s.data.prof_speed / s.data.viewers)*100)
+				s.data.prof_volume =  Math.round((s.data.prof_volume / s.data.viewers)*100)
+				s.data.prof_comprehensibility =  Math.round((s.data.prof_comprehensibility / s.data.viewers)*100)
+
+				$scope.slideId = s.data.active_slide;
+				// rt prof feedback
+				$scope.speed.up = (s.data.prof_speed > 0)?s.data.prof_speed :0;
+				$scope.speed.down = (s.data.prof_speed < 0)?s.data.prof_speed * -1 :0;
+				$scope.volume.up = (s.data.prof_volume > 0)?s.data.prof_volume :0;
+				$scope.volume.down = (s.data.prof_volume < 0)?s.data.prof_volume * -1 :0;
+				$scope.comprehensibility.up = (s.data.prof_comprehensibility > 0)?s.data.prof_comprehensibility :0;
+				$scope.comprehensibility.down = (s.data.prof_comprehensibility < 0)?s.data.prof_comprehensibility * -1 :0;
+
+				$scope.comprehensibility.canVote = s.data.prof_comprehensibility_canVote;
+				$scope.speed.canVote = s.data.prof_speed_canVote;
+				$scope.volume.canVote = s.data.prof_volume_canVote;
+
+				angular.forEach($scope.results, function(v,k){
+					v.pie = [];
+					var pieValues = [];
+					var pieColors = [];
+					v.decisive = false;
+					v.tooltip = {};
+					var firstCorrect = v.choices[0].correct;
+					
+					var ci = 0;
+					for(c in v.choices) if(v.choices[c].text){
+						if(v.total > 0){
+						pieValues.push({correct:v.choices[c].correct,value:v.choices[c].count});
+						if(firstCorrect!=v.choices[c].correct)
+							v.decisive = true;
+						}
+						v.tooltip[ci] = v.choices[c].text;
+						ci++;
+					}
+					
+					if(v.decisive){
+						v.tooltip = ["korrekt","falsch"];
+					}
+					
+					if(v.total > 0)for(i in pieValues){
+						if(v.decisive){
+							var j = (pieValues[i].correct)?0:1;
+							v.pie[j] =  (v.pie[j]==undefined)?pieValues[i].value:v.pie[j]+pieValues[i].value;
+						} else {
+							v.pie.push(pieValues[i].value)
+						}
+					}
+					
+
+				})
+				$timeout(function() {
+
+					jQuery(".sparklines").each(function(idx){
+						var tooltip =angular.fromJson(jQuery(this).attr("tooltip")); 
+						var values = angular.fromJson(jQuery(this).attr("values"))
+						var dec = (jQuery(this).attr("decisive")=="true")?true:false;
+						jQuery(this).sparkline(values,
+							{ 	
+								width : '100px', 
+								height : '100px', 
+								type : 'pie', 
+								sliceColors:((dec)? ["#00ff00","#ff0000"] : undefined),
+								tooltipFormat: '<span style="color: {{color}}">&#9679;</span> {{offset:names}} ({{percent.1}}%)',
+								tooltipValueLookups: {
+									names: tooltip
+								}
+							}
+						);
+					});
+				}, 0);
+				
+
+				$timeout($scope.rtc,$scope.rtcInterval);
+			});
+		}
+		$scope.rtc();
 
 
-  }
+	}
   </script>

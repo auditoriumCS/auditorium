@@ -257,7 +257,7 @@
 				</div>
 				<ul>
 					<li style="list-style-type: lower-alpha;" ng-repeat="c in poll.choices | orderBy:'position'">
-						<b>{{$index}}.</b> <input type="radio" ng-model="poll.choice_id" value="{{c.id}}" name="choice"/>
+						<input type="radio" ng-model="poll.choice_id" value="{{c.id}}" name="choice"/>
 						{{c.answertext}}
 					</li>
 				</ul>
@@ -294,4 +294,3 @@
 		</div>
 	</div>
 </div>
-

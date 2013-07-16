@@ -77,7 +77,6 @@ class PollResultsController < InheritedResources::Base
 		puts "+++++++++++++++session+++++++++++++++"
 		puts session
 
-		#TODO Lars: current_user auch bei Content-Type : application/json
 		#pr.user_id = current_user.id
 		pr.user_id = current_user.id
 		pr.poll_id = r['poll_id']
@@ -92,7 +91,27 @@ class PollResultsController < InheritedResources::Base
 		
 		res = Hash.new 
 		res['success'] = true
-		res['tries'] = PollResult.where(user_id: current_user.id, choice_id: pr.choice_id).count
+
+		#Can try again?
+		poll = Poll.find(r['poll_id'])
+		res_count = PollResult.where(poll_id: poll).where(user_id: current_user).count
+        decisive = false
+        poll.choices.each do |c|
+          #puts "++++#{c.is_correct}==#{poll.choices.first.is_correct}"
+          if poll.choices.first.is_correct != c.is_correct
+
+              decisive = true
+          end
+        end
+        res_correct = PollResult.where(poll_id: poll.id).where("user_id = #{current_user.id}").joins("INNER JOIN choices ON choices.id = poll_results.choice_id").where("choices.is_correct = true").count
+        if poll.poll_enabled && (decisive && (res_count < 2 && res_correct < 1) || !decisive && res_count < 1) || current_user.admin
+          res['can_try_again'] = true
+        else
+        	res['can_try_again'] = false
+        end
+        #puts "##++++#{poll.questiontext}+++++++++++#{decisive}+++++++++++++++#{(!decisive && res_count < 1).to_s}++++++++++++++++++++++++++++++++++++++#{res_count.to_s}"
+
+		
 		res['is_correct'] = choice.is_correct
 		res['msg'] = choice.feedback
 		respond_to do |format|
