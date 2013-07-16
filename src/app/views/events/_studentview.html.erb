@@ -34,6 +34,72 @@
 <div style=" -webkit-transition: all .5s ease; -moz-transition: all .5s ease; transition: all .5s ease;" id="events-polls">
 <div ng-app ng-controller="UserViewCtrl">
 	<div class="row">
+		<div class="span6" id="polls"> 
+			<h3>Polls & Messages</h3>
+			<div ng-show="pollslength > 1">
+			<span ng-click="decrementActivePoll()" class="btn btn-small"> &lt; {{activePoll + 1}}
+				</span>
+			</span>
+				<span ng-click="incrementActivePoll()" class="btn btn-small">{{pollslength}} &gt;
+				</span>
+			</div>
+
+			<div ng-repeat="(key, poll) in polls" ng-show="$index == activePoll">
+				<h3>{{poll.questiontext}}</h3>
+				<div ng-repeat="msg in poll.messages" ng-switch="msg.type">
+					<div ng-switch-when="0" class="alert alert-error">
+						<span ng-click="closeMessage(poll,$index,msg)" class="close">[x]</span>
+						<b>Wrong: </b>{{msg.text}}
+					</div>
+					<div ng-switch-when="1" class="alert alert-success">
+						<span ng-click="closeMessage(poll,$index,msg)" class="close">[x]</span>
+						<b>Correct: </b>{{msg.text}}
+					</div>
+					<div ng-switch-when="2" class="alert alert-info">
+						<span ng-click="closeMessage(poll,$index,msg)" class="close">[x]</span>
+						{{msg.text}}
+					</div>
+				</div>
+				<ul>
+					<li style="list-style-type: lower-alpha;" ng-repeat="c in poll.choices | orderBy:'position'">
+						<input type="radio" ng-model="poll.choice_id" value="{{c.id}}" name="choice"/>
+						{{c.answertext}}
+					</li>
+				</ul>
+				<button ng-show="poll.choices.length != 0" ng-click="submitPoll(poll.choice_id, key)" class="btn btn-primary">submit</button>
+			</div>
+			<p ng-show="pollslength == 0">
+				Currently there are no messages.
+			</p>
+		</div>
+		<div class="span4" id="results">
+			<h3>Result:</h3>
+			<div ng-show="results.length > 1">
+
+				<span ng-click="decrementActiveResult()"> &lt;</span>
+				<span>
+					{{activeResult + 1}}
+				</span>
+				|
+				<span>{{results.length}}</span>
+				<span ng-click="incrementActiveResult()"> &gt;</span>
+			</div>
+			<div  ng-style="{ height : resHeight($index,activeResult) }" style="overflow:hidden" ng-repeat="p in results">
+				<h3>{{p.text}}</h3>
+				<span class="sparklines pull-right" tooltip="{{p.tooltip}}" values="{{p.pie}}" decisive="{{p.decisive}}"></span>
+				<ul>
+					<li style="list-style-type: lower-alpha;" ng-repeat="c in p.choices">
+						{{c.text}}
+					</li>
+				</ul>
+			</div>
+			<p ng-show="results.length == 0">
+				Currently there are no results.
+			</p>
+		</div>
+
+	</div>
+	<div class="row">
 		
 		<div class="span6"> 
 		<div>Slide {{slideId}}</div>
@@ -125,69 +191,5 @@
 			</div>
 		</div>
 	</div>
-	<div class="row">
-		<div class="span6" id="polls"> 
-			<h3>Polls & Messages</h3>
-			<div ng-show="pollslength > 1">
-			<span ng-click="decrementActivePoll()" class="btn btn-small"> &lt; {{activePoll + 1}}
-				</span>
-			</span>
-				<span ng-click="incrementActivePoll()" class="btn btn-small">{{pollslength}} &gt;
-				</span>
-			</div>
 
-			<div ng-repeat="(key, poll) in polls" ng-show="$index == activePoll">
-				<h3>{{poll.questiontext}}</h3>
-				<div ng-repeat="msg in poll.messages" ng-switch="msg.type">
-					<div ng-switch-when="0" class="alert alert-error">
-						<span ng-click="closeMessage(poll,$index,msg)" class="close">[x]</span>
-						<b>Wrong: </b>{{msg.text}}
-					</div>
-					<div ng-switch-when="1" class="alert alert-success">
-						<span ng-click="closeMessage(poll,$index,msg)" class="close">[x]</span>
-						<b>Correct: </b>{{msg.text}}
-					</div>
-					<div ng-switch-when="2" class="alert alert-info">
-						<span ng-click="closeMessage(poll,$index,msg)" class="close">[x]</span>
-						{{msg.text}}
-					</div>
-				</div>
-				<ul>
-					<li style="list-style-type: lower-alpha;" ng-repeat="c in poll.choices | orderBy:'position'">
-						<input type="radio" ng-model="poll.choice_id" value="{{c.id}}" name="choice"/>
-						{{c.answertext}}
-					</li>
-				</ul>
-				<button ng-show="poll.choices.length != 0" ng-click="submitPoll(poll.choice_id, key)" class="btn btn-primary">submit</button>
-			</div>
-			<p ng-show="pollslength == 0">
-				Currently there are no messages.
-			</p>
-		</div>
-		<div class="span4" id="results">
-			<h3>Result:</h3>
-			<div ng-show="results.length > 1">
-
-				<span ng-click="decrementActiveResult()"> &lt;</span>
-				<span>
-					{{activeResult + 1}}
-				</span>
-				|
-				<span>{{results.length}}</span>
-				<span ng-click="incrementActiveResult()"> &gt;</span>
-			</div>
-			<div  ng-style="{ height : resHeight($index,activeResult) }" style="overflow:hidden" ng-repeat="p in results">
-				<h3>{{p.text}}</h3>
-				<span class="sparklines pull-right" tooltip="{{p.tooltip}}" values="{{p.pie}}" decisive="{{p.decisive}}"></span>
-				<ul>
-					<li style="list-style-type: lower-alpha;" ng-repeat="c in p.choices">
-						{{c.text}}
-					</li>
-				</ul>
-			</div>
-			<p ng-show="results.length == 0">
-				Currently there are no results.
-			</p>
-		</div>
-	</div>
 </div>
