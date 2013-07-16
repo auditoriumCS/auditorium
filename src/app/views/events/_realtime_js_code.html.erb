@@ -163,6 +163,10 @@ render.call(this))return;e&&a.drawCircle(d,d,Math.floor(d-e/2),c.get("borderColo
 					v.tooltip = {};
 					v.tooltip1 = {}
 
+					if (!v.choices.length) {
+						return;
+					}
+					
 					var firstCorrect = v.choices[0].correct;
 					
 					var ci = 0;
