@@ -34,52 +34,6 @@
 <div style=" -webkit-transition: all .5s ease; -moz-transition: all .5s ease; transition: all .5s ease;" id="events-polls">
 <div ng-app ng-controller="UserViewCtrl">
 	<div class="row">
-		<div class="span6" id="polls"> 
-			Fragen/Nachrichten:
-			<div ng-show="pollslength > 1">
-
-				<span ng-click="decrementActivePoll()"> &lt;</span>
-				<span>
-					{{activePoll + 1}}
-				</span>
-				|
-				<span>{{pollslength}}</span>
-				<span ng-click="incrementActivePoll()"> &gt;</span>
-			</div>
-
-			<div ng-repeat="(key, poll) in polls" ng-show="$index == activePoll">
-				<h3 class="blinkOnce">{{poll.questiontext}}</h3>
-				<div class="alert alert-error" ng-repeat="msg in poll.messages"><span ng-click="poll.messages.splice($index,1)" class="close">[x]</span>{{msg}}</div>
-				<div ng-repeat="c in poll.choices | orderBy:'position'">
-					<b>{{$index}}.</b> <input type="radio" ng-model="poll.choice_id" value="{{c.id}}" name="choice"/>
-					{{c.answertext}}
-				</div>
-				<button ng-show="poll.choices.length != 0" ng-click="submitPoll(poll.choice_id, key)" class="btn btn-primary">submit</button>
-			</div>
-		</div>
-		<div class="span4" id="results">
-			Ergebnisse:
-			<div ng-show="results.length > 1">
-
-				<span ng-click="decrementActiveResult()"> &lt;</span>
-				<span>
-					{{activeResult + 1}}
-				</span>
-				|
-				<span>{{results.length}}</span>
-				<span ng-click="incrementActiveResult()"> &gt;</span>
-			</div>
-			<div  ng-style="{ height : resHeight($index,activeResult) }" style="overflow:hidden" ng-repeat="p in results">
-				<h3>{{p.text}}</h3>
-				<span class="sparklines pull-right" values="{{p.pie}}" decisive="{{p.decisive}}"></span>
-				<div ng-repeat="c in p.choices">
-					<b>{{$index}}.</b> {{c.text}}
-				</div>
-				
-			</div>
-		</div>
-	</div>
-	<div class="row">
 		<div>Folie {{slideId}}</div>
 		<div class="span6"> 
 			<div id="page">
