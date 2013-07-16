@@ -9,6 +9,7 @@ render.call(this))return;e&&a.drawCircle(d,d,Math.floor(d-e/2),c.get("borderColo
 </script>
 <div ng-app ng-controller="UserViewCtrl">
 	<div class="row">
+		<div>Folie {{slideId}}</div>
 		<div class="span6"> 
 			<div id="page">
 				<header>
@@ -214,13 +215,31 @@ render.call(this))return;e&&a.drawCircle(d,d,Math.floor(d-e/2),c.get("borderColo
 
 			<div ng-repeat="(key, poll) in polls" ng-show="$index == activePoll">
 				<h3>{{poll.questiontext}}</h3>
-				<div class="alert alert-error" ng-repeat="msg in poll.messages"><span ng-click="poll.messages.splice($index,1)" class="close">[x]</span>{{msg}}</div>
-				<div ng-repeat="c in poll.choices | orderBy:'position'">
-					<b>{{$index}}.</b> <input type="radio" ng-model="poll.choice_id" value="{{c.id}}" name="choice"/>
-					{{c.answertext}}
+				<div ng-repeat="msg in poll.messages" ng-switch="msg.type">
+					<div ng-switch-when="0" class="alert alert-error">
+						<span ng-click="closeMessage(poll,$index,msg)" class="close">[x]</span>
+						<b>Falsch: </b>{{msg.text}}
+					</div>
+					<div ng-switch-when="1" class="alert alert-success">
+						<span ng-click="closeMessage(poll,$index,msg)" class="close">[x]</span>
+						<b>Richtig!: </b>{{msg.text}}
+					</div>
+					<div ng-switch-when="2" class="alert alert-info">
+						<span ng-click="closeMessage(poll,$index,msg)" class="close">[x]</span>
+						{{msg.text}}
+					</div>
 				</div>
+				<ul>
+					<li style="list-style-type: lower-alpha;" ng-repeat="c in poll.choices | orderBy:'position'">
+						<b>{{$index}}.</b> <input type="radio" ng-model="poll.choice_id" value="{{c.id}}" name="choice"/>
+						{{c.answertext}}
+					</li>
+				</ul>
 				<button ng-show="poll.choices.length != 0" ng-click="submitPoll(poll.choice_id, key)" class="btn btn-primary">submit</button>
 			</div>
+			<p ng-show="pollslength == 0">
+				Zur Zeit keine Fragen
+			</p>
 		</div>
 		<div class="span4" id="results">
 			Ergebnisse:
@@ -236,12 +255,16 @@ render.call(this))return;e&&a.drawCircle(d,d,Math.floor(d-e/2),c.get("borderColo
 			</div>
 			<div  ng-style="{ height : resHeight($index,activeResult) }" style="overflow:hidden" ng-repeat="p in results">
 				<h3>{{p.text}}</h3>
-				<span class="sparklines pull-right" values="{{p.pie}}" decisive="{{p.decisive}}"></span>
-				<div ng-repeat="c in p.choices">
-					<b>{{$index}}.</b> {{c.text}}
-				</div>
-				
+				<span class="sparklines pull-right" tooltip="{{p.tooltip}}" values="{{p.pie}}" decisive="{{p.decisive}}"></span>
+				<ul>
+					<li style="list-style-type: lower-alpha;" ng-repeat="c in p.choices">
+						{{c.text}}
+					</li>
+				</ul>
 			</div>
+			<p ng-show="results.length == 0">
+				Zur Zeit keine Ergebnisse
+			</p>
 		</div>
 	</div>
 </div>
@@ -269,19 +292,28 @@ render.call(this))return;e&&a.drawCircle(d,d,Math.floor(d-e/2),c.get("borderColo
 		$scope.speed = {
 			up: 0,
 			down : 0,
-			canVote : true	
+			canVote : false	
 		}
 
 		$scope.volume  = {
 			up: 0,
 			down : 0,
-			canVote : true	
+			canVote : false	
 		}
 
 		$scope.comprehensibility = {
 			up: 0,
 			down : 0,
-			canVote : true		
+			canVote : false		
+		}
+
+		$scope.closeMessage = function(poll, i, msg){
+			poll.messages.splice(i,1);
+			if(!poll.is_decisive || msg.is_correct || poll.choices.length == 0){
+				delete $scope.polls[data.poll_id];
+				$scope.pollslength --;
+				$scope.activePoll = $scope.activePoll % $scope.pollslength;
+			}
 		}
 
 		window.onbeforeunload = function(){
@@ -289,25 +321,28 @@ render.call(this))return;e&&a.drawCircle(d,d,Math.floor(d-e/2),c.get("borderColo
 		}
 
 		$scope.submitPoll = function(cid,pid){
-			var data = {}
+			var data = {};
+			var poll = $scope.polls[pid];
+
+			poll.lock = true;
 			data.choice_id = cid;
 			data.poll_id = pid;
-			data.t_delta = Date.now() - $scope.polls[pid].t_start;
+			data.t_delta = Date.now() - poll.t_start;
+			if(!poll.lock)
 			$http.post($scope.url.submitPoll,data).then(function(s){
-				var d = s.data;
+				var d = {};
 				d.msg = s.data.msg;
-				if(!d.is_correct){
-					if($scope.polls[data.poll_id].messages == undefined)
-						$scope.polls[data.poll_id].messages = [];
-					$scope.polls[data.poll_id].messages.push(d.msg);
-				} else {
-					delete $scope.polls[data.poll_id];
-					$scope.pollslength --;
-					$scope.activePoll = $scope.activePoll % $scope.pollslength;
-				}
-					
+				d.type = ((poll.is_decisive)?2:((s.data.is_correct)?1:0));
+				if(poll.messages == undefined)
+					poll.messages = [];
+				poll.messages.push(d);
+				if(s.data.tries > 1)
+					poll.choices = [];
+				poll.lock = false;
 			});
 		}
+
+
 
 		$scope.resHeight = function(i,a) {
 			return (i==a)?"auto":"0px";
@@ -315,10 +350,12 @@ render.call(this))return;e&&a.drawCircle(d,d,Math.floor(d-e/2),c.get("borderColo
 
 		$scope.submitControl = function(which, val) {
 			$scope[which].canVote = false;
+			$scope[which].lock = true;
 			var data = {}
 			data[which] = val;
+			(!$scope[which].lock)
 			$http.post($scope.url.submitControl,data).then(function(s){
-				
+				$scope[which].lock = false;
 			});
 		}
 
@@ -344,16 +381,19 @@ render.call(this))return;e&&a.drawCircle(d,d,Math.floor(d-e/2),c.get("borderColo
 				$scope.pollslength = 0;
 				angular.forEach(s.data.open_polls, function(v,k){
 					idxs[v.id] = true;
+
 					if($scope.polls[v.id] == undefined){
+						$scope.decisive = false;
+						var fv = v.choices[0].is_correct;
+						angular.forEach(v.choices, function(v1,k1){
+							if(v1.is_correct != fv) $scope.decisive = true;
+						});
 						$scope.polls[v.id] = v;
 						$scope.polls[v.id].t_start = Date.now();
 					}
-						
 				});
 				angular.forEach($scope.polls, function(v,k){
-					if(idxs[k]==undefined)
-						delete $scope.polls[k];
-					else $scope.pollslength++
+					$scope.pollslength++
 				});
 				s.data.prof_speed = Math.round((s.data.prof_speed / s.data.viewers)*100)
 				s.data.prof_volume =  Math.round((s.data.prof_volume / s.data.viewers)*100)
@@ -367,7 +407,6 @@ render.call(this))return;e&&a.drawCircle(d,d,Math.floor(d-e/2),c.get("borderColo
 				$scope.comprehensibility.up = (s.data.prof_comprehensibility > 0)?s.data.prof_comprehensibility :0;
 				$scope.comprehensibility.down = (s.data.prof_comprehensibility < 0)?s.data.prof_comprehensibility * -1 :0;
 
-
 				$scope.comprehensibility.canVote = s.data.prof_comprehensibility_canVote;
 				$scope.speed.canVote = s.data.prof_speed_canVote;
 				$scope.volume.canVote = s.data.prof_volume_canVote;
@@ -377,6 +416,7 @@ render.call(this))return;e&&a.drawCircle(d,d,Math.floor(d-e/2),c.get("borderColo
 					var pieValues = [];
 					var pieColors = [];
 					v.decisive = false;
+					v.tooltip = [];
 					var firstCorrect = v.choices[0].correct;
 					
 					for(c in v.choices) if(v.choices[c].text){
@@ -384,9 +424,13 @@ render.call(this))return;e&&a.drawCircle(d,d,Math.floor(d-e/2),c.get("borderColo
 						pieValues.push({correct:v.choices[c].correct,value:v.choices[c].count});
 						if(firstCorrect!=v.choices[c].correct)
 							v.decisive = true;
-							}
+						}
+						v.tooltip.push(v.choices[c].text);
 					}
 					
+					if(v.decisive){
+						v.tooltip = ["korrekt","falsch"];
+					}
 					
 					if(v.total > 0)for(i in pieValues){
 						if(v.decisive){
@@ -400,9 +444,11 @@ render.call(this))return;e&&a.drawCircle(d,d,Math.floor(d-e/2),c.get("borderColo
 
 				})
 				$timeout(function() {
+
 					jQuery(".sparklines").each(function(idx){
+						var tooltip =angular.fromJson(jQuery(this).attr("tooltip")); 
 						var dec = (jQuery(this).attr("decisive")=="true")?true:false;
-						jQuery(this).sparkline('html',{ width : '100', height : '100', type : 'pie', sliceColors:((dec)? ["#00ff00","#ff0000"] : undefined)})
+						jQuery(this).sparkline('html',tooltip,{ width : '100', height : '100', type : 'pie', sliceColors:((dec)? ["#00ff00","#ff0000"] : undefined)})
 					});
 				}, 10);
 				

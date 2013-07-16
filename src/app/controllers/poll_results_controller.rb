@@ -92,6 +92,7 @@ class PollResultsController < InheritedResources::Base
 		
 		res = Hash.new 
 		res['success'] = true
+		res['tries'] = PollResult.where(user_id: current_user.id, choice_id: pr.choice_id).count
 		res['is_correct'] = choice.is_correct
 		res['msg'] = choice.feedback
 		respond_to do |format|

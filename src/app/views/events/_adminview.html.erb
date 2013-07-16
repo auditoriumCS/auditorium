@@ -230,7 +230,8 @@ render.call(this))return;e&&a.drawCircle(d,d,Math.floor(d-e/2),c.get("borderColo
 </style>
 <div class="row" ng-repeat="p in results">
 	<div class="span8" id="polls"> 
-		<h2 ng-show="p.choices.length != 0">Frage:</h2><h2 ng-show="p.choices.length == 0">Nachricht:</h2> 
+		<h2 ng-show="p.choices.length != 0">{{p.decisive && 'Lernaufgabe' || 'Umfrage'}}:</h2>
+		<h2 ng-show="p.choices.length == 0">Nachricht:</h2>
 		<div class="btn-group">
 		  <button ng-click="toggleVisibilityOfPoll(p.id)" class="btn" ng-class="p.poll_enabled && 'icon-lock' || 'icon-unlock'" > {{p.poll_enabled && 'disable' || 'enable'}}</button>
 		  <button ng-click="editPoll(p.id)" class="btn icon-edit"> edit</button>
@@ -238,17 +239,18 @@ render.call(this))return;e&&a.drawCircle(d,d,Math.floor(d-e/2),c.get("borderColo
 		</div>
 		<div>
 			<h3>{{p.text}}</h3>
-			<div ng-repeat="c in p.choices">
-				{{$index}}. {{c.text}}
-			</div>
-			
+			<ul>
+				<li  style="list-style-type: lower-greek;" ng-repeat="c in p.choices">
+					{{c.text}}
+				</li>
+			</ul>
 		</div>
 	</div>
 	<div ng-show="p.choices.length != 0" class="span2" id="results">
 		<h2>Ergebnis:</h2>
 		<button ng-click="toggleVisibilityOfResult(p.id)" class="btn" ng-class="p.result_enabled && 'icon-lock' || 'icon-unlock'" > {{p.result_enabled && 'disable' || 'enable'}}</button>
 		<div>
-			<span class="sparklines pull-right" values="{{p.pie}}" decisive="{{p.decisive}}"></span>			
+			<span class="sparklines pull-right" tooltip="{{p.tooltip}}" values="{{p.pie}}" decisive="{{p.decisive}}"></span>			
 		</div>
 
 	</div>
@@ -456,19 +458,21 @@ render.call(this))return;e&&a.drawCircle(d,d,Math.floor(d-e/2),c.get("borderColo
 						// messages have no results
 						return;
 					}
+
 				
 					v.pie = [];
 					var pieValues = [];
 					var pieColors = [];
 					v.decisive = false;
 					var firstCorrect = v.choices[0].correct;
-					
+					v.tooltip = [];
 					for(c in v.choices) if(v.choices[c].text){
 						if(v.total > 0){
 						pieValues.push({correct:v.choices[c].correct,value:v.choices[c].count});
 						if(firstCorrect!=v.choices[c].correct)
 							v.decisive = true;
-							}
+						}
+						v.tooltip.push(v.choices[c].text)
 					}
 					
 					
@@ -485,8 +489,9 @@ render.call(this))return;e&&a.drawCircle(d,d,Math.floor(d-e/2),c.get("borderColo
 				})
 				$timeout(function() {
 					jQuery(".sparklines").each(function(idx){
+						var tooltip = angular.fromJson(jQuery(this).attr("tooltip"));
 						var dec = (jQuery(this).attr("decisive")=="true")?true:false;
-						jQuery(this).sparkline('html',{ width : '100', height : '100', type : 'pie', sliceColors:((dec)? ["#00ff00","#ff0000"] : undefined)})
+						jQuery(this).sparkline('html',tooltip,{ width : '100', height : '100', type : 'pie', sliceColors:((dec)? ["#00ff00","#ff0000"] : undefined)})
 					});
 				}, 10);
 				
