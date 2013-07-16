@@ -21,28 +21,27 @@ class EventsController < ApplicationController
     #@event.prof_speed = 0
     #@event.prof_volume = 0
     @event.viewers = 10
-    if session['active_slide'] != nil
-      if @event.active_slide != session['active_slide']
-        session['active_slide'] = @event.active_slide
-        session['prof_speed_canVote'] = true
-        session['prof_comprehensibility_canVote'] = true
-        session['prof_volume_canVote'] = true
-      end
-    else  
-      session['active_slide'] = @event.active_slide
-      session['prof_speed_canVote'] = true
-      session['prof_comprehensibility_canVote'] = true
-      session['prof_volume_canVote'] = true
-    end 
+    puts { render json: session['logged_in_events'] }
 
     if session['logged_in_events'] == nil
       session['logged_in_events'] = Hash.new
     end
 
-    if session['logged_in_events'][:id] == nil
-      session['logged_in_events'][:id] = true
+    if session['logged_in_events'][params[:id]] == nil
+      session['logged_in_events'][params[:id]] = Hash.new
       @event.viewers = @event.viewers + 1
     end
+
+    if @event.active_slide != session['logged_in_events'][params[:id]]['active_slide']
+        session['logged_in_events'][params[:id]]['active_slide'] = @event.active_slide
+        session['logged_in_events'][params[:id]]['prof_speed_canVote'] = true
+        session['logged_in_events'][params[:id]]['prof_comprehensibility_canVote'] = true
+        session['logged_in_events'][params[:id]]['prof_volume_canVote'] = true
+    else  
+      session['logged_in_events'][params[:id]]['prof_speed_canVote'] = false
+      session['logged_in_events'][params[:id]]['prof_comprehensibility_canVote'] = false
+      session['logged_in_events'][params[:id]]['prof_volume_canVote'] = false
+    end 
 
     @event.save
 
@@ -249,10 +248,19 @@ class EventsController < ApplicationController
     polls.each do |poll|
       if poll.poll_rules.empty?
         res_count = PollResult.where(poll_id: poll).where(user_id: current_user).count
+        decisive = false
+        poll.choices.each do |c|
+          #puts "++++#{c.is_correct}==#{poll.choices.first.is_correct}"
+          if poll.choices.first.is_correct != c.is_correct
+
+              decisive = true
+          end
+        end
         res_correct = PollResult.where(poll_id: poll.id).where("user_id = #{current_user.id}").joins("INNER JOIN choices ON choices.id = poll_results.choice_id").where("choices.is_correct = true").count
-        if poll.poll_enabled && (res_count < 3 && res_correct < 1) || current_user.admin
+        if poll.poll_enabled && (decisive && (res_count < 2 && res_correct < 1) || !decisive && res_count < 1) || current_user.admin
           res['open_polls'] << poll
         end
+        #puts "##++++#{poll.questiontext}+++++++++++#{decisive}+++++++++++++++#{(!decisive && res_count < 1).to_s}++++++++++++++++++++++++++++++++++++++#{res_count.to_s}"
       else
         if messagesForUser.find_index(poll) != nil || current_user.admin
           res['open_polls'] << poll
@@ -287,20 +295,21 @@ class EventsController < ApplicationController
     res['prof_speed'] = e.prof_speed 
     res['prof_volume']  = e.prof_volume 
 
-    res['prof_comprehensibility_canVote']  = session['prof_comprehensibility_canVote']
-    res['prof_speed_canVote'] = session['prof_speed_canVote']
-    res['prof_volume_canVote'] = session['prof_volume_canVote']
-
+    res['prof_comprehensibility_canVote']  = session['logged_in_events'][params[:id]]['prof_comprehensibility_canVote']
+    res['prof_speed_canVote'] = session['logged_in_events'][params[:id]]['prof_speed_canVote']
+    res['prof_volume_canVote'] = session['logged_in_events'][params[:id]]['prof_volume_canVote']
+    res['session'] = session['logged_in_events']
     res['viewers'] = e.viewers
 
-    if(res['active_slide'] != e.active_slide)
-      session['prof_comprehensibility_canVote'] = true
-      session['prof_speed_canVote'] = true
-      session['prof_volume_canVote'] = true
+    if(session['logged_in_events'][params[:id]]['active_slide'] != e.active_slide)
+      session['logged_in_events'][params[:id]]['prof_comprehensibility_canVote'] = true
+      session['logged_in_events'][params[:id]]['prof_speed_canVote'] = true
+      session['logged_in_events'][params[:id]]['prof_volume_canVote'] = true
     end
 
+    session['logged_in_events'][params[:id]]['active_slide'] = e.active_slide
     res['active_slide'] = e.active_slide
-    res['x-csrf'] = request.session_options[:id]
+    res['x-csrf'] = request.session_options[params[:id]]
 
 
     respond_to do |format|
@@ -315,18 +324,18 @@ class EventsController < ApplicationController
     r = JSON.parse(request.body.read)
     e = Event.find(params[:id])
     
-    if r['comprehensibility'] != nil && session['prof_comprehensibility_canVote']
+    if r['comprehensibility'] != nil && session['logged_in_events'][params[:id]]['prof_comprehensibility_canVote']
       e.prof_comprehensibility = e.prof_comprehensibility + r['comprehensibility'].to_i
-      session['prof_comprehensibility_canVote']  =false
+      session['logged_in_events'][params[:id]]['prof_comprehensibility_canVote']  =false
     end
 
-    if r['speed'] != nil && session['prof_speed_canVote']
+    if r['speed'] != nil && session['logged_in_events'][params[:id]]['prof_speed_canVote']
       e.prof_speed = e.prof_speed  + r['speed'].to_i
-      session['prof_speed_canVote'] = false
+      session['logged_in_events'][params[:id]]['prof_speed_canVote'] = false
     end
-    if r['volume'] != nil && session['prof_volume_canVote']
+    if r['volume'] != nil && session['logged_in_events'][params[:id]]['prof_volume_canVote']
       e.prof_volume = e.prof_volume + r['volume'].to_i
-      session['prof_volume_canVote'] = false
+      session['logged_in_events'][params[:id]]['prof_volume_canVote'] = false
     end
     e.save
 

@@ -210,6 +210,11 @@
 		background-color: #fff;
 	}
 
+	.sparklines {
+		display: inline-block;
+		width: 100px;
+		height: 100px;
+	}
 </style>
 <div class="row" ng-repeat="p in results">
 	<div class="span8" id="polls"> 
@@ -232,8 +237,9 @@
 	<div ng-show="p.choices.length != 0" class="span2" id="results">
 		<h2>Ergebnis:</h2>
 		<button ng-click="toggleVisibilityOfResult(p.id)" class="btn" ng-class="p.result_enabled && 'icon-lock' || 'icon-unlock'" > {{p.result_enabled && 'disable' || 'enable'}}</button>
-		<div>
-			<span class="sparklines pull-right" tooltip="{{p.tooltip}}" values="{{p.pie}}" decisive="{{p.decisive}}"></span>			
+		<div style="width:230px;">
+			<span style="margin-left:20px" class="sparklines pull-right" tooltip="{{p.tooltip1}}" values="{{p.pie1}}" decisive="false"></span>
+			<span class="sparklines pull-right" tooltip="{{p.tooltip}}" values="{{p.pie}}" decisive="true" isdecisive="{{p.decisive}}"></span>
 		</div>
 
 	</div>
@@ -437,46 +443,58 @@
 				$scope.volume.canVote = s.data.prof_volume_canVote;
 
 				angular.forEach($scope.results, function(v,k){
-					if (!v.choices.length) {
-						// messages have no results
-						return;
-					}
-
-				
 					v.pie = [];
+					v.pie1 = [];
 					var pieValues = [];
 					var pieColors = [];
 					v.decisive = false;
+					v.tooltip = {};
+					v.tooltip1 = {}
+
 					var firstCorrect = v.choices[0].correct;
-					v.tooltip = [];
+					
+					var ci = 0;
 					for(c in v.choices) if(v.choices[c].text){
 						if(v.total > 0){
 						pieValues.push({correct:v.choices[c].correct,value:v.choices[c].count});
 						if(firstCorrect!=v.choices[c].correct)
 							v.decisive = true;
 						}
-						v.tooltip.push(v.choices[c].text)
+						v.tooltip1[ci] = v.choices[c].text;
+						ci++;
 					}
 					
+					v.tooltip = ["korrekt","falsch"];
 					
 					if(v.total > 0)for(i in pieValues){
-						if(v.decisive){
 							var j = (pieValues[i].correct)?0:1;
 							v.pie[j] =  (v.pie[j]==undefined)?pieValues[i].value:v.pie[j]+pieValues[i].value;
-						} else {
-							v.pie.push(pieValues[i].value)
-						}
+							v.pie1.push(pieValues[i].value)
 					}
-					v.pie = v.pie.join(",")
+					
 
 				})
 				$timeout(function() {
+
 					jQuery(".sparklines").each(function(idx){
-						var tooltip = angular.fromJson(jQuery(this).attr("tooltip"));
+						var tooltip =angular.fromJson(jQuery(this).attr("tooltip")); 
+						var values = angular.fromJson(jQuery(this).attr("values"));
 						var dec = (jQuery(this).attr("decisive")=="true")?true:false;
-						jQuery(this).sparkline('html',tooltip,{ width : '100', height : '100', type : 'pie', sliceColors:((dec)? ["#00ff00","#ff0000"] : undefined)})
+						if (jQuery(this).attr("isdecisive")!="false")
+							jQuery(this).sparkline(values,
+								{ 	
+									width : '100px', 
+									height : '100px', 
+									type : 'pie', 
+									sliceColors:((dec)? ["#00ff00","#ff0000"] : undefined),
+									tooltipFormat: '<span style="color: {{color}}">&#9679;</span> {{offset:names}} ({{percent.1}}%)',
+									tooltipValueLookups: {
+										names: tooltip
+									}
+								}
+							);
 					});
-				}, 10);
+				}, 0);
 				
 
 				$timeout($scope.rtc,$scope.rtcInterval);
