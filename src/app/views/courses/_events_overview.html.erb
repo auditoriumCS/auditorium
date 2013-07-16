@@ -1,42 +1,37 @@
-<div style="overflow:hidden; max-height:0px; -webkit-transition: all .5s ease; -moz-transition: all .5s ease; transition: all .5s ease;" id="course_events">
+<div style="overflow:hidden; -webkit-transition: all .5s ease; -moz-transition: all .5s ease; transition: all .5s ease;" id="course_events">
 
 <% if @events.count == 0 %>  
    No events, yet.
 
-
 <% else %> 
-	<table class="table announcement-teaser">
+	<table class="table announcement-teaser pink-teaser">
     <tr>
-      <th> Event </th>
-      <th> Tutor </th>
-      <th> Datum </th>
-      <th> Ort   </th>
-      <th> Action   </th>
+      <th>What?</th>
+      <th>When?</th>
+      <th>Where?</th>
+      <th>Lecturer</th>
+
+      <% if can? :manage, @course %>
+      <th></th>
+      <% end %>
     </tr>
   <% @events.first(5).each do |event| %>
     <tr>
-      <td><%= event.event_type      ? event.event_type : " - " %></td>
-      <td><%= event.tutor.full_name ? event.tutor.full_name : " - "  %></td>
-      <td><%= event.beginDate %> <br> <%= event.endDate %></td>
-      <td><%= event.building        ? event.building : " - " %> 
-          <%= event.room            ? event.room : " - " %></td>
+      <td><b><%= link_to event.event_type.capitalize, event %></b></td>
       <td>
-        <small>
-          <b class="icon-question-sign">&nbsp;<%= link_to "add poll", new_poll_path %></b> <br>
-          <b class="icon-edit">&nbsp;<%= link_to "edit", edit_event_path(event) %></b> <br>
-          <b class="icon-trash">&nbsp;<%= link_to 'delete', event, confirm: 'Are you sure?', method: :delete %></b>
-
-        </small>
+        <%= "#{l(event.beginDate, format: :long)}" %><br />
+        <%= "From #{event.beginTime.strftime('%H:%M')}" if event.beginTime.presence %><%= event.endTime.presence ? " to #{event.endTime.strftime('%H:%M')}" : " (open end)" %>
       </td>
+      <td><%= event.room.presence or event.building.presence ? "#{event.building} #{event.room}" : 't.b.a.' %></td>
+      <td><%= event.tutor.full_name %></td>
+      <% if can? :manage, @course %>
+        <td>
+          <p class="pull-right"><%= link_to "Add a new poll", new_poll_path, class: 'btn btn-small' %>
+          <%= link_to "Edit", edit_event_path(event), class: 'btn btn-small btn-warning' %>
+          <%= link_to 'Delete', event, confirm: 'Are you sure?', method: :delete, class: 'btn btn-small btn-danger' %></p>
+        </td>
+      <% end %>
 		</tr>  
-    <tr style="border:none">
-      <td collspan="5" style="border:none">
-          Pollslist<br>
-          <% event.polls.each do |poll| %>
-            <%= render :partial => 'polls/oneline_poll',  :locals => { :poll => poll} %>
-          <% end %>
-      </td>
-    </tr>
   <% end %>
 </table>
 <% end %>

@@ -49,7 +49,7 @@
 
 #events_arrow_down{
 	height: 20px;
-display:block;
+	display:block;
 }
 
 #events_arrow_up{
@@ -59,7 +59,7 @@ display:block;
 
 #announc_arrow_down{
 	height: 20px;
-display:block;
+	display:block;
 }
 
 #announc_arrow_up{
@@ -69,10 +69,18 @@ display:block;
 
 #ques_arrow_down{
 	height: 20px;
-display:block;
+	display:block;
 }
 
 #ques_arrow_up{
 	height: 0;
 	display:block;
+}
+
+#course_events, #course_announcements, #course_questions{
+	max-height: 99999px;
+}
+
+table.announcement-teaser.pink-teaser {
+	border-color: #FF6666;
 }

@@ -23,7 +23,6 @@
 //= require course_memberships
 //= require courses
 //= require email_settings
-//= require events
 //= require faculties
 //= require feedbacks
 //= require follow-button
