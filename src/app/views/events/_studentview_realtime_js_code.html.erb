@@ -23,7 +23,7 @@ function UserViewCtrl($scope, $http, $timeout){
     $scope.activeResult = 0;
     $scope.pollslength = 0;
 
-    $scope.slideId = "";
+    $scope.slideId = 0;
 
     $scope.speed = {
       up: 0,
@@ -114,8 +114,8 @@ function UserViewCtrl($scope, $http, $timeout){
 
     $scope.decrementActivePoll = function() {
       $scope.activePoll = ($scope.pollslength + $scope.activePoll - 1) % $scope.pollslength
-
     }
+
     $scope.incrementActiveResult = function () {
       $scope.activeResult = ($scope.activeResult + 1) % $scope.results.length
     }
@@ -123,36 +123,43 @@ function UserViewCtrl($scope, $http, $timeout){
     $scope.decrementActiveResult = function() {
       $scope.activeResult = ($scope.results.length + $scope.activeResult - 1) % $scope.results.length
     }
+    
     $scope.rtc = function() {
       $http.get($scope.url.rtc).then(function(s){
-        $scope.results = s.data.poll_results;
-        var idxs = {}
-        $scope.pollslength = 0;
-        angular.forEach(s.data.open_polls, function(v,k){
-          idxs[v.id] = true;
-
-          if($scope.polls[v.id] == undefined){
-            // TODO! Der Code führte dazu, dass Nachrichten nicht gesendet wurden.
-            // $scope.decisive = false;
+        if ($scope.slideId != s.data.active_slide) {
+          // delete all polls if slide changes
+          $scope.polls = {};
+          $scope.activePoll = 0;
+        }
+        $scope.slideId = s.data.active_slide;
+        
+        angular.forEach(s.data.open_polls, function(poll,k){
+          if ($scope.polls[poll.id] == undefined) {
+            if (poll.choices.length) {
+              poll.decisive = false;
+              for (var i = 0; i < poll.choices.length; i++) {
+                if (poll.choices[i].is_correct) {
+                  // poll has a correct choice – mark it as decisive 
+                  poll.decisive = true;
+                  break;
+                }
+              }
+            }
             
-            // fv = v.choices[0].is_correct;
-          
-            // console.log(fv);
-            // angular.forEach(v.choices, function(v1,k1){
-            //   if(v1.is_correct != fv) v.decisive = true;
-            // });
-            $scope.polls[v.id] = v;
-            $scope.polls[v.id].t_start = Date.now();
+            $scope.polls[poll.id] = poll;
+            $scope.polls[poll.id].t_start = Date.now();
           }
         });
-        angular.forEach($scope.polls, function(v,k){
-          $scope.pollslength++
+        
+        $scope.pollslength = 0;
+        angular.forEach($scope.polls, function(v,k) {
+          $scope.pollslength++;
         });
+
         s.data.prof_speed = Math.round((s.data.prof_speed / s.data.viewers)*100)
         s.data.prof_volume =  Math.round((s.data.prof_volume / s.data.viewers)*100)
         s.data.prof_comprehensibility =  Math.round((s.data.prof_comprehensibility / s.data.viewers)*100)
 
-        $scope.slideId = s.data.active_slide;
         // rt prof feedback
         $scope.speed.up = (s.data.prof_speed > 0)?s.data.prof_speed :0;
         $scope.speed.down = (s.data.prof_speed < 0)?s.data.prof_speed * -1 :0;
@@ -165,6 +172,7 @@ function UserViewCtrl($scope, $http, $timeout){
         $scope.speed.canVote = s.data.prof_speed_canVote;
         $scope.volume.canVote = s.data.prof_volume_canVote;
 
+        $scope.results = s.data.poll_results;
         angular.forEach($scope.results, function(v,k){
           v.pie = [];
           var pieValues = [];
