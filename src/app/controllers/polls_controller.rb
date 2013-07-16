@@ -78,16 +78,16 @@ class PollsController < ApplicationController
 def create
   @poll = Poll.new(params[:poll])
   @poll.event_id = params[:poll][:event_id]
-
+  @event = Event.find(@poll.event_id)
+  @course = @event.course
   
 
   respond_to do |format|
-    if !is_singlebestchoice(@poll)
-      format.html  { render :action => "new", :notice => 'poll needs to have one correct answer.'}
+    if !(is_singlebestchoice(@poll) or is_realPoll(@poll))
+      format.html  { render :action => "new", :notice => 'poll cannot have more than one correct answer.'}
       format.json  { render :json => @poll.errors,
                     :status => :unprocessable_entity }
-
-    elsif @poll.save
+    elsif @poll.save!
           @event = Event.find(@poll.event_id)
           @event.record_modification
           
@@ -96,7 +96,7 @@ def create
           format.json  { render :json => @poll,
                     :status => :created, :location => @poll }
     else
-      format.html  { render :action => "new" }
+      format.html  { render :action => "new", :notice => 'poll could not be saved.' }
       format.json  { render :json => @poll.errors,
                     :status => :unprocessable_entity }
     end
@@ -143,15 +143,16 @@ end
 def update 
   @poll = Poll.find(params[:id])
 
-  if !true #s_singlebestchoice(@poll)
-      flash[:notice] = "poll needs to have one correct answer."
-      redirect_to @poll
-  elsif @poll.update_attributes(params[:poll])
-      @event = Event.find(@poll.event_id)
-      @event.record_modification
+  if @poll.update_attributes(params[:poll])
+    if !(is_singlebestchoice(@poll) or is_realPoll(@poll))
+        flash[:notice] = "poll cannot have more than one correct answer."
+        render :action => 'edit'
+    end
+    @event = Event.find(@poll.event_id)
+    @event.record_modification
 
-      flash[:notice] = "Successfully updated poll."
-      redirect_to @poll
+    flash[:notice] = "Successfully updated poll."
+    redirect_to @poll
   else
       render :action => 'edit'
   end
@@ -190,27 +191,24 @@ def toggle_result
       end                
   end
 
-  def is_singlebestchoice poll
-    is_okay = true
-    single = false
+  def is_realPoll poll
+    hasCorrectAnswer = false
     poll.choices.each do |c|
-      if c.is_correct && single
-        is_okay = false
-        # poll.errors.add(:choices, "cannot have more than one correct answer.")
+      if c.is_correct 
+        hasCorrectAnswer = true
       end
+    end  
+    return !hasCorrectAnswer
+  end
 
-      if c.is_correct
-        single = true
+  def is_singlebestchoice poll
+    correctCount = 0
+    poll.choices.each do |c|
+      if c.is_correct 
+        correctCount = correctCount+1
       end
-
     end
-
-    if !single
-      is_okay = false
-      # poll.errors.add(:choices, "must have one correct answer.")
-    end
-
-    return is_okay
+    return correctCount <= 1
   end
 
 # GET /polls/:id/is_visible
