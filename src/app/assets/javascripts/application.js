@@ -28,6 +28,7 @@
 //= require follow-button
 //= require home
 //= require ie
+//= require events
 //= require institutes
 //= require jquery.placeholder.min
 //= require landing_page
