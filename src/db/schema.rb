@@ -126,13 +126,13 @@ ActiveRecord::Schema.define(:version => 20130712141433) do
     t.string   "url",                    :default => ""
     t.string   "building",               :default => ""
     t.string   "room",                   :default => ""
-    t.integer  "version",                :default => 0,     :null => false
     t.integer  "chat_active"
+    t.integer  "active_slide"
     t.integer  "prof_speed"
     t.integer  "prof_volume"
     t.integer  "prof_comprehensibility"
     t.integer  "viewers"
-    t.integer  "active_slide"
+    t.integer  "version",                :default => 0,     :null => false
     t.boolean  "modified",               :default => false, :null => false
     t.time     "beginTime"
     t.time     "endTime"
@@ -166,6 +166,13 @@ ActiveRecord::Schema.define(:version => 20130712141433) do
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
     t.boolean  "read",       :default => false
+  end
+
+  create_table "groups", :force => true do |t|
+    t.string   "title"
+    t.text     "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "institutes", :force => true do |t|

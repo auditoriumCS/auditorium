@@ -129,14 +129,11 @@
 		<div class="span6" id="polls"> 
 			<h3>Polls & Messages</h3>
 			<div ng-show="pollslength > 1">
-
-				<span ng-click="decrementActivePoll()"> &lt;</span>
-				<span>
-					{{activePoll + 1}}
+			<span ng-click="decrementActivePoll()" class="btn btn-small"> &lt; {{activePoll + 1}}
 				</span>
-				|
-				<span>{{pollslength}}</span>
-				<span ng-click="incrementActivePoll()"> &gt;</span>
+			</span>
+				<span ng-click="incrementActivePoll()" class="btn btn-small">{{pollslength}} &gt;
+				</span>
 			</div>
 
 			<div ng-repeat="(key, poll) in polls" ng-show="$index == activePoll">
