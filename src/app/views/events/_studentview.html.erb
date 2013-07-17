@@ -1,5 +1,5 @@
 <h2>Event <%= @event.event_type.capitalize %></h2><span class="pull-right"><%= link_to 'Show event details', '#', id: 'toggle-event-details', class: 'btn btn-small' %></span>
-<p>Course <%= link_to @event.course.name, @event.course %></p>
+<p>Kurs <%= link_to @event.course.name, @event.course %></p>
 
 <%= render 'events/studentview_realtime_js_code' %>
 
@@ -10,18 +10,18 @@
 				<td><%= @event.tutor.full_name  %></td>
 			</tr>
 			<tr>
-				<td> <strong>Weekday</strong> </td>
+				<td> <strong>Wochentag</strong> </td>
 				<td><%= @event.weekday %> in <%= @event.week %> </td>
 			</tr>
 			<tr>
-				<td> <strong>Date</strong> </td>
+				<td> <strong>Datum</strong> </td>
 				<td>
 					<%= "#{l(@event.beginDate, format: :long)}" %><%= ", #{@event.beginTime.strftime('%H:%M')}" if @event.beginTime.presence %><%= @event.endTime.presence ? " - #{@event.endTime.strftime('%H:%M')}" : " (open end)" %>
 
 				</td>
 			</tr>
 			<tr>
-				<td> <strong>Place</strong> </td>
+				<td> <strong>Ort</strong> </td>
 				<td><%= @event.building %> <%= @event.room %></td>
 			</tr>
 			<tr>
@@ -35,7 +35,7 @@
 <div ng-app ng-controller="UserViewCtrl">
 	<div class="row">
 		<div class="span6" id="polls"> 
-			<h3>Polls & Messages</h3>
+			<h3>Umfragen & Nachrichten</h3>
 			<div ng-show="pollslength > 1">
 			<span ng-click="decrementActivePoll()" class="btn btn-small"> &lt; {{activePoll + 1}}
 				</span>
@@ -49,11 +49,11 @@
 				<div ng-repeat="msg in poll.messages" ng-switch="msg.type">
 					<div ng-switch-when="0" class="alert alert-error">
 						<span ng-click="closeMessage(poll,$index,msg)" class="close">[x]</span>
-						<b>Wrong: </b>{{msg.text}}
+						<b>Falsch: </b>{{msg.text}}
 					</div>
 					<div ng-switch-when="1" class="alert alert-success">
 						<span ng-click="closeMessage(poll,$index,msg)" class="close">[x]</span>
-						<b>Correct: </b>{{msg.text}}
+						<b>Korrekt: </b>{{msg.text}}
 					</div>
 					<div ng-switch-when="2" class="alert alert-info">
 						<span ng-click="closeMessage(poll,$index,msg)" class="close">[x]</span>
@@ -69,11 +69,11 @@
 				<button ng-show="poll.choices.length != 0" ng-click="submitPoll(poll.choice_id, key)" class="btn btn-primary">submit</button>
 			</div>
 			<p ng-show="pollslength == 0">
-				Currently there are no messages.
+				Im moment gibt es keine Nachrichten oder Umfragen.
 			</p>
 		</div>
 		<div class="span4" id="results">
-			<h3>Result:</h3>
+			<h3>Resultate:</h3>
 			<div ng-show="results.length > 1">
 
 				<span ng-click="decrementActiveResult()"> &lt;</span>
@@ -94,7 +94,7 @@
 				</ul>
 			</div>
 			<p ng-show="results.length == 0">
-				Currently there are no results.
+				Im Moment liegen keine Ergebnisse vor.
 			</p>
 		</div>
 
@@ -139,7 +139,7 @@
 		</div>
 
 		<div class="span4" id="mood">
-			Speed 
+			Geschwindigkeit 
 
 			<div class="prof-control" id="speed">
 				<span class="back"></span>
@@ -156,7 +156,7 @@
 				</span>
 			</div>
 
-			Volume
+			Lautstärke
 
 			<div class="prof-control" id="volume">
 				<span class="back"></span>
@@ -173,7 +173,7 @@
 				</span>
 			</div>
 
-			Comprehensibility
+			Verständlichkeit
 
 			<div class="prof-control" id="comprehensibility">
 				<span class="back"></span>
