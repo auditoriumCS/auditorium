@@ -312,7 +312,7 @@
 
                         jQuery('#memberList').append("<li id='" + nick + "'>" + "<div class='member'>"
 
-                                + "<div class='image'><img src='img/member.png' alt='pic'></div>"
+                                + "<div class='image'><img src='../assets/member.png' alt='pic'></div>"
                                 + "<div class='nick'>" + nick + "</div></li>");
                     }
                 }
@@ -484,25 +484,28 @@
                             if (style === "create") {
                                 classRoom.jid = jQuery('#jid').val() + "@" + classRoom.OPENFIREDOMAIN;
                                 classRoom.pw = jQuery('#password').val();
-
+                                classRoom.connection = new Strophe.Connection(classRoom.BOSH);
+                                classRoom.connect({jid: classRoom.jid, password: classRoom.pw});
 
                             } else if (style === "connect") {
-                                $.ajax({
-                                    url: 'userinformation.json',
-                                    dataType: 'json',
-                                    async: false,
-                                    //data: myData,
-                                    success: function(data) {
-                                        classRoom.user = data.user;
-                                        classRoom.pw = data.pw;
-                                        classRoom.jid = data.user + "@" + classRoom.OPENFIREDOMAIN;
-                                    }
-                                });
+                                // $.ajax({
+                                //     url: 'userinformation.json',
+                                //     dataType: 'json',
+                                //     async: false,
+                                //     //data: myData,
+                                //     success: function(data) {
+                                //         classRoom.user = data.user;
+                                //         classRoom.pw = data.pw;
+                                //         classRoom.jid = data.user + "@" + classRoom.OPENFIREDOMAIN;
+                                //     }
+                                // });
+                                classRoom.connection = new Strophe.Connection(classRoom.BOSH);
+                                classRoom.connect({jid: "student", password: "student"});
                             }
                             var roomName = $('#room').val();
                             classRoom.ROOM = roomName + "@conference." + classRoom.OPENFIREDOMAIN
-                            classRoom.connection = new Strophe.Connection(classRoom.BOSH);
-                            classRoom.connect({jid: classRoom.jid, password: classRoom.pw});
+                            // classRoom.connection = new Strophe.Connection(classRoom.BOSH);
+                            // classRoom.connect({jid: classRoom.jid, password: classRoom.pw});
 
                             jQuery('#password').val('');
                             jQuery(this).dialog('close');
@@ -525,7 +528,7 @@
 			onStop: function() {
 				jQuery('#page').hide();
 				jQuery('body').css(
-				{	'background-image': 'url(img/amcs_logo.png)',
+				{	'background-image': 'url(../assets/amcs_logo.png)',
 					'background-size':'50%',
 					'background-repeat':'no-repeat',
 					'background-position': 'center'	
@@ -554,7 +557,7 @@
 					jQuery('body').find('#activate').each(function() { jQuery(this).remove(); });
 					jQuery('body').append('<div id ="activate" style="margin: 0 auto; text-align:right;">'
 
-					+'<img style="width:40px;height:40px;" id="go" src="img/go.png" alt="Enable Chat" title="Enable Chat"></div>');
+					+'<img style="width:40px;height:40px;" id="go" src="../assets/go.png" alt="Enable Chat" title="Enable Chat"></div>');
 				}
 			}
         },

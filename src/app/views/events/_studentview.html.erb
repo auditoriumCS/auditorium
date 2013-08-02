@@ -105,16 +105,16 @@
 		<div>Slide {{slideId}}</div>
 			<div id="page">
 				<header>
-					<div id="icon"><img src="img/amcs_logo.png" alt="logo"></div>
+					<div id="icon"><img src="../assets/amcs_logo.png" alt="logo"></div>
 					<div id="avatar"></div>
 					<div id="stopIcon">
-						<img class="hidden" id="stop" src="img/stop.png" alt="Disable Chat" title="Disable Chat">
+						<img class="hidden" id="stop" src="../assets/stop.png" alt="Disable Chat" title="Disable Chat">
 					</div>
 					<div id="status">
 				<!--			<div id="slideStatus" style="float:left; padding: 0 3% 0 3%;"></div>    -->
 					</div>
 
-					<div id="logout"><img id="disconnect" alt="Logout" title="Logout" src ="img/logout.png"> </div>
+					<div id="logout"><img id="disconnect" alt="Logout" title="Logout" src ="../assets/logout.png"> </div>
 				</header>
 
 				<div id="memberContainer">
@@ -130,6 +130,12 @@
 				<button id="connect_room" class="btn btn-small">Connect to chat</button> 
 				
 			<!--  Login Dialog  -->
+			<div id="loginDialog">
+		<div id="login_user"><label>User:</label><input type="text" id="jid"></div>
+		<div id="login_pw"><label>Password:</label> <input type="password" id="password"></div>
+		<div id="login_nick"><label>Nickname:</label> <input type="text" id="nickname"></div>
+		<div id="login_room"><label>Room:</label> <input type="text" id="room"></div>
+	</div>
 
 			<!--  Private Message Dialog  -->
 			<div id="pmDialog" class="hidden">
