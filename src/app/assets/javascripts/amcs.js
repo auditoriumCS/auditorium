@@ -68,6 +68,7 @@
     jQuery('#create_room').hide();
     jQuery('#connect_room').hide();
     jQuery('#page').show();
+    console.log('Call CONNECTED');
   },
     
   disconnected: function() {
@@ -80,6 +81,8 @@
     jQuery('#page').hide();
     jQuery('#create_room').show();
     jQuery('#connect_room').show();
+    console.log('Call DISCONNECTED');
+
   },
       
   register: function() {
@@ -105,6 +108,7 @@
       }
     };
     classRoom.connection.register.connect(classRoom.jid, callback);
+    console.log('Call REGISTER');
   },
     
    /**
@@ -127,12 +131,14 @@
         classRoom.FeedBack.enableItems();
 
         classRoom.Action.SlideChange(actualSlide, time);
+        console.log('Call HANDLE SLIDE CHANGE');
       },
 
     setSlideStatus: function() {
       var count = classRoom.FeedBack.slideCount;
 
       jQuery('#slideStatus').text(classRoom.FeedBack.actualSlide + ' / ' + count);
+      console.log('Call SET SLIDE STATUS');
     },
   },
      /**
@@ -155,6 +161,8 @@
                 if (bool_bottom) {
                     chatContainer.scrollTop = chatContainer.scrollHeight;
                 }
+
+                console.log('Call ADD MESSAGE');
             },
       
       /**
@@ -168,7 +176,7 @@
                 second = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds());
 
                 return  hour + ':' + minute + ':' + second;
-
+                console.log('Call TIME');
             },
       
             /** Function: addHandler
@@ -188,6 +196,7 @@
              */
             addHandler: function(handler, ns, name, type, id, from, options) {
                 return classRoom.connection.addHandler(handler, ns, name, type, id, from, options);
+                console.log('Call ADD HANDLER');
             },
       
       registerHandlers: function() {
@@ -197,6 +206,7 @@
                 classRoom.Utils.addHandler(classRoom.Handler.onSlideChange, classRoom.SLIDE, 'message', 'groupchat');
                 classRoom.Utils.addHandler(classRoom.Handler.configRoom, Strophe.NS.Client, 'message', 'groupchat', '', classRoom.ROOM);
         classRoom.Utils.addHandler(classRoom.Handler.onInterruption, classRoom.INTERRUPTION, 'message', 'groupchat');
+        console.log('Call REGISTER HANDLERS');
       }
         },
     
@@ -505,6 +515,7 @@
                                 // });
                                 classRoom.connection = new Strophe.Connection(classRoom.BOSH);
                                 classRoom.connect({jid: "student", password: "student"});
+                                console.log('Call CONNECT with STROPHE');
                             }
                             var roomName = $('#room').val();
                             classRoom.ROOM = roomName + "@conference." + classRoom.OPENFIREDOMAIN
