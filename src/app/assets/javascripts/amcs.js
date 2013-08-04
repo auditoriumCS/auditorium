@@ -7,7 +7,7 @@
      */
     //BOSH: "http://localhost/http-bind",
     //BOSH: "/http-bind",
-    BOSH: "http://141.76.41.204/http-bind/",
+    BOSH: "http://localhost/http-bind/",
     MUC: "http://jabber.org/protocol/muc",
     OPENFIREDOMAIN: "141.76.41.204",
     //ROOM: "test@conference.kp",
