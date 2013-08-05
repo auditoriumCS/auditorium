@@ -7,7 +7,7 @@
      */
     //BOSH: "http://localhost/http-bind",
     //BOSH: "/http-bind",
-    BOSH: "http://auditorium.inf.tu-dresden.de:7070/http-bind/",
+    BOSH: "http://auditorium.inf.tu-dresden.de/http-bind/",
     MUC: "http://jabber.org/protocol/muc",
     OPENFIREDOMAIN: "141.76.41.204",
     //ROOM: "test@conference.kp",
