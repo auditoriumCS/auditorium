@@ -300,7 +300,7 @@
                 if (jQuery(presence).attr('type') === 'error' && !classRoom.joined) {
 
                     classRoom.connection.disconnect();
-                    //alert('error');
+                    alert('Dem Raum konnte nicht beigetreten werden');
                 }
                 else
 
