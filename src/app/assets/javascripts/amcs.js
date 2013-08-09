@@ -518,6 +518,9 @@
                                 console.log('Call CONNECT with STROPHE');
                             }
                             var roomName = $('#room').val();
+                            var eventid = null;
+                            eventid = (window.location.pathname.split("/")).pop();
+                            var roomName = "room_" + eventid;
                             classRoom.ROOM = roomName + "@conference." + classRoom.OPENFIREDOMAIN
                             // classRoom.connection = new Strophe.Connection(classRoom.BOSH);
                             // classRoom.connect({jid: classRoom.jid, password: classRoom.pw});
