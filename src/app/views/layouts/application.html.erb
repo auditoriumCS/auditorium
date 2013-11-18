@@ -58,6 +58,25 @@
      <a id="tooCool" href="http://abetterbrowser.org" target="_blank">Too cool for Internet Explorer?</a>
     <![endif]-->
     <%= render 'feedbacks/feedback_modal' %>
+
+
+
+    <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://141.76.41.204:7443//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://141.76.41.204:7443/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
   </body>
 </html>
 
